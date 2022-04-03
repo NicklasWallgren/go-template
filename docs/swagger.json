@@ -1,0 +1,27 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/users": {
+            "get": {
+                "description": "Retrieve users endpoint",
+                "summary": "Retrieve users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/converters.PageableResponseConverter"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "converters.PageableResponseConverter": {
+            "type": "object"
+        }
+    }
+}

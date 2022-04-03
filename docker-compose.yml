@@ -1,0 +1,49 @@
+version: '2.3'
+
+networks:
+  private:
+    driver: bridge
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./deployment/docker/Dockerfile
+    env_file:
+      - .env.docker
+    ports:
+      - "8080:8080"
+    networks:
+      - private
+
+  mariadb:
+    image: library/mariadb:10.5.10
+    container_name: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=go_template
+    ports:
+      - 3306:3306
+    networks:
+      - private
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    entrypoint:
+      sh -c "
+      echo 'CREATE DATABASE IF NOT EXISTS go_template_test; GRANT ALL PRIVILEGES ON go_template_test.* TO '\''root'\''@'\''%'\''; ' > /docker-entrypoint-initdb.d/init.sql;
+      /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      "
+
+  rabbitmq:
+    image: heidiks/rabbitmq-delayed-message-exchange:3.7.23-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - private
+    volumes:
+      - rabbitmq_data:/data
+
+volumes:
+  rabbitmq_data:
+  mariadb_data:

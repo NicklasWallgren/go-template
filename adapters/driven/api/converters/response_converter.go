@@ -1,0 +1,20 @@
+package converters
+
+import (
+	"github.com/NicklasWallgren/go-template/adapters/driven/api/response"
+	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/models"
+	"github.com/NicklasWallgren/go-template/domain/common"
+	"github.com/mariomac/gostream/stream"
+)
+
+type ApiResponseConverter[T common.EntityConstraint, R response.ApiResponse] interface {
+	ResponseOf(T) R
+}
+
+type PageableResponseConverter[T common.EntityConstraint, R response.ApiResponse] struct{}
+
+func (p PageableResponseConverter[T, R]) ResponseOf(page *models.Page[T], converter ApiResponseConverter[T, R]) *response.PageableResponse[R] {
+	contentSlice := stream.Map(stream.OfSlice(page.Content), converter.ResponseOf).ToSlice()
+
+	return response.NewPageableResponse[R](contentSlice, page.IsEmpty(), page.TotalPages(), page.NumberOfElements(), page.TotalNumberOfElements, page.TotalPages())
+}

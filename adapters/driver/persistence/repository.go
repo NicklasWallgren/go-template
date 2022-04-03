@@ -1,0 +1,139 @@
+package persistence
+
+import (
+	"context"
+	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/drivers"
+	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/models"
+	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/transaction"
+	"github.com/NicklasWallgren/go-template/config"
+	"github.com/NicklasWallgren/go-template/domain/common"
+	"github.com/NicklasWallgren/go-template/infrastructure/database"
+	"github.com/NicklasWallgren/go-template/infrastructure/logger"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+)
+
+type Repository[T common.EntityConstraint] interface {
+	WithTx(tx *gorm.DB) Repository[T]
+	TransactWithDefaultRetry(operation func(tx *gorm.DB) error) error
+	FindOneById(ctx context.Context, id uint) (entity *T, err error)
+	FindOneByIdForUpdate(ctx context.Context, id uint) (entity *T, err error)
+	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[T], err error)
+	Create(ctx context.Context, entity *T) (*T, error)
+	Save(ctx context.Context, entity *T) (*T, error)
+	DeleteById(ctx context.Context, id uint) error
+	Count(ctx context.Context) (int64, error)
+	Gorm() *gorm.DB
+}
+
+type repository[T common.EntityConstraint] struct {
+	database.Database
+	Logger logger.Logger
+	config *config.AppConfig
+	entity T
+}
+
+func NewRepository[T common.EntityConstraint](database database.Database, entity T, logger logger.Logger, config *config.AppConfig) Repository[T] {
+	return &repository[T]{Database: database, entity: entity, Logger: logger, config: config}
+}
+
+func (r repository[T]) WithTx(tx *gorm.DB) Repository[T] {
+	// WithTx that the transaction (*gorm.DB) is only available in the returned Repository
+	// Otherwise we would pollute the main instance.
+	cloned := r
+	cloned.DB = tx
+
+	return cloned
+}
+
+func (r repository[T]) TransactWithDefaultRetry(operation func(tx *gorm.DB) error) error {
+	// TODO, pass repository instead of gorm.DB
+
+	return transaction.TransactWithDefaultRetry(r.DB, func(tx *gorm.DB) error {
+		return operation(tx)
+	})
+}
+
+func (r repository[T]) FindOneById(ctx context.Context, id uint) (entity *T, err error) {
+	if err := r.DB.WithContext(ctx).First(&entity, id).Error; err != nil {
+		return nil, r.wrapIntoDBError(err)
+	}
+
+	return entity, nil
+}
+
+func (r repository[T]) FindOneByIdForUpdate(ctx context.Context, id uint) (entity *T, err error) {
+	if err := r.DB.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&entity, id).Error; err != nil {
+		return nil, r.wrapIntoDBError(err)
+	}
+
+	return entity, nil
+}
+
+func (r repository[T]) FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[T], err error) {
+	tx := r.DB.WithContext(ctx).Offset(pagination.Offset()).Limit(pagination.Limit).Order(pagination.Order())
+
+	content := &[]T{}
+	if tx.Find(content).Error != nil {
+		return page, r.wrapIntoDBError(err)
+	}
+
+	newPage, err := models.NewPageWith[T](*content, pagination, func() (int, error) { return r.totalCountSupplier(ctx) })
+	if err != nil {
+		return page, r.wrapIntoDBError(err)
+	}
+
+	return newPage, nil
+}
+
+func (r repository[T]) Create(ctx context.Context, entity *T) (*T, error) {
+	if err := r.DB.WithContext(ctx).Create(entity).Error; err != nil {
+		return nil, r.wrapIntoDBError(err)
+	}
+
+	return entity, nil
+}
+
+func (r repository[T]) Save(ctx context.Context, entity *T) (*T, error) {
+	if err := r.DB.WithContext(ctx).Save(entity).Error; err != nil {
+		return nil, r.wrapIntoDBError(err)
+	}
+
+	return entity, nil
+}
+
+func (r repository[T]) DeleteById(ctx context.Context, id uint) error {
+	var entity *T
+	if err := r.DB.WithContext(ctx).Delete(&entity, id).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r repository[T]) Count(ctx context.Context) (int64, error) {
+	var totalCount int64
+	if err := r.DB.WithContext(ctx).Model(r.entity).Count(&totalCount).Error; err != nil {
+		return 0, r.wrapIntoDBError(err)
+	}
+
+	return totalCount, nil
+}
+
+func (r repository[T]) Gorm() *gorm.DB {
+	return r.DB
+}
+
+func (r *repository[T]) wrapIntoDBError(err error) error {
+	driver := drivers.GetDriver(r.config.Database.Dialect)
+
+	// TODO, handle nil error
+
+	return driver.ConvertError(err)
+}
+
+func (r *repository[T]) totalCountSupplier(ctx context.Context) (int, error) {
+	result, err := r.Count(ctx)
+
+	return int(result), err
+}

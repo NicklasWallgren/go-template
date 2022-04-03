@@ -1,0 +1,16 @@
+definitions:
+  converters.PageableResponseConverter:
+    type: object
+info:
+  contact: {}
+paths:
+  /api/users:
+    get:
+      description: Retrieve users endpoint
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/converters.PageableResponseConverter'
+      summary: Retrieve users
+swagger: "2.0"
