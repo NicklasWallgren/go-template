@@ -2,6 +2,7 @@ package health
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/infrastructure/database"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 )

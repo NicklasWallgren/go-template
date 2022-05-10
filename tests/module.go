@@ -1,10 +1,11 @@
 package tests
 
 import (
-	"github.com/NicklasWallgren/go-template/tests/integration/utils"
 	"io/fs"
 	"os"
 	"testing"
+
+	"github.com/NicklasWallgren/go-template/tests/integration/utils"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/api"
 	"github.com/NicklasWallgren/go-template/adapters/driver"

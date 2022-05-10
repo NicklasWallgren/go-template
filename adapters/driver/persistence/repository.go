@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/drivers"
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/transaction"

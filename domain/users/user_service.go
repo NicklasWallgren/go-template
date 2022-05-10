@@ -3,6 +3,7 @@ package users
 import (
 	"context"
 	"fmt"
+
 	"github.com/NicklasWallgren/go-template/domain/validation"
 
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/models"
@@ -88,7 +89,7 @@ func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) 
 	err = s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
 		txService := s.WithTx(tx).(userService)
 
-		if err := txService.userValidator.WithTx(tx).ValidateToCreate(&toBeCreated); err != nil {
+		if err := txService.userValidator.WithTx(tx).ValidateToCreate(ctx, &toBeCreated); err != nil {
 			return domainErrors.NewDomainError("could not create user", err)
 		}
 
@@ -118,7 +119,7 @@ func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (pe
 			return domainErrors.NewDomainError("unable to retrieve the user before updating", err)
 		}
 
-		if err = txService.userValidator.WithTx(tx).ValidateToUpdate(originUser, updated); err != nil {
+		if err = txService.userValidator.WithTx(tx).ValidateToUpdate(ctx, originUser, updated); err != nil {
 			return domainErrors.NewDomainError("unable to update user", err)
 		}
 
@@ -145,14 +146,14 @@ func (s userService) DeleteUserById(ctx context.Context, id uint) error {
 			return domainErrors.NewDomainError("unable to retrieve the user before deleting", err)
 		}
 
-		if err := s.userValidator.ValidateToDelete(user); err != nil {
+		if err := s.userValidator.ValidateToDelete(ctx, user); err != nil {
 			return domainErrors.NewDomainError("unable to delete user", err)
 		}
 
 		return txService.repository.DeleteById(ctx, id)
 	})
 
-	//Publish(s.eventPublisherManager, events.DELETED, persistedUser)
+	// Publish(s.eventPublisherManager, events.DELETED, persistedUser)
 
 	return err
 }

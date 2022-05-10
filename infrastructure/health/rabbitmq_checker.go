@@ -2,6 +2,7 @@ package health
 
 import (
 	"context"
+
 	"github.com/wagslane/go-rabbitmq"
 )
 

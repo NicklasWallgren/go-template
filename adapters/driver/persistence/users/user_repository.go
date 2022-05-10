@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence"
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/models"
 	"github.com/NicklasWallgren/go-template/config"
@@ -23,7 +24,6 @@ type UserRepository interface {
 	Save(ctx context.Context, user *entities.User) (*entities.User, error)
 	DeleteById(ctx context.Context, id uint) error
 	Count(ctx context.Context) (int64, error)
-	Raw(ctx context.Context, query string) error
 }
 
 // userRepository database structure
@@ -89,8 +89,4 @@ func (r userRepository) DeleteById(ctx context.Context, id uint) error {
 
 func (r userRepository) Count(ctx context.Context) (int64, error) {
 	return r.Repository.Count(ctx)
-}
-
-func (r userRepository) Raw(ctx context.Context, query string) error {
-	return r.Repository.Gorm().WithContext(ctx).Exec(query).Error
 }

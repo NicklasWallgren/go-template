@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/converters"
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/users/response"
 	domain "github.com/NicklasWallgren/go-template/domain/users"

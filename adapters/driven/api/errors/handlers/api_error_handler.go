@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+
 	errorTypes "github.com/NicklasWallgren/go-template/adapters/driven/api/errors"
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/response"
 )

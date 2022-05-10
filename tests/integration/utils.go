@@ -39,7 +39,7 @@ func WithDatabaseName(t *testing.T, testFuncName string) fx.Option {
 			utils.DropDatabase(databaseName, appConfig)
 		})
 
-		//Makes the new database name available in the application context
+		// Makes the new database name available in the application context
 		appConfig.Database.Name = databaseName
 
 		return appConfig

@@ -2,9 +2,10 @@ package persistence
 
 import (
 	"context"
-	"github.com/NicklasWallgren/go-template/tests/fakers"
 	"os"
 	"testing"
+
+	"github.com/NicklasWallgren/go-template/tests/fakers"
 
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/users"

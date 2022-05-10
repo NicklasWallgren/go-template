@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+
 	repository "github.com/NicklasWallgren/go-template/adapters/driver/persistence/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
 	"github.com/NicklasWallgren/go-template/domain/validation"
@@ -33,32 +34,32 @@ func (u UserValidator) WithTx(tx *gorm.DB) validation.EntityValidator[entities.U
 	return u
 }
 
-func (u UserValidator) ValidateToCreate(user *entities.User) error {
+func (u UserValidator) ValidateToCreate(ctx context.Context, user *entities.User) error {
 	validationMethods := []validation.ValidationFunc[entities.User]{
 		u.validateName,
 		u.validateAge,
 		u.validateUniqueEmail,
 	}
 
-	return validation.Validate(user, validationMethods)
+	return validation.Validate(ctx, user, validationMethods)
 }
 
-func (u UserValidator) ValidateToUpdate(origin *entities.User, updated *entities.User) error {
+func (u UserValidator) ValidateToUpdate(ctx context.Context, origin *entities.User, updated *entities.User) error {
 	validationSteps := []validation.ValidationFunc[entities.User]{
 		validation.ValidateChangeStep(u.validateName, origin.Name, updated.Name),
 		validation.ValidateChangeStep(u.validateAge, origin.Age, updated.Age),
 	}
 
-	return validation.Validate(updated, validationSteps)
+	return validation.Validate(ctx, updated, validationSteps)
 }
 
-func (u UserValidator) ValidateToDelete(user *entities.User) error {
+func (u UserValidator) ValidateToDelete(ctx context.Context, user *entities.User) error {
 	validationMethods := []validation.ValidationFunc[entities.User]{}
 
-	return validation.Validate(user, validationMethods)
+	return validation.Validate(ctx, user, validationMethods)
 }
 
-func (u UserValidator) validateName(user *entities.User) error {
+func (u UserValidator) validateName(ctx context.Context, user *entities.User) error {
 	if len(user.Name) <= 0 {
 		return &validation.ValidationFieldError{Field: "Name", Message: "Invalid name", Value: user.Name}
 	}
@@ -66,7 +67,7 @@ func (u UserValidator) validateName(user *entities.User) error {
 	return nil
 }
 
-func (u UserValidator) validateAge(user *entities.User) error {
+func (u UserValidator) validateAge(ctx context.Context, user *entities.User) error {
 	if user.Age < 18 {
 		return &validation.ValidationFieldError{Field: "Age", Message: "Invalid age", Value: user.Age}
 	}
@@ -74,8 +75,8 @@ func (u UserValidator) validateAge(user *entities.User) error {
 	return nil
 }
 
-func (u UserValidator) validateUniqueEmail(user *entities.User) error {
-	user, err := u.userRepository.FindOneByEmailWithExclusiveLock(context.TODO(), user.Email) // TODO, pass correct context
+func (u UserValidator) validateUniqueEmail(ctx context.Context, user *entities.User) error {
+	user, err := u.userRepository.FindOneByEmailWithExclusiveLock(ctx, user.Email)
 	if user != nil && user.ID > 0 {
 		return &validation.ValidationFieldError{Field: "Email", Message: "The email has already been reserved", Value: user.Email}
 	}

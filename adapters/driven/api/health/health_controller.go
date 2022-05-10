@@ -1,10 +1,11 @@
 package health
 
 import (
+	"net/http"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/response"
 	"github.com/NicklasWallgren/go-template/infrastructure/health"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type HealthController struct {

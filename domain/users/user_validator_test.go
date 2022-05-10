@@ -1,8 +1,10 @@
 package users_test
 
 import (
-	"github.com/NicklasWallgren/go-template/tests/mocks"
+	"context"
 	"testing"
+
+	"github.com/NicklasWallgren/go-template/tests/mocks"
 
 	"github.com/NicklasWallgren/go-template/domain/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
@@ -18,7 +20,7 @@ func Test(t *testing.T) {
 		user := entities.NewUser("", gofakeit.Email(), uint8(gofakeit.Number(18, 150)), gofakeit.Date())
 
 		validator := users.NewUserValidator(mocks.NewUserRepository(t))
-		err := validator.ValidateToCreate(&user)
+		err := validator.ValidateToCreate(context.TODO(), &user)
 
 		assertValidationFieldError(t, err, "Name", "", "Invalid name")
 	})
@@ -29,7 +31,7 @@ func Test(t *testing.T) {
 		user := entities.NewUser(gofakeit.Name(), gofakeit.Email(), uint8(gofakeit.Number(0, 17)), gofakeit.Date())
 
 		validator := users.NewUserValidator(mocks.NewUserRepository(t))
-		err := validator.ValidateToCreate(&user)
+		err := validator.ValidateToCreate(context.TODO(), &user)
 
 		assertValidationFieldError(t, err, "Age", user.Age, "Invalid age")
 	})
@@ -42,7 +44,7 @@ func Test(t *testing.T) {
 		updatedUser.Name = ""
 
 		validator := users.NewUserValidator(mocks.NewUserRepository(t))
-		err := validator.ValidateToUpdate(&user, &updatedUser)
+		err := validator.ValidateToUpdate(context.TODO(), &user, &updatedUser)
 
 		assertValidationFieldError(t, err, "Name", "", "Invalid name")
 	})
@@ -55,7 +57,7 @@ func Test(t *testing.T) {
 		updatedUser.Age = 17
 
 		validator := users.NewUserValidator(mocks.NewUserRepository(t))
-		err := validator.ValidateToUpdate(&user, &updatedUser)
+		err := validator.ValidateToUpdate(context.TODO(), &user, &updatedUser)
 
 		assertValidationFieldError(t, err, "Age", updatedUser.Age, "Invalid age")
 	})
@@ -69,11 +71,10 @@ func Test(t *testing.T) {
 		userRepository.On("FindOneByEmailWithExclusiveLock", user.Email).Return(&user, nil)
 
 		validator := users.NewUserValidator(userRepository)
-		err := validator.ValidateToCreate(&user)
+		err := validator.ValidateToCreate(context.TODO(), &user)
 
 		assertValidationFieldError(t, err, "Email", user.Email, "The email has already been reserved")
 	})
-
 }
 
 func assertValidationFieldError(t *testing.T, err error, field string, value any, message string) {

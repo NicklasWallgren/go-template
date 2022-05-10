@@ -2,6 +2,7 @@ package factories
 
 import (
 	"context"
+
 	pUser "github.com/NicklasWallgren/go-template/adapters/driver/persistence/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
 	"github.com/NicklasWallgren/go-template/tests/fakers"

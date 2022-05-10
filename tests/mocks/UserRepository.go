@@ -3,6 +3,7 @@
 package mocks
 
 import (
+	"context"
 	entities "github.com/NicklasWallgren/go-template/domain/users/entities"
 	gorm "gorm.io/gorm"
 
@@ -21,7 +22,7 @@ type UserRepository struct {
 }
 
 // Count provides a mock function with given fields:
-func (_m *UserRepository) Count() (int64, error) {
+func (_m *UserRepository) Count(ctx context.Context) (int64, error) {
 	ret := _m.Called()
 
 	var r0 int64
@@ -42,7 +43,7 @@ func (_m *UserRepository) Count() (int64, error) {
 }
 
 // Create provides a mock function with given fields: user
-func (_m *UserRepository) Create(user *entities.User) (*entities.User, error) {
+func (_m *UserRepository) Create(ctx context.Context, user *entities.User) (*entities.User, error) {
 	ret := _m.Called(user)
 
 	var r0 *entities.User
@@ -65,7 +66,7 @@ func (_m *UserRepository) Create(user *entities.User) (*entities.User, error) {
 }
 
 // DeleteById provides a mock function with given fields: id
-func (_m *UserRepository) DeleteById(id uint) error {
+func (_m *UserRepository) DeleteById(ctx context.Context, id uint) error {
 	ret := _m.Called(id)
 
 	var r0 error
@@ -79,7 +80,7 @@ func (_m *UserRepository) DeleteById(id uint) error {
 }
 
 // FindAll provides a mock function with given fields: pagination
-func (_m *UserRepository) FindAll(pagination *models.Pagination) (*models.Page[entities.User], error) {
+func (_m *UserRepository) FindAll(ctx context.Context, pagination *models.Pagination) (*models.Page[entities.User], error) {
 	ret := _m.Called(pagination)
 
 	var r0 *models.Page[entities.User]
@@ -102,7 +103,7 @@ func (_m *UserRepository) FindAll(pagination *models.Pagination) (*models.Page[e
 }
 
 // FindOneByEmailWithExclusiveLock provides a mock function with given fields: email
-func (_m *UserRepository) FindOneByEmailWithExclusiveLock(email string) (*entities.User, error) {
+func (_m *UserRepository) FindOneByEmailWithExclusiveLock(ctx context.Context, email string) (*entities.User, error) {
 	ret := _m.Called(email)
 
 	var r0 *entities.User
@@ -125,7 +126,7 @@ func (_m *UserRepository) FindOneByEmailWithExclusiveLock(email string) (*entiti
 }
 
 // FindOneById provides a mock function with given fields: id
-func (_m *UserRepository) FindOneById(id uint) (*entities.User, error) {
+func (_m *UserRepository) FindOneById(ctx context.Context, id uint) (*entities.User, error) {
 	ret := _m.Called(id)
 
 	var r0 *entities.User
@@ -148,7 +149,7 @@ func (_m *UserRepository) FindOneById(id uint) (*entities.User, error) {
 }
 
 // FindOneByIdForUpdate provides a mock function with given fields: id
-func (_m *UserRepository) FindOneByIdForUpdate(id uint) (*entities.User, error) {
+func (_m *UserRepository) FindOneByIdForUpdate(ctx context.Context, id uint) (*entities.User, error) {
 	ret := _m.Called(id)
 
 	var r0 *entities.User
@@ -171,7 +172,7 @@ func (_m *UserRepository) FindOneByIdForUpdate(id uint) (*entities.User, error) 
 }
 
 // Save provides a mock function with given fields: user
-func (_m *UserRepository) Save(user *entities.User) (*entities.User, error) {
+func (_m *UserRepository) Save(ctx context.Context, user *entities.User) (*entities.User, error) {
 	ret := _m.Called(user)
 
 	var r0 *entities.User
@@ -194,7 +195,7 @@ func (_m *UserRepository) Save(user *entities.User) (*entities.User, error) {
 }
 
 // TransactWithDefaultRetry provides a mock function with given fields: operation
-func (_m *UserRepository) TransactWithDefaultRetry(operation func(*gorm.DB) error) error {
+func (_m *UserRepository) TransactWithDefaultRetry(ctx context.Context, operation func(*gorm.DB) error) error {
 	ret := _m.Called(operation)
 
 	var r0 error

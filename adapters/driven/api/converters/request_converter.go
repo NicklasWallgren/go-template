@@ -2,6 +2,7 @@ package converters
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/request"
 	"github.com/NicklasWallgren/go-template/domain/common"
 )

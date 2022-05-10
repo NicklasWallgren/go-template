@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+
 	"github.com/NicklasWallgren/go-template/infrastructure/env"
 	"go.uber.org/fx/fxevent"
 	"go.uber.org/zap"
