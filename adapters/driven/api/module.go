@@ -29,6 +29,7 @@ var controllersModule = fx.Options(
 // Module Middleware exported
 var middlewareModule = fx.Options(
 	fx.Provide(middlewares.NewCorsMiddleware),
+	fx.Provide(middlewares.NewObservabilityMiddleware),
 	fx.Provide(middlewares.NewMiddlewares),
 )
 

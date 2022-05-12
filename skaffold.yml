@@ -3,8 +3,7 @@ kind: Config
 
 build:
   tagPolicy:
-    envTemplate:
-      template: "latest"
+    sha256: {}
   local:
     concurrency: 0
     useBuildkit: true
@@ -21,7 +20,7 @@ profiles:
     deploy:
       kubectl:
         manifests:
-          - deployment/k8s/app
+          - deployment/k8s/app/*.yaml
 
   - name: go-template-infrastructure
     deploy:
