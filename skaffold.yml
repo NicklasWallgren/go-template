@@ -1,0 +1,29 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+
+build:
+  tagPolicy:
+    envTemplate:
+      template: "latest"
+  local:
+    concurrency: 0
+    useBuildkit: true
+  artifacts:
+    - image: europe-north1-docker.pkg.dev/stim-237210/docker-images/go-template
+      docker:
+        dockerfile: deployment/docker/Dockerfile
+        cacheFrom:
+          - europe-north1-docker.pkg.dev/stim-237210/docker-images/go-template
+      context: .
+
+profiles:
+  - name: go-template-app
+    deploy:
+      kubectl:
+        manifests:
+          - deployment/k8s/app
+
+  - name: go-template-infrastructure
+    deploy:
+      kustomize:
+        paths: [ "kustomize/overlays/dev/infrastructure" ]

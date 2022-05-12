@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-tmpl-backend
+  labels:
+    app: go-tmpl-backend
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: go-tmpl-backend
+  template:
+    metadata:
+      labels:
+        app: go-tmpl-backend
+    spec:
+      containers:
+        - name: go-tmpl-backend
+          image: europe-north1-docker.pkg.dev/stim-237210/docker-images/go-template:latest
+          env:
+            - name: SERVER_PORT
+              value: "8080"
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          resources:
+            limits:
+              memory: "124Mi"
+          ports:
+            - containerPort: 8080
+              name: go-tmpl-backend
+
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: go-tmpl-backend
+            failureThreshold: 30
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: go-tmpl-backend
+            failureThreshold: 30
+            periodSeconds: 10
+
+      nodeSelector:
+        stim.se/feature: apm
+
+      terminationGracePeriodSeconds: 900
