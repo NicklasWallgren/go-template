@@ -101,7 +101,7 @@ func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) 
 		return nil, err
 	}
 
-	Publish(s.eventPublisherManager, events.CREATED, user)
+	Publish(ctx, s.eventPublisherManager, events.CREATED, user)
 
 	return user, nil
 }
@@ -128,7 +128,7 @@ func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (pe
 		return nil
 	})
 
-	Publish(s.eventPublisherManager, events.UPDATED, persistedUser)
+	Publish(ctx, s.eventPublisherManager, events.UPDATED, persistedUser)
 
 	return persistedUser, err
 }
@@ -156,9 +156,9 @@ func (s userService) DeleteUserById(ctx context.Context, id uint) error {
 	return err
 }
 
-func Publish(eventPublisherManager events.EventPublisherManager, action events.EventAction, user *entities.User) {
+func Publish(ctx context.Context, eventPublisherManager events.EventPublisherManager, action events.EventAction, user *entities.User) error {
 	// TODO, handle error, retry, dead-letter queue?
-	eventPublisherManager.Publish(events.NewEvent(action, user,
+	return eventPublisherManager.Publish(ctx, events.NewEvent(action, user,
 		events.WithRouting("routing_key"),
 		events.WithConverter(ResponseOf),
 	))

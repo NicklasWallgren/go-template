@@ -1,7 +1,12 @@
 package rabbitmq
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/NicklasWallgren/go-template/infrastructure/logger"
+	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace"
+	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/ext"
+	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 	"log"
 
 	"github.com/NicklasWallgren/go-template/config"
@@ -16,22 +21,41 @@ type RabbitMQPublisher struct {
 	rabbitmqPublisher *rabbitmq.Publisher
 	initialized       bool
 	config            *config.RabbitMQ
+	logger            logger.Logger
 }
 
-func NewRabbitMQPublisher(config *config.AppConfig) pubsub.AMQPPublisher {
-	return &RabbitMQPublisher{config: config.RabbitMQ}
+func NewRabbitMQPublisher(config *config.AppConfig, logger logger.Logger) pubsub.AMQPPublisher {
+	return &RabbitMQPublisher{config: config.RabbitMQ, logger: logger}
 }
 
-func (r *RabbitMQPublisher) Publish(data any, routingKey string) error {
+func (r *RabbitMQPublisher) Publish(ctx context.Context, data any, routingKey string) error {
 	// Lazy initialize to improve bootup time of the application
 	if err := r.lazyLoad(); err != nil {
 		return err
 	}
 
+	// TODO, handle error before emitting the span
+	opts := []ddtrace.StartSpanOption{
+		tracer.ServiceName("rabbitmq"),
+		tracer.ResourceName("publish/" + routingKey),
+		tracer.SpanType(ext.SpanTypeMessageProducer),
+		tracer.Tag("amqp.command", "basic.publish"),
+		tracer.Tag("amqp.exchange", "events"), // TODO
+		tracer.Tag("amqp.routing_key", routingKey),
+		tracer.Measured(),
+	}
+
+	span, ctx := tracer.StartSpanFromContext(ctx, "amqp.publish", opts...)
+	defer span.Finish()
+
 	dataByteArray, err := json.Marshal(data)
 	if err != nil {
 		return err // TODO, wrap in error
 	}
+
+	r.logger.Info("Publishing to rabbitmq")
+
+	// TODO, the exchange isn't created by the publisher, see https://github.com/wagslane/go-rabbitmq/issues/43
 
 	return r.rabbitmqPublisher.Publish(
 		dataByteArray,

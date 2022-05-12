@@ -1,11 +1,12 @@
 package events
 
 import (
+	"context"
 	"github.com/NicklasWallgren/go-template/infrastructure/pubsub"
 )
 
 type EventPublisher interface {
-	Publish(event *Event) error
+	Publish(ctx context.Context, event *Event) error
 }
 
 type AmqpEventPublisher struct {
@@ -16,7 +17,7 @@ func NewAmqpEventPublisher(publisher pubsub.AMQPPublisher) EventPublisher {
 	return &AmqpEventPublisher{publisher: publisher}
 }
 
-func (r AmqpEventPublisher) Publish(event *Event) error {
+func (r AmqpEventPublisher) Publish(ctx context.Context, event *Event) error {
 	convertedData, err := event.Converter(event)
 	if err != nil {
 		return err // TODO, wrap in error for more context
@@ -24,5 +25,5 @@ func (r AmqpEventPublisher) Publish(event *Event) error {
 
 	// TODO, wrap error for more context?
 
-	return r.publisher.Publish(convertedData, event.RoutingKey)
+	return r.publisher.Publish(ctx, convertedData, event.RoutingKey)
 }

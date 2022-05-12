@@ -34,14 +34,14 @@ spec:
 
           livenessProbe:
             httpGet:
-              path: /api/health
+              path: /api/health/
               port: go-tmpl-backend
             failureThreshold: 30
             periodSeconds: 10
 
           readinessProbe:
             httpGet:
-              path: /api/health
+              path: /api/health/
               port: go-tmpl-backend
             failureThreshold: 30
             periodSeconds: 10

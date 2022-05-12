@@ -1,7 +1,9 @@
 package events
 
+import "context"
+
 type EventPublisherManager interface {
-	Publish(event *Event) error
+	Publish(ctx context.Context, event *Event) error
 }
 
 type eventPublisherManager struct {
@@ -12,7 +14,7 @@ func NewEventPublisherManager(publisher EventPublisher) EventPublisherManager {
 	return &eventPublisherManager{publisher: publisher}
 }
 
-func (e eventPublisherManager) Publish(event *Event) error {
+func (e eventPublisherManager) Publish(ctx context.Context, event *Event) error {
 	// TODO, publish using go routine to not block current routine?
-	return e.publisher.Publish(event)
+	return e.publisher.Publish(ctx, event)
 }

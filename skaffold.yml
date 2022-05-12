@@ -21,6 +21,7 @@ profiles:
       kubectl:
         manifests:
           - deployment/k8s/app/*.yaml
+        defaultNamespace: go-template
 
   - name: go-template-infrastructure
     deploy:

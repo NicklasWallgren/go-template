@@ -1,5 +1,7 @@
 package pubsub
 
+import "context"
+
 type AMQPPublisher interface {
-	Publish(data any, routingKey string) error
+	Publish(ctx context.Context, data any, routingKey string) error
 }
