@@ -8,11 +8,11 @@ build:
     concurrency: 0
     useBuildkit: true
   artifacts:
-    - image: europe-north1-docker.pkg.dev/stim-237210/docker-images/go-template
+    - image: <INSERT-IMAGE-REPOSITORY>/go-template
       docker:
         dockerfile: deployment/docker/Dockerfile
         cacheFrom:
-          - europe-north1-docker.pkg.dev/stim-237210/docker-images/go-template
+          - <INSERT-IMAGE-REPOSITORY>/go-template
       context: .
 
 profiles:
