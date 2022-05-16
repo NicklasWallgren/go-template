@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: go-tmpl-backend
-          image: europe-north1-docker.pkg.dev/stim-237210/docker-images/go-template:latest
+          image: <INSERT-IMAGE-REPOSITORY>/go-template:latest
           env:
             - name: SERVER_PORT
               value: "8080"
