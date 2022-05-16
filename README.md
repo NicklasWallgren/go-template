@@ -32,6 +32,7 @@ Go-template is an opinionated Hexagonal backend template written in GO.
     - Command to handle migrations (migration).
     - Command to serve the http server.
     - Command to launch amqp consumer.
+- Support for observability via [dd-trace-go](https://github.com/DataDog/dd-trace-go/)
 
 ## Prerequisites
 
