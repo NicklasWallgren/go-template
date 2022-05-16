@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 	"log"
 	"net/http"
 	"time"
@@ -40,6 +41,14 @@ func (s *HttpServerCommand) Run(cmd *cobra.Command) cli.CommandRunner {
 		logger logger.Logger,
 		config *config.AppConfig,
 	) {
+		// TODO, pass via env
+		tracer.Start(
+			tracer.WithEnv("gotemplate-dev"),
+			tracer.WithService("go-template"),
+			tracer.WithServiceVersion("0.10.0"),
+		)
+		defer tracer.Stop()
+
 		logger.Info(config.Assets.Logo)
 		middleware.Setup()
 		route.Setup()

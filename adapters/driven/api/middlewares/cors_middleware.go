@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	// "github.com/dipeshdulal/clean-gin/lib"
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/common"
 	"github.com/NicklasWallgren/go-template/infrastructure/env"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"

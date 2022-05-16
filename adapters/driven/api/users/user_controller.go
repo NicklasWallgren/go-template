@@ -42,7 +42,7 @@ func (u UserController) GetOneUserById(ctx *gin.Context) (response.ApiResponseEn
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	user, err := u.service.FindOneUserById(ctx, uint(id))
+	user, err := u.service.FindOneUserById(ctx.Request.Context(), uint(id))
 	if err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
@@ -64,7 +64,7 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (response.ApiResponseEnve
 	}
 
 	// TODO, support for predicate/criteria?
-	userPage, err := u.service.FindAllUser(ctx, &pagination)
+	userPage, err := u.service.FindAllUser(ctx.Request.Context(), &pagination)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func (u UserController) SaveUser(ctx *gin.Context) (response.ApiResponseEnvelop,
 		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
 	}
 
-	persistedUser, err := u.service.CreateUser(ctx, u.apiConverter.EntityOf(request))
+	persistedUser, err := u.service.CreateUser(ctx.Request.Context(), u.apiConverter.EntityOf(request))
 	if err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
 	}
@@ -96,12 +96,12 @@ func (u UserController) UpdateUser(ctx *gin.Context) (response.ApiResponseEnvelo
 		return nil, err
 	}
 
-	toBeUpdatedUser, err := u.apiConverter.UpdatedEntityOf(ctx, request)
+	toBeUpdatedUser, err := u.apiConverter.UpdatedEntityOf(ctx.Request.Context(), request)
 	if err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndMessageAndError(http.StatusInternalServerError, "unable to update user, please try again", err))
 	}
 
-	persistedUser, err := u.service.UpdateUser(ctx, toBeUpdatedUser)
+	persistedUser, err := u.service.UpdateUser(ctx.Request.Context(), toBeUpdatedUser)
 	if err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
 	}
@@ -116,7 +116,7 @@ func (u UserController) DeleteUserById(ctx *gin.Context) (response.ApiResponseEn
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	if err := u.service.DeleteUserById(ctx, uint(id)); err != nil {
+	if err := u.service.DeleteUserById(ctx.Request.Context(), uint(id)); err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
