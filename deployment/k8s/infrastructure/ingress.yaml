@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: virtual-host-ingress
+  namespace: go-template
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: stimtechdev-issuer
+    external-dns.alpha.kubernetes.io/hostname: gotemplate.stimtech.dev
+    external-dns.alpha.kubernetes.io/ttl: "1"
+    external-dns.alpha.kubernetes.io/target: "10.144.100.38,10.144.100.39"
+spec:
+  tls:
+    - secretName: go-template-k3s-tls
+      hosts:
+        - gotemplate.stimtech.dev
+  rules:
+    - host: gotemplate.stimtech.dev
+      http:
+        paths:
+          - path: /api
+            backend:
+              serviceName: go-tmpl-backend
+              servicePort: 80

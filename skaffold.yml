@@ -1,0 +1,29 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+
+build:
+  tagPolicy:
+    sha256: {}
+  local:
+    concurrency: 0
+    useBuildkit: true
+  artifacts:
+    - image: <INSERT-IMAGE-REPOSITORY>/go-template
+      docker:
+        dockerfile: deployment/docker/Dockerfile
+        cacheFrom:
+          - <INSERT-IMAGE-REPOSITORY>/go-template
+      context: .
+
+profiles:
+  - name: go-template-app
+    deploy:
+      kubectl:
+        manifests:
+          - deployment/k8s/app/*.yaml
+        defaultNamespace: go-template
+
+  - name: go-template-infrastructure
+    deploy:
+      kustomize:
+        paths: [ "kustomize/overlays/dev/infrastructure" ]

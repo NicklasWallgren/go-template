@@ -31,7 +31,6 @@ type userService struct {
 	logger                logger.Logger
 	repository            repository.UserRepository
 	eventPublisherManager events.EventPublisherManager
-	ctx                   context.Context
 }
 
 // NewUserService creates a new userService
@@ -41,7 +40,6 @@ func NewUserService(userValidator *UserValidator, logger logger.Logger, reposito
 		logger:                logger,
 		repository:            repository,
 		eventPublisherManager: eventPublisherManager,
-		ctx:                   context.TODO(),
 	}
 }
 
