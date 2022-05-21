@@ -14,23 +14,15 @@ var Module = fx.Options(
 	fx.Provide(logger.NewLogger),
 	fx.Provide(database.NewDatabase),
 	fx.Provide(database.NewGooseMigrator),
-	dbChecker,
-	healthCheckerManager,
 	healthCheckers,
+	healthCheckerManager,
 )
 
-var dbChecker = fx.Provide(fx.Annotated{
-	Name:   "dbChecker",
-	Target: health.NewDBHealthChecker,
-})
+var healthCheckers = fx.Provide(
+	fx.Annotate(health.NewDBHealthChecker, fx.ResultTags(`group:"checkers"`)),
+	fx.Annotate(health.NewRabbitMQHealthChecker, fx.ResultTags(`group:"checkers"`)),
+)
 
-type HealthCheckerParams struct {
-	fx.In
-	DBChecker health.HealthChecker `name:"dbChecker"`
-}
-
-var healthCheckers = fx.Provide(func(healthCheckers HealthCheckerParams) []health.HealthChecker {
-	return []health.HealthChecker{healthCheckers.DBChecker}
-})
-
-var healthCheckerManager = fx.Provide(health.NewHealthCheckerManager)
+var healthCheckerManager = fx.Provide(
+	fx.Annotate(health.NewHealthCheckerManager, fx.ParamTags(`group:"checkers"`)),
+)
