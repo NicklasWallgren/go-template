@@ -13,15 +13,15 @@ type ErrorTypeResponseHandler interface {
 	ErrorType() error
 }
 
-type ErrorResponseHandler struct {
+type ErrorResponseManager struct {
 	errorTypeHandlers []ErrorTypeResponseHandler
 }
 
-func NewErrorResponseHandler(errorTypeHandlers []ErrorTypeResponseHandler) *ErrorResponseHandler {
-	return &ErrorResponseHandler{errorTypeHandlers: errorTypeHandlers}
+func NewErrorResponseManager(errorTypeHandlers []ErrorTypeResponseHandler) *ErrorResponseManager {
+	return &ErrorResponseManager{errorTypeHandlers: errorTypeHandlers}
 }
 
-func (e ErrorResponseHandler) Handle(err error) response.ApiResponseEnvelop {
+func (e ErrorResponseManager) Handle(err error) response.ApiResponseEnvelop {
 	for _, handler := range e.errorTypeHandlers {
 		if !handler.IsSupported(err) {
 			continue

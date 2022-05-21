@@ -11,10 +11,7 @@ import (
 
 type ValidationGoPlaygroundErrorHandler struct{}
 
-// To ensure that ValidationGoPlaygroundErrorHandler implements the ErrorTypeResponseHandler interface
-var _ ErrorTypeResponseHandler = (*ValidationGoPlaygroundErrorHandler)(nil)
-
-func NewValidationGoPlaygroundErrorHandler() *ValidationGoPlaygroundErrorHandler {
+func NewValidationGoPlaygroundErrorHandler() ErrorTypeResponseHandler {
 	return &ValidationGoPlaygroundErrorHandler{}
 }
 
