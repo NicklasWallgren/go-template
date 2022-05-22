@@ -10,10 +10,7 @@ import (
 
 type DomainErrorTypeHandler struct{}
 
-// To ensure that DomainErrorTypeHandler implements the ErrorTypeResponseHandler interface
-var _ ErrorTypeResponseHandler = (*DomainErrorTypeHandler)(nil)
-
-func NewDomainErrorTypeHandler() *DomainErrorTypeHandler {
+func NewDomainErrorTypeHandler() ErrorTypeResponseHandler {
 	return &DomainErrorTypeHandler{}
 }
 

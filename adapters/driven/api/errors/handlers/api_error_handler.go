@@ -9,10 +9,7 @@ import (
 
 type ApiErrorTypeHandler struct{}
 
-// To ensure that ApiErrorTypeHandler implements the ErrorTypeResponseHandler interface
-var _ ErrorTypeResponseHandler = (*ApiErrorTypeHandler)(nil)
-
-func NewApiErrorTypeHandler() *ApiErrorTypeHandler {
+func NewApiErrorTypeHandler() ErrorTypeResponseHandler {
 	return &ApiErrorTypeHandler{}
 }
 

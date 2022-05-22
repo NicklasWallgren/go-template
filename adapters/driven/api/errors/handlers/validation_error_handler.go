@@ -10,10 +10,7 @@ import (
 
 type ValidationErrorTypeHandler struct{}
 
-// To ensure that ValidationErrorTypeHandler implements the ErrorTypeResponseHandler interface
-var _ ErrorTypeResponseHandler = (*ValidationErrorTypeHandler)(nil)
-
-func NewValidationErrorTypeHandler() *ValidationErrorTypeHandler {
+func NewValidationErrorTypeHandler() ErrorTypeResponseHandler {
 	return &ValidationErrorTypeHandler{}
 }
 

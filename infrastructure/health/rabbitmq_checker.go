@@ -6,6 +6,8 @@ import (
 	"github.com/wagslane/go-rabbitmq"
 )
 
+// TODO, move to rabbitmq driver package?
+
 type RabbitMQHealthChecker struct {
 	rabbitmqPublisher *rabbitmq.Publisher
 }

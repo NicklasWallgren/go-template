@@ -12,5 +12,4 @@ var Module = fx.Options(
 	fx.Provide(users.NewUserValidator),
 	fx.Provide(events.NewAmqpEventPublisher),
 	fx.Provide(events.NewEventPublisherManager),
-	// fx.Provide(NewJWTAuthService),
 )
