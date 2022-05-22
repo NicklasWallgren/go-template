@@ -47,7 +47,7 @@ func (u UserController) GetOneUserById(ctx *gin.Context) (response.ApiResponseEn
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	return response.NewApiResponseWithPayload(http.StatusOK, u.apiConverter.ResponseOf(*user)), nil
+	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(*user)), nil
 }
 
 // FindAllUsers godoc
@@ -71,7 +71,7 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (response.ApiResponseEnve
 
 	// TODO, inject converter
 	converter := converters.PageableResponseConverter[entities.User, userResponse.UserResponse]{}
-	return response.NewApiResponseWithPayload(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
+	return response.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
 }
 
 // SaveUser saves the user
@@ -86,7 +86,7 @@ func (u UserController) SaveUser(ctx *gin.Context) (response.ApiResponseEnvelop,
 		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
 	}
 
-	return response.NewApiResponseWithPayload(http.StatusCreated, u.apiConverter.ResponseOf(*persistedUser)), nil
+	return response.NewWithResponse(http.StatusCreated, u.apiConverter.ResponseOf(*persistedUser)), nil
 }
 
 // UpdateUser updates user
@@ -106,7 +106,7 @@ func (u UserController) UpdateUser(ctx *gin.Context) (response.ApiResponseEnvelo
 		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
 	}
 
-	return response.NewApiResponseWithPayload(http.StatusOK, u.apiConverter.ResponseOf(*persistedUser)), nil
+	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(*persistedUser)), nil
 }
 
 // DeleteUserById deletes user
@@ -120,5 +120,5 @@ func (u UserController) DeleteUserById(ctx *gin.Context) (response.ApiResponseEn
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	return response.NewApiResponseEnvelop(http.StatusNoContent), nil
+	return response.New(http.StatusNoContent), nil
 }

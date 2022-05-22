@@ -22,7 +22,7 @@ func (d DomainErrorTypeHandler) Handle(err error) response.ApiResponseEnvelop {
 		response.NewApiError(domainError.Message),
 	}
 
-	return response.NewApiResponseEnvelop(http.StatusBadRequest, response.WithPayload(response.NewApiErrorResponse(errors)))
+	return response.New(http.StatusBadRequest, response.WithResponse(response.NewApiErrorResponse(errors)))
 }
 
 func (d DomainErrorTypeHandler) IsSupported(err error) bool {

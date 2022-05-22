@@ -26,7 +26,7 @@ func (v ValidationGoPlaygroundErrorHandler) Handle(err error) response.ApiRespon
 		fieldErrors[i] = response.NewApiFieldError(message, v.Field(), v.Value())
 	}
 
-	return response.NewApiResponseEnvelop(http.StatusBadRequest, response.WithPayload(response.NewApiErrorResponse(fieldErrors)))
+	return response.New(http.StatusBadRequest, response.WithResponse(response.NewApiErrorResponse(fieldErrors)))
 }
 
 func (v ValidationGoPlaygroundErrorHandler) IsSupported(err error) bool {
