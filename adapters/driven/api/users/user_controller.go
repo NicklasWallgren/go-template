@@ -54,7 +54,7 @@ func (u UserController) GetOneUserById(ctx *gin.Context) (response.ApiResponseEn
 // @Summary 	Retrieve users paginated
 // @BasePath 	/api/users
 // @Success		200 {object} response.PageableResponse[userResponse.UserResponse]
-// @Success		400 {object} response.ApiResponseEnvelop[userResponse.UserResponse]
+// @Failure		400 {object} response.ApiError
 // @Router 		/api/users [get]
 // TODO, support for generics https://github.com/swaggo/swag/issues/1170
 func (u UserController) FindAllUsers(ctx *gin.Context) (response.ApiResponseEnvelop, error) {

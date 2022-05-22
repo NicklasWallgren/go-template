@@ -19,7 +19,7 @@ func (v ValidationGoPlaygroundErrorHandler) Handle(err error) response.ApiRespon
 	validationErrors := validator.ValidationErrors{}
 	errors.As(err, &validationErrors)
 
-	fieldErrors := make([]response.ApiErrorConstraint, len(validationErrors))
+	fieldErrors := make([]response.ApiError, len(validationErrors))
 	for i, v := range validationErrors {
 		message := fmt.Sprintf("Invalid value for field '%s'. Cause: '%s'. Value: '%s'", v.Field(), v.Tag(), v.Value())
 

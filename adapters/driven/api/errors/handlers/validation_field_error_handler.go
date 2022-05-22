@@ -18,7 +18,7 @@ func (a ValidationFieldErrorTypeHandler) Handle(err error) response.ApiResponseE
 	validationFieldError := &validation.ValidationFieldError{}
 	errors.As(err, &validationFieldError)
 
-	errors := []response.ApiErrorConstraint{
+	errors := []response.ApiError{
 		response.NewApiFieldError(validationFieldError.Message, validationFieldError.Field, validationFieldError.Value),
 	}
 

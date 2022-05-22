@@ -16,7 +16,7 @@ func NewApiErrorTypeHandler() ErrorTypeResponseHandler {
 func (a ApiErrorTypeHandler) Handle(err error) response.ApiResponseEnvelop {
 	actualError, _ := (err).(*errorTypes.ApiError)
 
-	errors := []response.ApiErrorConstraint{
+	errors := []response.ApiError{
 		response.NewApiError(actualError.Message),
 	}
 

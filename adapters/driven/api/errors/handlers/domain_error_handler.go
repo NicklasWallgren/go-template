@@ -18,7 +18,7 @@ func (d DomainErrorTypeHandler) Handle(err error) response.ApiResponseEnvelop {
 	domainError := &domainErrors.DomainError{}
 	errors.As(err, &domainError)
 
-	errors := []response.ApiErrorConstraint{
+	errors := []response.ApiError{
 		response.NewApiError(domainError.Message),
 	}
 
