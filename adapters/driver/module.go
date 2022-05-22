@@ -6,29 +6,28 @@ import (
 	"go.uber.org/fx"
 )
 
-// PersistenceModule exports dependency
 var PersistenceModule = fx.Options(
 	fx.Provide(users.NewUserRepository),
 )
 
-var ConsumerModules = fx.Options(fx.Provide(
-	func(consumer rabbitmq.Consumer) rabbitmq.Consumers {
-		return []rabbitmq.Consumer{consumer}
-	}), fx.Provide(rabbitmq.NewConsumerManager), fx.Provide(rabbitmq.NewRabbitMQConsumer))
+var consumers = fx.Provide(
+	fx.Annotate(rabbitmq.NewRabbitMQConsumer, fx.ResultTags(`name:"rabbitmq_consumer"`)),
+)
 
-var ConsumerRunnerModules = fx.Options(fx.Provide(
-	func(simpleConsumerRunner rabbitmq.ConsumerRunner) rabbitmq.ConsumerRunners {
-		return []rabbitmq.ConsumerRunner{simpleConsumerRunner}
-	}), fx.Provide(rabbitmq.NewSimpleConsumerRunner))
+var consumerRunners = fx.Provide(
+	fx.Annotate(rabbitmq.NewSimpleConsumerRunner, fx.ParamTags(`name:"rabbitmq_consumer"`), fx.ResultTags(`group:"amqp_consumers"`)),
+)
 
-var PublisherModules = fx.Options(fx.Provide(rabbitmq.NewRabbitMQPublisher))
+var consumerManager = fx.Provide(
+	fx.Annotate(rabbitmq.NewConsumerManager, fx.ParamTags(`group:"amqp_consumers"`)),
+)
 
-// TODO, use fx.In and fx.Out
+var publishers = fx.Provide(rabbitmq.NewRabbitMQPublisher)
 
-// Module exports dependency
 var Module = fx.Options(
 	PersistenceModule,
-	ConsumerModules,
-	ConsumerRunnerModules,
-	PublisherModules,
+	consumers,
+	consumerRunners,
+	consumerManager,
+	publishers,
 )

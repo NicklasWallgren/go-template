@@ -12,50 +12,8 @@ import (
 
 const DefaultExchange = "events"
 
-type ConsumerRunnerOptions struct {
-	name         string
-	exchangeName string
-	exchangeKind string
-	queue        string
-	routingKeys  []string
-}
-
-type ConsumerRunner interface {
-	Run(ctx context.Context)
-	Do(ctx context.Context)
-	Options() ConsumerRunnerOptions
-}
-
 type Consumer interface {
 	Consume(ctx context.Context, runner ConsumerRunner)
-}
-
-type (
-	Consumers       []Consumer
-	ConsumerRunners []ConsumerRunner
-)
-
-type ConsumerManager struct {
-	ConsumerRunners ConsumerRunners
-}
-
-func NewConsumerManager(consumerRunners ConsumerRunners) *ConsumerManager {
-	return &ConsumerManager{ConsumerRunners: consumerRunners}
-}
-
-func (c *ConsumerManager) AddConsumerRunner(consumerRunner ConsumerRunner) {
-	c.ConsumerRunners = append(c.ConsumerRunners, consumerRunner)
-}
-
-func (c ConsumerManager) Run(ctx context.Context) {
-	for _, runner := range c.ConsumerRunners {
-		go runner.Run(ctx)
-	}
-
-	// Wait until all go routines has finished
-	<-ctx.Done()
-
-	fmt.Println("stopping consumer")
 }
 
 type RabbitMQConsumer struct {
@@ -103,33 +61,4 @@ func (c *RabbitMQConsumer) Consume(ctx context.Context, runner ConsumerRunner) {
 	<-ctx.Done()
 
 	fmt.Println("The consumer is stopping")
-}
-
-type SimpleConsumerRunner struct {
-	consumer Consumer
-}
-
-func NewSimpleConsumerRunner(consumer Consumer) ConsumerRunner {
-	return &SimpleConsumerRunner{consumer: consumer}
-}
-
-func (s SimpleConsumerRunner) Run(ctx context.Context) {
-	s.consumer.Consume(ctx, s)
-}
-
-func (s SimpleConsumerRunner) Do(ctx context.Context) {
-	fmt.Println("Inside simple consumer runner")
-
-	// TODO, unmarshall body
-	// TODO, return rabbitmq.action?
-}
-
-func (s SimpleConsumerRunner) Options() ConsumerRunnerOptions {
-	return ConsumerRunnerOptions{
-		name:         "simple-consumer-runner",
-		exchangeName: "events",
-		exchangeKind: "topic",
-		queue:        "my_queue",
-		routingKeys:  []string{"routing_key"},
-	}
 }

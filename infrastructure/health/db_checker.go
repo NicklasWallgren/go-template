@@ -12,6 +12,8 @@ type DBHealthChecker struct {
 	logger   logger.Logger
 }
 
+// TODO, move to persistence driver package?
+
 func NewDBHealthChecker(database database.Database, logger logger.Logger) HealthChecker {
 	return &DBHealthChecker{database: database, logger: logger}
 }
