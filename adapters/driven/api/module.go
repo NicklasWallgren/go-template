@@ -56,6 +56,7 @@ var validatorModule = fx.Options(
 
 // Module exports dependency
 var Module = fx.Options(
+	errorTypeHandlers,
 	errorResponseModule,
 	fx.Provide(common.NewRequestHandler),
 	fx.Provide(routeHandlers.NewRootHandler),
