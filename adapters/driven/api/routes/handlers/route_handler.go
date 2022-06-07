@@ -9,10 +9,10 @@ import (
 type RouteHandler func(c *gin.Context) (response.ApiResponseEnvelop, error)
 
 type RootHandler struct {
-	ErrorHandler *handlers.ErrorResponseManager
+	ErrorHandler handlers.ErrorResponseManager
 }
 
-func NewRootHandler(errorHandler *handlers.ErrorResponseManager) *RootHandler {
+func NewRootHandler(errorHandler handlers.ErrorResponseManager) *RootHandler {
 	return &RootHandler{ErrorHandler: errorHandler}
 }
 
@@ -33,7 +33,7 @@ func (r RootHandler) Handle(handler RouteHandler) gin.HandlerFunc {
 	}
 }
 
-func handleErrorResponse(c *gin.Context, err error, errorHandler *handlers.ErrorResponseManager) {
+func handleErrorResponse(c *gin.Context, err error, errorHandler handlers.ErrorResponseManager) {
 	apiResponse := errorHandler.Handle(err)
 
 	// TODO, should we use c.AbortWithStatus if 4xx,5xx?
