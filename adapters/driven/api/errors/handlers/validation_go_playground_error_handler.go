@@ -36,3 +36,7 @@ func (v ValidationGoPlaygroundErrorHandler) IsSupported(err error) bool {
 func (v ValidationGoPlaygroundErrorHandler) ErrorType() error {
 	return &validator.ValidationErrors{}
 }
+
+func (v ValidationGoPlaygroundErrorHandler) Priority() int {
+	return 3
+}

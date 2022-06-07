@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"errors"
+	"github.com/mariomac/gostream/order"
+	"github.com/mariomac/gostream/stream"
 	"net/http"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/response"
@@ -19,7 +21,12 @@ type ErrorResponseManager struct {
 }
 
 func NewErrorResponseManager(errorTypeHandlers []ErrorTypeResponseHandler) *ErrorResponseManager {
-	return &ErrorResponseManager{errorTypeHandlers: errorTypeHandlers}
+	// Sort the error handlers based on priority
+	sortedTypeHandlers := stream.Sorted(stream.OfSlice(errorTypeHandlers), func(h1, h2 ErrorTypeResponseHandler) int {
+		return order.Natural(h1.Priority(), h2.Priority())
+	}).ToSlice()
+
+	return &ErrorResponseManager{errorTypeHandlers: sortedTypeHandlers}
 }
 
 func (e ErrorResponseManager) Handle(err error) response.ApiResponseEnvelop {
