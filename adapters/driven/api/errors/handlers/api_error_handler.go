@@ -31,3 +31,7 @@ func (a ApiErrorTypeHandler) IsSupported(err error) bool {
 func (a ApiErrorTypeHandler) ErrorType() error {
 	return &errorTypes.ApiError{}
 }
+
+func (a ApiErrorTypeHandler) Priority() int {
+
+}
