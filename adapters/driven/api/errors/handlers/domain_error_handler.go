@@ -33,3 +33,7 @@ func (d DomainErrorTypeHandler) IsSupported(err error) bool {
 func (d DomainErrorTypeHandler) ErrorType() error {
 	return &domainErrors.DomainError{}
 }
+
+func (d DomainErrorTypeHandler) Priority() int {
+	return 4
+}

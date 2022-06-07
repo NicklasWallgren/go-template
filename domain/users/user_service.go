@@ -88,7 +88,7 @@ func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) 
 		txService := s.WithTx(tx).(userService)
 
 		if err := txService.userValidator.WithTx(tx).ValidateToCreate(ctx, &toBeCreated); err != nil {
-			return domainErrors.NewDomainError("could not create user", err)
+			return domainErrors.NewDomainError("unable to create user", err)
 		}
 
 		if user, err = txService.repository.Create(ctx, &toBeCreated); err != nil {
