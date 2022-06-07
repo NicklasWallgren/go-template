@@ -33,3 +33,7 @@ func (a ValidationFieldErrorTypeHandler) IsSupported(err error) bool {
 func (a ValidationFieldErrorTypeHandler) ErrorType() error {
 	return &validation.ValidationFieldError{}
 }
+
+func (a ValidationFieldErrorTypeHandler) Priority() int {
+	return 1
+}

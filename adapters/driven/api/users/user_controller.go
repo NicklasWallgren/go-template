@@ -60,7 +60,7 @@ func (u UserController) GetOneUserById(ctx *gin.Context) (response.ApiResponseEn
 func (u UserController) FindAllUsers(ctx *gin.Context) (response.ApiResponseEnvelop, error) {
 	pagination, err := request.Into(ctx, models.NewPaginationWithDefaults())
 	if err != nil {
-		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
+		return nil, err
 	}
 
 	// TODO, support for predicate/criteria?
