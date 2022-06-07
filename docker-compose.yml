@@ -34,6 +34,20 @@ services:
       /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
       "
 
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_MULTIPLE_DATABASES=go_template,go_template_test
+    ports:
+      - 5432:5432
+    networks:
+      - private
+    volumes:
+      - ./deployment/docker/postgres/create-multiple-postgresql-databases.sh:/docker-entrypoint-initdb.d/init.sh
+
   rabbitmq:
     image: heidiks/rabbitmq-delayed-message-exchange:3.7.23-management
     ports:
@@ -47,3 +61,4 @@ services:
 volumes:
   rabbitmq_data:
   mariadb_data:
+  postgresdb_data:

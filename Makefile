@@ -6,11 +6,11 @@
 ENVIRONMENT_FILE=$(shell pwd)/.env
 
 # Available docker containers
-CONTAINERS=app mariadb rabbitmq
+CONTAINERS=app mariadb rabbitmq postgres
 
 # Default environment variables
-MYSQL_ROOT_PASSWORD ?= secret
-MYSQL_DATABASE ?= go_template
+DB_ROOT_PASSWORD ?= secret
+DB_DATABASE ?= go_template
 
 #####################################################
 # RUNTIME TARGETS			 						#
@@ -64,7 +64,6 @@ clean: prerequisite prompt-continue
 	# Remove the docker containers, networks and volumes
 	- docker-compose -f docker-compose.yml rm -svf
 	- docker-compose -f docker-compose.yml down --rmi all -v --remove-orphans
-	- rm -rf app/docker/data
 
 # Echos the container status
 status: prerequisite
@@ -72,12 +71,12 @@ status: prerequisite
 
 # Drop and creates a new database
 database-setup:
-	- mysql -u root -p$(MYSQL_ROOT_PASSWORD) -h 127.0.0.1 -e "DROP DATABASE IF EXISTS ${MYSQL_DATABASE}; CREATE DATABASE ${MYSQL_DATABASE};"
+	- mysql -u root -p$(DB_ROOT_PASSWORD) -h 127.0.0.1 -e "DROP DATABASE IF EXISTS ${DB_DATABASE}; CREATE DATABASE ${DB_DATABASE};"
 	# TODO, apply migration and seed
 
 # Drop and creates a new test database
 database-test-setup:
-	- mysql -u root -p$(MYSQL_ROOT_PASSWORD) -h 127.0.0.1 -e "DROP DATABASE IF EXISTS ${MYSQL_DATABASE}_test; CREATE DATABASE ${MYSQL_DATABASE}_test;"
+	- mysql -u root -p$(DB_ROOT_PASSWORD) -h 127.0.0.1 -e "DROP DATABASE IF EXISTS ${DB_DATABASE}_test; CREATE DATABASE ${DB_DATABASE}_test;"
 
 #####################################################
 # BASH CLI TARGETS			 						#
@@ -95,13 +94,21 @@ bash-mariadb: prerequisite
 bash-rabbitmq: prerequisite
 	- docker-compose -f docker-compose.yml exec --env COLUMNS=`tput cols` --env LINES=`tput lines` rabbitmq bash
 
+# Opens the postgres bash cli
+bash-postgres: prerequisite
+	- docker-compose -f docker-compose.yml exec --env COLUMNS=`tput cols` --env LINES=`tput lines` postgres bash
+
 #####################################################
 # APPLICATION CLI TARGETS			 				#
 #####################################################
 
 # Opens the mysql cli
 cli-mariadb:
-	- docker-compose -f docker-compose.yml exec mysql mysql -u root -p$(MYSQL_ROOT_PASSWORD)
+	- docker-compose -f docker-compose.yml exec mysql mysql -u root -p$(DB_ROOT_PASSWORD)
+
+# Opens the mysql cli
+cli-psql:
+	- docker-compose -f docker-compose.yml exec postgres psql -d ${DB_DATABASE}
 
 #####################################################
 # TEST TARGETS			 						    #
