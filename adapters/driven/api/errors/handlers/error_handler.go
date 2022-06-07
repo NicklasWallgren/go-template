@@ -9,27 +9,24 @@ import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/response"
 )
 
-type ErrorTypeResponseHandler interface {
-	IsSupported(error error) bool
-	Handle(error error) response.ApiResponseEnvelop
-	ErrorType() error
-	Priority() int
+type ErrorResponseManager interface {
+	Handle(err error) response.ApiResponseEnvelop
 }
 
-type ErrorResponseManager struct {
+type errorResponseManager struct {
 	errorTypeHandlers []ErrorTypeResponseHandler
 }
 
-func NewErrorResponseManager(errorTypeHandlers []ErrorTypeResponseHandler) *ErrorResponseManager {
+func NewErrorResponseManager(errorTypeHandlers []ErrorTypeResponseHandler) ErrorResponseManager {
 	// Sort the error handlers based on priority
 	sortedTypeHandlers := stream.Sorted(stream.OfSlice(errorTypeHandlers), func(h1, h2 ErrorTypeResponseHandler) int {
 		return order.Natural(h1.Priority(), h2.Priority())
 	}).ToSlice()
 
-	return &ErrorResponseManager{errorTypeHandlers: sortedTypeHandlers}
+	return &errorResponseManager{errorTypeHandlers: sortedTypeHandlers}
 }
 
-func (e ErrorResponseManager) Handle(err error) response.ApiResponseEnvelop {
+func (e errorResponseManager) Handle(err error) response.ApiResponseEnvelop {
 	for _, handler := range e.errorTypeHandlers {
 		if !handler.IsSupported(err) {
 			continue
