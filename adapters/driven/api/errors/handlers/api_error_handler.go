@@ -33,5 +33,5 @@ func (a ApiErrorTypeHandler) ErrorType() error {
 }
 
 func (a ApiErrorTypeHandler) Priority() int {
-
+	return 5
 }
