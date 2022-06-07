@@ -11,9 +11,9 @@ import (
 var _ Driver = (*MySQLDriver)(nil)
 
 const (
-	DuplicateEntry   = 1062
-	LockWaitTimeout  = 1205
-	IncorrectInteger = 1366
+	mysqlDuplicateEntry   = 1062
+	mysqlLockWaitTimeout  = 1205
+	mysqlIncorrectInteger = 1366
 )
 
 type MySQLDriver struct{}
@@ -25,10 +25,10 @@ func (m MySQLDriver) ConvertError(driverError error) error {
 	}
 
 	switch mysqlError.Number {
-	case DuplicateEntry:
-		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(false, DuplicateEntry, mysqlError)) // TODO, might be useful with retry?
-	case LockWaitTimeout:
-		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(true, LockWaitTimeout, mysqlError))
+	case mysqlDuplicateEntry:
+		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(false, dbErrors.DuplicateEntry, mysqlError)) // TODO, might be useful with retry?
+	case mysqlLockWaitTimeout:
+		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(true, dbErrors.LockWaitTimeout, mysqlError))
 	}
 
 	return dbErrors.NewDBError(dbErrors.WithRetryableAndError(false, mysqlError))

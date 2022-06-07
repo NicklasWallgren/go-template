@@ -10,7 +10,7 @@ import (
 	"github.com/NicklasWallgren/go-template/config"
 )
 
-//go:embed resources/database/migrations/*.sql
+//go:embed resources/database/migrations/*/*.sql
 var embedMigrations embed.FS
 
 // logo is generated via https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=Go%20Template

@@ -63,7 +63,7 @@ build-containers:
 clean: prerequisite prompt-continue
 	# Remove the docker containers, networks and volumes
 	- docker-compose -f docker-compose.yml rm -svf
-	- docker-compose -f docker-compose.yml down --rmi all -v --remove-orphans
+	- docker-compose -f docker-compose.yml down -v --remove-orphans
 
 # Echos the container status
 status: prerequisite

@@ -28,11 +28,9 @@ services:
       - private
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./deployment/docker/mariadb/:/docker-entrypoint-initdb.d/
     entrypoint:
-      sh -c "
-      echo 'CREATE DATABASE IF NOT EXISTS go_template_test; GRANT ALL PRIVILEGES ON go_template_test.* TO '\''root'\''@'\''%'\''; ' > /docker-entrypoint-initdb.d/init.sql;
-      /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-      "
+      sh -c "/usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
 
   postgres:
     image: postgres:14
@@ -46,7 +44,7 @@ services:
     networks:
       - private
     volumes:
-      - ./deployment/docker/postgres/create-multiple-postgresql-databases.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./deployment/docker/postgres/:/docker-entrypoint-initdb.d/
 
   rabbitmq:
     image: heidiks/rabbitmq-delayed-message-exchange:3.7.23-management

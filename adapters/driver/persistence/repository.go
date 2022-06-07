@@ -126,11 +126,12 @@ func (r repository[T]) Gorm() *gorm.DB {
 }
 
 func (r *repository[T]) wrapIntoDBError(err error) error {
-	driver := drivers.GetDriver(r.config.Database.Dialect)
+	nillableDriver := drivers.GetDriverOrNil(r.config.Database.Driver)
+	if nillableDriver == nil {
+		return err
+	}
 
-	// TODO, handle nil error
-
-	return driver.ConvertError(err)
+	return nillableDriver.ConvertError(err)
 }
 
 func (r *repository[T]) totalCountSupplier(ctx context.Context) (int, error) {

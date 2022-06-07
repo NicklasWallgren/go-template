@@ -6,10 +6,11 @@ type Driver interface {
 
 // TODO, support other drivers
 var drivers = map[string]Driver{
-	"mysql": &MySQLDriver{},
+	"mysql":    &MySQLDriver{},
+	"postgres": &PostgresDriver{},
 }
 
-func GetDriver(dialect string) Driver {
+func GetDriverOrNil(dialect string) Driver {
 	driver, ok := drivers[dialect]
 	if !ok {
 		return nil

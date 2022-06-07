@@ -22,7 +22,7 @@ import (
 )
 
 func MigrationFs() fs.FS {
-	return os.DirFS(utils.TestDirectoryRoot + "/../resources/database/migrations")
+	return os.DirFS(utils.TestDirectoryRoot + "/../")
 }
 
 func NewForTest(tb testing.TB, opts ...fx.Option) *fx.App {

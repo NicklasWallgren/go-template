@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-
 	"github.com/NicklasWallgren/go-template/infrastructure/env"
 )
 
@@ -13,15 +12,11 @@ type Database struct {
 	Host               string
 	Port               string
 	MigrationDirectory string
-	Dialect            string // TODO, validate supported dialects
+	Driver             string // TODO, validate supported dialects
 }
 
 func NewDatabase(name string, user string, password string, host string, port string, migrationDirectory string, dialect string) *Database {
-	return &Database{Name: name, User: user, Password: password, Host: host, Port: port, MigrationDirectory: migrationDirectory, Dialect: dialect}
-}
-
-func (d Database) ToDatabaseDsn() string {
-	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", d.User, d.Password, d.Host, d.Port, d.Name)
+	return &Database{Name: name, User: user, Password: password, Host: host, Port: port, MigrationDirectory: migrationDirectory, Driver: dialect}
 }
 
 type Log struct {
@@ -66,7 +61,7 @@ type AppConfig struct {
 func NewAppConfig(assets *Assets, env env.Env) *AppConfig {
 	return &AppConfig{
 		Assets:     assets,
-		Database:   NewDatabase(env.DBName, env.DBUsername, env.DBPassword, env.DBHost, env.DBPort, env.DBMigrationsDirectory, env.DBDialect),
+		Database:   NewDatabase(env.DBName, env.DBUsername, env.DBPassword, env.DBHost, env.DBPort, env.DBMigrationsDirectory, env.DBDriver),
 		Log:        *NewLog(""),
 		HttpServer: *NewHttpServer(env.ServerPort, env.JWTSecret),
 		RabbitMQ:   NewRabbitMQ(env.RabbitMQUser, env.RabbitMQPassword, env.RabbitMQHost),
