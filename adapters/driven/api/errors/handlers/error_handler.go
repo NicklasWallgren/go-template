@@ -11,6 +11,7 @@ type ErrorTypeResponseHandler interface {
 	IsSupported(error error) bool
 	Handle(error error) response.ApiResponseEnvelop
 	ErrorType() error
+	Priority() int
 }
 
 type ErrorResponseManager struct {
