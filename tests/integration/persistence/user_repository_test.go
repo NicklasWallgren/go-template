@@ -60,15 +60,18 @@ func Test(t *testing.T) {
 		Runner(t, invoke, WithPersistenceAndApplyMigration(), TruncateDatabase)
 	})
 
-	//t.Run("GivenUsers_WhenTotalCount_ThenIsCorrectNumber", func(t *testing.T) {
-	//	invoke := func(uf *factories.UserFactory, repository users.UserRepository) {
-	//		utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) })
-	//
-	//		assert.Equal(t, 5, int(result))
-	//	}
-	//
-	//	Runner(t, invoke, WithPersistenceAndApplyMigration(), TruncateDatabase)
-	//})
+	t.Run("GivenUsers_WhenTotalCount_ThenIsCorrectNumber", func(t *testing.T) {
+		invoke := func(uf *factories.UserFactory, repository users.UserRepository) {
+			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) })
+
+			numberOfRows, err := repository.Count(context.TODO())
+
+			utils.AssertNilOrFail(t, err)
+			assert.Equal(t, 5, int(numberOfRows))
+		}
+
+		Runner(t, invoke, WithPersistenceAndApplyMigration(), TruncateDatabase)
+	})
 
 	t.Run("GivenUsers_WhenDelete_ThenIsDeleted", func(t *testing.T) {
 		invoke := func(uf *factories.UserFactory, repository users.UserRepository) {
