@@ -21,12 +21,12 @@ import (
 type UserController struct {
 	service      services.UserService
 	logger       logger.Logger
-	apiConverter *UserApiConverter
+	apiConverter UserApiConverter
 	validator    binding.StructValidator
 }
 
 // NewUserController creates new user controller
-func NewUserController(userService services.UserService, logger logger.Logger, apiConverter *UserApiConverter, validator binding.StructValidator) UserController {
+func NewUserController(userService services.UserService, logger logger.Logger, apiConverter UserApiConverter, validator binding.StructValidator) UserController {
 	return UserController{
 		service:      userService,
 		logger:       logger,
