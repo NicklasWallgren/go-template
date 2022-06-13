@@ -35,12 +35,12 @@ func (e errorResponseManager) Handle(err error) response.ApiResponseEnvelop {
 		errorType := handler.ErrorType()
 		if !errors.As(err, &errorType) {
 			// TODO, generic errors, UUID for error tracing, log
-			return response.NewApiResponseEnvelop(http.StatusInternalServerError, response.WithPayload("INSERT MESSAGE AND UUID"))
+			return response.New(http.StatusInternalServerError, response.WithResponse("INSERT MESSAGE AND UUID"))
 		}
 
 		return handler.Handle(errorType)
 	}
 
 	// TODO, generic errors, UUID for error tracing, log
-	return response.NewApiResponseEnvelop(http.StatusInternalServerError, response.WithPayload("INSERT MESSAGE AND UUID"))
+	return response.New(http.StatusInternalServerError, response.WithResponse("INSERT MESSAGE AND UUID"))
 }
