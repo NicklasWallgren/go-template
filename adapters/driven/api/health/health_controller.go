@@ -20,7 +20,7 @@ func NewHealthController(healthCheckerManager *health.HealthCheckerManager, apiC
 func (h HealthController) Health(ctx *gin.Context) (response.ApiResponseEnvelop, error) {
 	healthResult := h.healthCheckerManager.Check(ctx.Request.Context())
 
-	return response.NewApiResponseEnvelop(HealthToHttpStatus(healthResult.Status), response.WithPayload(h.apiConverter.ResponseOf(healthResult))), nil
+	return response.New(HealthToHttpStatus(healthResult.Status), response.WithResponse(h.apiConverter.ResponseOf(healthResult))), nil
 }
 
 func HealthToHttpStatus(status health.HealthStatus) int {

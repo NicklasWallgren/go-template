@@ -1,29 +1,23 @@
 package response
 
-type ApiErrorConstraint interface{}
-
 type ApiErrorResponse struct {
-	Errors []ApiErrorConstraint
+	Errors []ApiError
 }
 
-func NewApiErrorResponse(errors []ApiErrorConstraint) *ApiErrorResponse {
+func NewApiErrorResponse(errors []ApiError) ApiResponse {
 	return &ApiErrorResponse{Errors: errors}
 }
 
 type ApiError struct {
-	Message string `json:"Message"`
+	Message string `json:"message" example:"invalid id"`
+	Field   string `json:"field,omitempty" example:"id"`
+	Value   any    `json:"value,omitempty" example:"1"`
 }
 
-func NewApiError(message string) *ApiError {
-	return &ApiError{Message: message}
+func NewApiError(message string) ApiError {
+	return ApiError{Message: message}
 }
 
-type ApiFieldError struct {
-	ApiError
-	Field string
-	Value any
-}
-
-func NewApiFieldError(message string, field string, value any) *ApiFieldError {
-	return &ApiFieldError{ApiError: ApiError{Message: message}, Field: field, Value: value}
+func NewApiFieldError(message string, field string, value any) ApiError {
+	return ApiError{Message: message, Field: field, Value: value}
 }

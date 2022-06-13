@@ -5,8 +5,10 @@ go 1.18
 require (
 	github.com/gin-gonic/gin v1.7.7
 	github.com/spf13/cobra v1.4.0
+	github.com/wagslane/go-rabbitmq v0.8.1
 	go.uber.org/fx v1.17.1
 	go.uber.org/zap v1.21.0
+	gopkg.in/DataDog/dd-trace-go.v1 v1.38.1
 	gorm.io/gorm v1.23.5
 )
 
@@ -28,12 +30,12 @@ require (
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
 	github.com/swaggo/gin-swagger v1.4.1
 	github.com/swaggo/swag v1.8.1
-	github.com/wagslane/go-rabbitmq v0.8.1
-	gopkg.in/DataDog/dd-trace-go.v1 v1.38.1
 	gorm.io/driver/mysql v1.3.3
 	gorm.io/driver/postgres v1.3.7
 	moul.io/zapgorm2 v1.1.3
 )
+
+replace github.com/wagslane/go-rabbitmq v0.8.1 => github.com/NicklasWallgren/go-rabbitmq v0.10.1-0.20220527095640-5ed506244369
 
 require (
 	github.com/DataDog/datadog-agent/pkg/obfuscate v0.0.0-20211129110424-6491aa3bf583 // indirect
