@@ -1,3 +1,3 @@
 package request
 
-type ApiRequest interface{}
+type APIRequest interface{}

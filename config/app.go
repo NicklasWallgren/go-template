@@ -16,8 +16,18 @@ type Database struct {
 	Driver             string // TODO, validate supported dialects
 }
 
-func NewDatabase(name string, user string, password string, host string, port string, migrationDirectory string, dialect string) *Database {
-	return &Database{Name: name, User: user, Password: password, Host: host, Port: port, MigrationDirectory: migrationDirectory, Driver: dialect}
+func NewDatabase(
+	name string, user string, password string, host string, port string, migrationDirectory string, dialect string,
+) *Database {
+	return &Database{
+		Name:               name,
+		User:               user,
+		Password:           password,
+		Host:               host,
+		Port:               port,
+		MigrationDirectory: migrationDirectory,
+		Driver:             dialect,
+	}
 }
 
 type Log struct {
@@ -28,13 +38,13 @@ func NewLog(level string) *Log {
 	return &Log{level: level}
 }
 
-type HttpServer struct {
+type HTTPServer struct {
 	Port     string
 	JwtToken string // TODO, belongs to another struct?
 }
 
-func NewHttpServer(port string, jwtToken string) *HttpServer {
-	return &HttpServer{Port: port, JwtToken: jwtToken}
+func NewHTTPServer(port string, jwtToken string) *HTTPServer {
+	return &HTTPServer{Port: port, JwtToken: jwtToken}
 }
 
 type RabbitMQ struct {
@@ -55,16 +65,19 @@ type AppConfig struct {
 	Assets     *Assets
 	Database   *Database
 	Log        Log
-	HttpServer HttpServer
+	HttpServer HTTPServer
 	RabbitMQ   *RabbitMQ
 }
 
 func NewAppConfig(assets *Assets, env env.Env) *AppConfig {
+	db := NewDatabase(
+		env.DBName, env.DBUsername, env.DBPassword, env.DBHost, env.DBPort, env.DBMigrationsDirectory, env.DBDriver)
+
 	return &AppConfig{
 		Assets:     assets,
-		Database:   NewDatabase(env.DBName, env.DBUsername, env.DBPassword, env.DBHost, env.DBPort, env.DBMigrationsDirectory, env.DBDriver),
+		Database:   db,
 		Log:        *NewLog(""),
-		HttpServer: *NewHttpServer(env.ServerPort, env.JWTSecret),
+		HttpServer: *NewHTTPServer(env.ServerPort, env.JWTSecret),
 		RabbitMQ:   NewRabbitMQ(env.RabbitMQUser, env.RabbitMQPassword, env.RabbitMQHost),
 	}
 }

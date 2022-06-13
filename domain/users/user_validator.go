@@ -19,13 +19,13 @@ func NewUserValidator(userRepository repository.UserRepository) *UserValidator {
 	return &UserValidator{userRepository: userRepository}
 }
 
-// To ensure that UserValidator implements the validation.EntityCreationValidator interface
+// To ensure that UserValidator implements the validation.EntityCreationValidator interface.
 var _ validation.EntityCreationValidator[entities.User] = (*UserValidator)(nil)
 
-// To ensure that UserValidator implements the validation.EntityUpdateValidator interface
+// To ensure that UserValidator implements the validation.EntityUpdateValidator interface.
 var _ validation.EntityUpdateValidator[entities.User] = (*UserValidator)(nil)
 
-// To ensure that UserValidator implements the validation.EntityDeleteValidator interface
+// To ensure that UserValidator implements the validation.EntityDeleteValidator interface.
 var _ validation.EntityDeleteValidator[entities.User] = (*UserValidator)(nil)
 
 func (u UserValidator) WithTx(tx *gorm.DB) validation.EntityValidator[entities.User] {
@@ -62,7 +62,7 @@ func (u UserValidator) ValidateToDelete(ctx context.Context, user *entities.User
 }
 
 func (u UserValidator) validateName(ctx context.Context, user *entities.User) error {
-	if len(user.Name) <= 0 {
+	if len(user.Name) <= 0 { // nolint:gocritic
 		return &validation.ValidationFieldError{Field: "Name", Message: "Invalid name", Value: user.Name}
 	}
 
@@ -80,7 +80,9 @@ func (u UserValidator) validateAge(ctx context.Context, user *entities.User) err
 func (u UserValidator) validateUniqueEmail(ctx context.Context, user *entities.User) error {
 	user, err := u.userRepository.FindOneByEmailWithExclusiveLock(ctx, user.Email)
 	if user != nil && user.ID > 0 {
-		return &validation.ValidationFieldError{Field: "Email", Message: "The email has already been reserved", Value: user.Email}
+		return &validation.ValidationFieldError{
+			Field: "Email", Message: "The email has already been reserved", Value: user.Email,
+		}
 	}
 
 	return err

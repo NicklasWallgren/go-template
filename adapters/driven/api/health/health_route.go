@@ -6,7 +6,7 @@ import (
 	logger "github.com/NicklasWallgren/go-template/infrastructure/logger"
 )
 
-// HealthRoutes struct
+// HealthRoutes struct.
 type HealthRoutes struct {
 	logger           logger.Logger
 	handler          common.RequestHandler
@@ -14,7 +14,7 @@ type HealthRoutes struct {
 	rootHandler      *routeHandlers.RootHandler
 }
 
-// Setup health routes
+// Setup health routes.
 func (s HealthRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/health")
 	{
@@ -22,7 +22,7 @@ func (s HealthRoutes) Setup() {
 	}
 }
 
-// NewHealthRoutes creates new health routes
+// NewHealthRoutes creates new health routes.
 func NewHealthRoutes(
 	logger logger.Logger,
 	handler common.RequestHandler,

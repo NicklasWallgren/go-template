@@ -5,15 +5,15 @@ import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/users"
 )
 
-// Routes contains multiple routes
+// Routes contains multiple routes.
 type Routes []Route
 
-// Route interface
+// Route interface.
 type Route interface {
 	Setup()
 }
 
-// NewRoutes sets up routes
+// NewRoutes sets up routes.
 func NewRoutes(userRoutes users.UserRoutes, swaggerRoutes SwaggerRoutes, healthRoutes health.HealthRoutes) Routes {
 	return Routes{
 		userRoutes,
@@ -22,7 +22,7 @@ func NewRoutes(userRoutes users.UserRoutes, swaggerRoutes SwaggerRoutes, healthR
 	}
 }
 
-// Setup all the route
+// Setup all the route.
 func (r Routes) Setup() {
 	for _, route := range r {
 		route.Setup()

@@ -17,7 +17,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UserController data type
+// UserController data type.
 type UserController struct {
 	service      services.UserService
 	logger       logger.Logger
@@ -25,8 +25,13 @@ type UserController struct {
 	validator    binding.StructValidator
 }
 
-// NewUserController creates new user controller
-func NewUserController(userService services.UserService, logger logger.Logger, apiConverter UserApiConverter, validator binding.StructValidator) UserController {
+// NewUserController creates new user controller.
+func NewUserController(
+	userService services.UserService,
+	logger logger.Logger,
+	apiConverter UserApiConverter,
+	validator binding.StructValidator,
+) UserController {
 	return UserController{
 		service:      userService,
 		logger:       logger,
@@ -35,14 +40,14 @@ func NewUserController(userService services.UserService, logger logger.Logger, a
 	}
 }
 
-// GetOneUserById gets one user
-func (u UserController) GetOneUserById(ctx *gin.Context) (response.ApiResponseEnvelop, error) {
+// GetOneUserByID gets one user.
+func (u UserController) GetOneUserByID(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	user, err := u.service.FindOneUserById(ctx.Request.Context(), uint(id))
+	user, err := u.service.FindOneUserByID(ctx.Request.Context(), uint(id))
 	if err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
@@ -54,10 +59,10 @@ func (u UserController) GetOneUserById(ctx *gin.Context) (response.ApiResponseEn
 // @Summary 	Retrieve users paginated
 // @BasePath 	/api/users
 // @Success		200 {object} response.PageableResponse[userResponse.UserResponse]
-// @Failure		400 {object} response.ApiError
+// @Failure		400 {object} response.APIError
 // @Router 		/api/users [get]
 // TODO, support for generics https://github.com/swaggo/swag/issues/1170
-func (u UserController) FindAllUsers(ctx *gin.Context) (response.ApiResponseEnvelop, error) {
+func (u UserController) FindAllUsers(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	pagination, err := request.Into(ctx, models.NewPaginationWithDefaults())
 	if err != nil {
 		return nil, err
@@ -75,8 +80,8 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (response.ApiResponseEnve
 	return response.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
 }
 
-// SaveUser saves the user
-func (u UserController) SaveUser(ctx *gin.Context) (response.ApiResponseEnvelop, error) {
+// SaveUser saves the user.
+func (u UserController) SaveUser(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, CreateUserRequest{})
 	if err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
@@ -90,8 +95,8 @@ func (u UserController) SaveUser(ctx *gin.Context) (response.ApiResponseEnvelop,
 	return response.NewWithResponse(http.StatusCreated, u.apiConverter.ResponseOf(*persistedUser)), nil
 }
 
-// UpdateUser updates user
-func (u UserController) UpdateUser(ctx *gin.Context) (response.ApiResponseEnvelop, error) {
+// UpdateUser updates user.
+func (u UserController) UpdateUser(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, UpdateUserRequest{})
 	if err != nil {
 		return nil, err
@@ -99,7 +104,9 @@ func (u UserController) UpdateUser(ctx *gin.Context) (response.ApiResponseEnvelo
 
 	toBeUpdatedUser, err := u.apiConverter.UpdatedEntityOf(ctx.Request.Context(), request)
 	if err != nil {
-		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndMessageAndError(http.StatusInternalServerError, "unable to update user, please try again", err))
+		return nil, apiError.NewApiErrorWith(
+			apiError.WithStatusAndMessageAndError(
+				http.StatusInternalServerError, "unable to update user, please try again", err))
 	}
 
 	persistedUser, err := u.service.UpdateUser(ctx.Request.Context(), toBeUpdatedUser)
@@ -110,14 +117,14 @@ func (u UserController) UpdateUser(ctx *gin.Context) (response.ApiResponseEnvelo
 	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(*persistedUser)), nil
 }
 
-// DeleteUserById deletes user
-func (u UserController) DeleteUserById(ctx *gin.Context) (response.ApiResponseEnvelop, error) {
+// DeleteUserByID deletes user.
+func (u UserController) DeleteUserByID(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	if err := u.service.DeleteUserById(ctx.Request.Context(), uint(id)); err != nil {
+	if err := u.service.DeleteUserByID(ctx.Request.Context(), uint(id)); err != nil {
 		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 

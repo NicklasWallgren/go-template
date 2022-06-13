@@ -37,7 +37,7 @@ func NewForTest(tb testing.TB, opts ...fx.Option) *fx.App {
 	return fx.New(opts...)
 }
 
-// TestPersistenceModule is the test persistence module containing the dependency graph for the persistence module
+// TestPersistenceModule is the test persistence module containing the dependency graph for the persistence module.
 var TestPersistenceModule = fx.Options(
 	fx.Provide(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {
@@ -50,7 +50,7 @@ var TestPersistenceModule = fx.Options(
 	fx.Provide(database.NewGooseMigrator),
 )
 
-// ApplicationModule is the application module containing the dependency graph for the application
+// ApplicationModule is the application module containing the dependency graph for the application.
 var ApplicationModule = fx.Options(
 	fx.Decorate(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {

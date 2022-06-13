@@ -15,7 +15,8 @@ var consumers = fx.Provide(
 )
 
 var consumerRunners = fx.Provide(
-	fx.Annotate(rabbitmq.NewSimpleConsumerRunner, fx.ParamTags(`name:"rabbitmq_consumer"`), fx.ResultTags(`group:"amqp_consumers"`)),
+	fx.Annotate(rabbitmq.NewSimpleConsumerRunner,
+		fx.ParamTags(`name:"rabbitmq_consumer"`), fx.ResultTags(`group:"amqp_consumers"`)),
 )
 
 var consumerManager = fx.Provide(

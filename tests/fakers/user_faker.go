@@ -20,7 +20,7 @@ type UserFaker struct {
 	faker     *gofakeit.Faker
 }
 
-// To ensure that UserFaker implements the EntityFaker interface
+// To ensure that UserFaker implements the EntityFaker interface.
 var _ EntityFaker[entities.User] = (*UserFaker)(nil)
 
 func NewUserFaker(faker *gofakeit.Faker) *UserFaker {

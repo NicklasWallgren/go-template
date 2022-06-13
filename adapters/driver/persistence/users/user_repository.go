@@ -16,27 +16,27 @@ import (
 type UserRepository interface {
 	WithTx(tx *gorm.DB) UserRepository
 	TransactWithDefaultRetry(ctx context.Context, operation func(tx *gorm.DB) error) error
-	FindOneById(ctx context.Context, id uint) (user *entities.User, err error)
-	FindOneByIdForUpdate(ctx context.Context, id uint) (*entities.User, error)
+	FindOneByID(ctx context.Context, id uint) (user *entities.User, err error)
+	FindOneByIDForUpdate(ctx context.Context, id uint) (*entities.User, error)
 	FindOneByEmailWithExclusiveLock(ctx context.Context, email string) (*entities.User, error)
 	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[entities.User], err error)
 	Create(ctx context.Context, user *entities.User) (*entities.User, error)
 	Save(ctx context.Context, user *entities.User) (*entities.User, error)
-	DeleteById(ctx context.Context, id uint) error
+	DeleteByID(ctx context.Context, id uint) error
 	Count(ctx context.Context) (int64, error)
 }
 
-// userRepository database structure
+// userRepository database structure.
 type userRepository struct {
 	persistence.Repository[entities.User]
 }
 
-// NewUserRepository creates a new user repository
+// NewUserRepository creates a new user repository.
 func NewUserRepository(db database.Database, logger logger.Logger, config *config.AppConfig) UserRepository {
 	return &userRepository{persistence.NewRepository[entities.User](db, entities.User{}, logger, config)}
 }
 
-// WithTx delegates transaction to user repository
+// WithTx delegates transaction to user repository.
 func (r userRepository) WithTx(tx *gorm.DB) UserRepository {
 	// Ensures that the transaction (*gorm.DB) is only available in the returned UserRepository
 	// Otherwise we would pollute the main instance.
@@ -47,7 +47,8 @@ func (r userRepository) WithTx(tx *gorm.DB) UserRepository {
 	return cloned
 }
 
-func (r userRepository) TransactWithDefaultRetry(ctx context.Context, operation func(tx *gorm.DB) error) error { // nolint:wsl
+// nolint:wsl
+func (r userRepository) TransactWithDefaultRetry(ctx context.Context, operation func(tx *gorm.DB) error) error {
 	// TODO, pass repository instead of gorm.DB?
 
 	return r.Repository.TransactWithDefaultRetry(func(tx *gorm.DB) error {
@@ -55,24 +56,30 @@ func (r userRepository) TransactWithDefaultRetry(ctx context.Context, operation 
 	})
 }
 
-func (r userRepository) FindOneById(ctx context.Context, id uint) (*entities.User, error) {
-	return r.Repository.FindOneById(ctx, id)
+func (r userRepository) FindOneByID(ctx context.Context, id uint) (*entities.User, error) {
+	return r.Repository.FindOneByID(ctx, id)
 }
 
-func (r userRepository) FindOneByIdForUpdate(ctx context.Context, id uint) (*entities.User, error) {
-	return r.Repository.FindOneByIdForUpdate(ctx, id)
+func (r userRepository) FindOneByIDForUpdate(ctx context.Context, id uint) (*entities.User, error) {
+	return r.Repository.FindOneByIDForUpdate(ctx, id)
 }
 
 func (r userRepository) FindOneByEmailWithExclusiveLock(ctx context.Context, email string) (*entities.User, error) {
 	var user *entities.User
-	if err := r.Gorm().WithContext(ctx).Where("email = ?", email).Clauses(clause.Locking{Strength: "UPDATE"}).Find(&user).Error; err != nil {
+	if err := r.Gorm().
+		WithContext(ctx).
+		Where("email = ?", email).
+		Clauses(clause.Locking{Strength: "UPDATE"}).
+		Find(&user).Error; err != nil {
 		return nil, err
 	}
 
 	return user, nil
 }
 
-func (r userRepository) FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[entities.User], err error) {
+func (r userRepository) FindAll(
+	ctx context.Context, pagination *models.Pagination,
+) (page *models.Page[entities.User], err error) {
 	return r.Repository.FindAll(ctx, pagination)
 }
 
@@ -84,8 +91,8 @@ func (r userRepository) Save(ctx context.Context, user *entities.User) (*entitie
 	return r.Repository.Save(ctx, user)
 }
 
-func (r userRepository) DeleteById(ctx context.Context, id uint) error {
-	return r.Repository.DeleteById(ctx, id)
+func (r userRepository) DeleteByID(ctx context.Context, id uint) error {
+	return r.Repository.DeleteByID(ctx, id)
 }
 
 func (r userRepository) Count(ctx context.Context) (int64, error) {

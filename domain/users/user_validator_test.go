@@ -66,7 +66,7 @@ func Test(t *testing.T) {
 	t.Run("GivenNotUniqueEmail_whenValidateToCreate_thenExpectedValidationFieldError", func(t *testing.T) {
 		t.Parallel()
 
-		user := entities.NewUserWithId(1, gofakeit.Name(), gofakeit.Email(), uint8(gofakeit.Number(18, 150)), gofakeit.Date())
+		user := entities.NewUserWithID(1, gofakeit.Name(), gofakeit.Email(), uint8(gofakeit.Number(18, 150)), gofakeit.Date())
 
 		userRepository := mocks.NewUserRepository(t)
 		userRepository.On("FindOneByEmailWithExclusiveLock", user.Email).Return(&user, nil)

@@ -2,7 +2,7 @@ package middlewares
 
 import "go.uber.org/fx"
 
-// Module Middleware exported
+// Module Middleware exported.
 var Module = fx.Options(
 // fx.Provide(NewCorsMiddleware),
 // fx.Provide(NewJWTAuthMiddleware),
@@ -10,16 +10,16 @@ var Module = fx.Options(
 // fx.Provide(NewMiddlewares),
 )
 
-// Middleware interface
+// Middleware interface.
 type Middleware interface {
 	Setup()
 }
 
-// Middlewares contains multiple middleware
+// Middlewares contains multiple middleware.
 type Middlewares []Middleware
 
 // NewMiddlewares creates new middlewares
-// Register the middleware that should be applied directly (globally)
+// Register the middleware that should be applied directly (globally).
 func NewMiddlewares(corsMiddleware CorsMiddleware, observabilityMiddleware ObservabilityMiddleware) Middlewares {
 	return Middlewares{
 		corsMiddleware,
@@ -27,7 +27,7 @@ func NewMiddlewares(corsMiddleware CorsMiddleware, observabilityMiddleware Obser
 	}
 }
 
-// Setup sets up middlewares
+// Setup sets up middlewares.
 func (m Middlewares) Setup() {
 	for _, middleware := range m {
 		middleware.Setup()

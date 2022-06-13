@@ -17,12 +17,12 @@ import (
 type Repository[T common.EntityConstraint] interface {
 	WithTx(tx *gorm.DB) Repository[T]
 	TransactWithDefaultRetry(operation func(tx *gorm.DB) error) error
-	FindOneById(ctx context.Context, id uint) (entity *T, err error)
-	FindOneByIdForUpdate(ctx context.Context, id uint) (entity *T, err error)
+	FindOneByID(ctx context.Context, id uint) (entity *T, err error)
+	FindOneByIDForUpdate(ctx context.Context, id uint) (entity *T, err error)
 	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[T], err error)
 	Create(ctx context.Context, entity *T) (*T, error)
 	Save(ctx context.Context, entity *T) (*T, error)
-	DeleteById(ctx context.Context, id uint) error
+	DeleteByID(ctx context.Context, id uint) error
 	Count(ctx context.Context) (int64, error)
 	Gorm() *gorm.DB
 }
@@ -34,7 +34,9 @@ type repository[T common.EntityConstraint] struct {
 	entity T
 }
 
-func NewRepository[T common.EntityConstraint](database database.Database, entity T, logger logger.Logger, config *config.AppConfig) Repository[T] {
+func NewRepository[T common.EntityConstraint](
+	database database.Database, entity T, logger logger.Logger, config *config.AppConfig,
+) Repository[T] {
 	return &repository[T]{Database: database, entity: entity, Logger: logger, config: config}
 }
 
@@ -55,7 +57,7 @@ func (r repository[T]) TransactWithDefaultRetry(operation func(tx *gorm.DB) erro
 	})
 }
 
-func (r repository[T]) FindOneById(ctx context.Context, id uint) (entity *T, err error) {
+func (r repository[T]) FindOneByID(ctx context.Context, id uint) (entity *T, err error) {
 	if err := r.DB.WithContext(ctx).First(&entity, id).Error; err != nil {
 		return nil, r.wrapIntoDBError(err)
 	}
@@ -63,7 +65,7 @@ func (r repository[T]) FindOneById(ctx context.Context, id uint) (entity *T, err
 	return entity, nil
 }
 
-func (r repository[T]) FindOneByIdForUpdate(ctx context.Context, id uint) (entity *T, err error) {
+func (r repository[T]) FindOneByIDForUpdate(ctx context.Context, id uint) (entity *T, err error) {
 	if err := r.DB.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&entity, id).Error; err != nil {
 		return nil, r.wrapIntoDBError(err)
 	}
@@ -103,7 +105,7 @@ func (r repository[T]) Save(ctx context.Context, entity *T) (*T, error) {
 	return entity, nil
 }
 
-func (r repository[T]) DeleteById(ctx context.Context, id uint) error {
+func (r repository[T]) DeleteByID(ctx context.Context, id uint) error {
 	var entity *T
 	if err := r.DB.WithContext(ctx).Delete(&entity, id).Error; err != nil {
 		return err

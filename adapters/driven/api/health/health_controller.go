@@ -10,17 +10,22 @@ import (
 
 type HealthController struct {
 	healthCheckerManager *health.HealthCheckerManager
-	apiConverter         *HealthApiConverter
+	apiConverter         *HealthAPIConverter
 }
 
-func NewHealthController(healthCheckerManager *health.HealthCheckerManager, apiConverter *HealthApiConverter) HealthController {
-	return HealthController{healthCheckerManager: healthCheckerManager, apiConverter: apiConverter}
+func NewHealthController(
+	healthCheckerManager *health.HealthCheckerManager, apiConverter *HealthAPIConverter,
+) HealthController {
+	return HealthController{
+		healthCheckerManager: healthCheckerManager, apiConverter: apiConverter,
+	}
 }
 
-func (h HealthController) Health(ctx *gin.Context) (response.ApiResponseEnvelop, error) {
+func (h HealthController) Health(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	healthResult := h.healthCheckerManager.Check(ctx.Request.Context())
 
-	return response.New(HealthToHttpStatus(healthResult.Status), response.WithResponse(h.apiConverter.ResponseOf(healthResult))), nil
+	return response.New(
+		HealthToHttpStatus(healthResult.Status), response.WithResponse(h.apiConverter.ResponseOf(healthResult))), nil
 }
 
 func HealthToHttpStatus(status health.HealthStatus) int {

@@ -1,93 +1,16 @@
 linters:
-  enable:
-    - asciicheck
-    - bidichk
-    - bodyclose
-    - contextcheck
-    - cyclop
-    - deadcode
-    - depguard
-    - dogsled
-    - dupl
-    - durationcheck
-    - errcheck
-    - errname
-    - errorlint
-    - exhaustive
-#    - exhaustruct
-    - exportloopref
-    - forbidigo
-    - forcetypeassert
-    - funlen
-#    - gci
-#    - gochecknoglobals
-    - gochecknoinits
-    - gocognit
-    - goconst
-    - gocyclo
-#    - godot temporary
-#    - godox temporary
-    - gofmt
-    - gofumpt
-    - goheader
-    - goimports
-#    - gomnd
-    - gomoddirectives
-    - gomodguard
-    - goprintffuncname
-    - gosec
-    - ifshort
-    - importas
-    - ineffassign
-    - makezero
-    - misspell
-    - nakedret
-    - nestif
-    - nilerr
-    - nilnil
-    - noctx
-    - paralleltest
-    - prealloc
-    - predeclared
-    - promlinter
-    - rowserrcheck
-    - sqlclosecheck
-    - structcheck
-    - tagliatelle
-    - tenv
-    - testpackage
-    - thelper
-    - tparallel
-    - typecheck
-    - unconvert
-    - unparam
-    - varcheck
-#    - varnamelen
-    - wastedassign
-    - whitespace
-#    - wrapcheck
-    - wsl
-
   disable:
-    - interfacer
     - golint
-    - scopelint
     - maligned
-    - lll
     - nolintlint
     - ireturn
-    - goerr113
-    - govet
-    - staticcheck
-    - gocritic
-    - revive
-    - unused
-    - stylecheck
-    - gosimple
-    - godot # temporary
-    - wrapcheck # temporary
+    - staticcheck # does not support generics
+    - unused # does not support generics
+    - stylecheck # does not support generics
+    - gosimple # does not support generics
+    - wrapcheck
     - exhaustruct
-    - godox # temporary
+    - godox
     - nonamedreturns
     - exhaustivestruct
     - varnamelen
@@ -95,6 +18,8 @@ linters:
     - gochecknoglobals
     - gci
     - gomnd
+    - testpackage
+    - gomoddirectives
 
   presets:
     - bugs
@@ -111,17 +36,16 @@ linters:
     - test
     - unused
 
-
 linters-settings:
-  check-shadowing: true
-  enable-all: true
-
   govet:
-    enable:
+    disable:
       - fieldalignment
 
-issues:
-  exclude-use-default: false
+  revive:
+    rules:
+      - name: exported
+        severity: warning
+        disabled: true
 
 run:
   go: '1.18'

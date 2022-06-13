@@ -5,13 +5,13 @@ import (
 	"github.com/mariomac/gostream/stream"
 )
 
-type HealthApiConverter struct{}
+type HealthAPIConverter struct{}
 
-func NewHealthApiConverter() *HealthApiConverter {
-	return &HealthApiConverter{}
+func NewHealthAPIConverter() *HealthAPIConverter {
+	return &HealthAPIConverter{}
 }
 
-func (h HealthApiConverter) ResponseOf(result health.HealthResult) HealthResponse {
+func (h HealthAPIConverter) ResponseOf(result health.HealthResult) HealthResponse {
 	componentSlice := stream.Map(stream.OfSlice(result.Components), HealthToResponseHealth).ToSlice()
 
 	return HealthResponse{result.Status.String(), componentSlice}

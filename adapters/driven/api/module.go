@@ -31,8 +31,8 @@ var middlewareModule = fx.Options(
 )
 
 var converterModule = fx.Options(
-	fx.Provide(users.NewUserApiConverter),
-	fx.Provide(health.NewHealthApiConverter),
+	fx.Provide(users.NewUserAPIConverter),
+	fx.Provide(health.NewHealthAPIConverter),
 )
 
 var errorTypeHandlers = fx.Provide(
@@ -47,14 +47,14 @@ var errorResponseModule = fx.Provide(
 	fx.Annotate(handlers.NewErrorResponseManager, fx.ParamTags(`group:"error_type_handlers"`)),
 )
 
-// A copy of the validator so we can reuse it even if gin.DisableBindValidation() has been called
+// A copy of the validator so we can reuse it even if gin.DisableBindValidation() has been called.
 var validator binding.StructValidator = binding.Validator
 
 var validatorModule = fx.Options(
 	fx.Provide(func() binding.StructValidator { return validator }),
 )
 
-// Module exports dependency
+// Module exports dependency.
 var Module = fx.Options(
 	errorTypeHandlers,
 	errorResponseModule,

@@ -13,7 +13,7 @@ type UserFactory struct {
 	userRepository pUser.UserRepository
 }
 
-// To ensure that UserFactory implements the EntityFactory interface
+// To ensure that UserFactory implements the EntityFactory interface.
 var _ EntityFactory[entities.User, fakers.UserFaker] = (*UserFactory)(nil)
 
 func NewUserFactory(userRepository pUser.UserRepository) *UserFactory {

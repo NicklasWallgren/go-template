@@ -11,7 +11,7 @@ import (
 	"moul.io/zapgorm2"
 )
 
-// Logger structure
+// Logger structure.
 type Logger struct {
 	*zap.SugaredLogger
 	zapLogger *zap.Logger
@@ -21,14 +21,14 @@ type GinLogger struct {
 	*Logger
 }
 
-// Write interface implementation for gin-framework
+// Write interface implementation for gin-framework.
 func (l GinLogger) Write(p []byte) (n int, err error) {
 	l.Info(string(p)) // TODO
 
 	return len(p), nil
 }
 
-// NewLogger get the logger
+// NewLogger get the logger.
 func NewLogger(env env.Env) (Logger, error) {
 	level, err := zapcore.ParseLevel(env.LogLevel)
 	if err != nil {
@@ -47,21 +47,21 @@ func NewLogger(env env.Env) (Logger, error) {
 	return Logger{SugaredLogger: zapLogger.Sugar(), zapLogger: zapLogger}, nil
 }
 
-// GetGinLogger get the gin logger
+// GetGinLogger get the gin logger.
 func (l Logger) GetGinLogger() GinLogger {
 	logger := l.zapLogger.WithOptions(zap.WithCaller(false))
 
 	return GinLogger{Logger: &Logger{SugaredLogger: logger.Sugar()}}
 }
 
-// GetFxLogger gets logger for go-fx
+// GetFxLogger gets logger for go-fx.
 func (l *Logger) GetFxLogger() fxevent.Logger {
 	logger := l.zapLogger.WithOptions(zap.WithCaller(false))
 
 	return &fxevent.ZapLogger{Logger: logger}
 }
 
-// GetGormLogger gets the gorm framework logger
+// GetGormLogger gets the gorm framework logger.
 func (l Logger) GetGormLogger() gormLogger.Interface {
 	log := zapgorm2.New(l.zapLogger)
 

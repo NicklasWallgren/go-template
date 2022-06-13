@@ -8,7 +8,7 @@ import (
 	"go.uber.org/fx"
 )
 
-// Module exports dependency
+// Module exports dependency.
 var Module = fx.Options(
 	fx.Provide(env.NewEnv),
 	fx.Provide(logger.NewLogger),

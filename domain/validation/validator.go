@@ -64,7 +64,7 @@ func ValidationStep[T any](ctx context.Context, toBeValidated *T, v ValidationFu
 	return v(ctx, toBeValidated)
 }
 
-func ValidateChangeStep[T any, V comparable](validationMethod ValidationFunc[T], value1 V, value2 V) func(ctx context.Context, subject *T) error {
+func ValidateChangeStep[T any, V comparable](validationMethod ValidationFunc[T], value1 V, value2 V) ValidationFunc[T] {
 	return func(ctx context.Context, subject *T) error {
 		if !HasValueChanged(value1, value2) {
 			return nil

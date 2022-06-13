@@ -13,7 +13,7 @@ import (
 func GetParamInt(c *gin.Context, name string) (int, error) {
 	val := c.Params.ByName(name)
 	if val == "" {
-		return 0, errors.New(name + " path parameter value is empty or not specified")
+		return 0, errors.New(name + " path parameter value is empty or not specified") // nolint:goerr113
 	}
 
 	return strconv.Atoi(val)

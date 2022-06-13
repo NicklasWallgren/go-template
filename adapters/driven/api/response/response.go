@@ -1,34 +1,34 @@
 package response
 
-type ApiResponse interface{}
+type APIResponse interface{}
 
-type ApiResponseEnvelop interface {
+type APIResponseEnvelop interface {
 	Status() int
-	Response() ApiResponse
+	Response() APIResponse
 }
 
 type responseEnvelop struct {
 	status   int
-	response ApiResponse
+	response APIResponse
 }
 
 func (r responseEnvelop) Status() int {
 	return r.status
 }
 
-func (r responseEnvelop) Response() ApiResponse {
+func (r responseEnvelop) Response() APIResponse {
 	return r.response
 }
 
 type ResponseOption func(envelop *responseEnvelop)
 
-func WithResponse(response ApiResponse) ResponseOption {
+func WithResponse(response APIResponse) ResponseOption {
 	return func(responseEnvelop *responseEnvelop) {
 		responseEnvelop.response = response
 	}
 }
 
-func New(status int, options ...ResponseOption) ApiResponseEnvelop {
+func New(status int, options ...ResponseOption) APIResponseEnvelop {
 	responseEnvelop := &responseEnvelop{status: status}
 
 	for _, option := range options {
@@ -38,7 +38,7 @@ func New(status int, options ...ResponseOption) ApiResponseEnvelop {
 	return responseEnvelop
 }
 
-func NewWithResponse(status int, payload ApiResponse) ApiResponseEnvelop {
+func NewWithResponse(status int, payload APIResponse) APIResponseEnvelop {
 	return New(status, WithResponse(payload))
 }
 
@@ -51,7 +51,9 @@ type PageableResponse[T any] struct {
 	TotalPages       int
 }
 
-func NewPageableResponse[T any](content []T, empty bool, number int, numberOfElements int, totalElements int, totalPages int) *PageableResponse[T] {
+func NewPageableResponse[T any](
+	content []T, empty bool, number int, numberOfElements int, totalElements int, totalPages int,
+) *PageableResponse[T] {
 	return &PageableResponse[T]{
 		Content:          content,
 		Empty:            empty,

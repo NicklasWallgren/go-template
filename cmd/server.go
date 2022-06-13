@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"log"
 	"net/http"
 	"time"
@@ -62,7 +63,7 @@ func (s *HttpServerCommand) Run(cmd *cobra.Command) cli.CommandRunner {
 		// Initializing the server in a goroutine so that it won't block
 		// See validatorModule in adapters/driven/api/module.go
 		go func() {
-			if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 				log.Fatalf("listen: %s\n", err)
 			}
 		}()

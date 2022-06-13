@@ -7,14 +7,14 @@ import (
 	cors "github.com/rs/cors/wrapper/gin"
 )
 
-// CorsMiddleware middleware for cors
+// CorsMiddleware middleware for cors.
 type CorsMiddleware struct {
 	handler common.RequestHandler
 	logger  logger.Logger
 	env     env.Env
 }
 
-// NewCorsMiddleware creates new cors middleware
+// NewCorsMiddleware creates new cors middleware.
 func NewCorsMiddleware(handler common.RequestHandler, logger logger.Logger, env env.Env) CorsMiddleware {
 	return CorsMiddleware{
 		handler: handler,
@@ -23,7 +23,7 @@ func NewCorsMiddleware(handler common.RequestHandler, logger logger.Logger, env 
 	}
 }
 
-// Setup sets up cors middleware
+// Setup sets up cors middleware.
 func (m CorsMiddleware) Setup() {
 	m.logger.Info("Setting up cors middleware")
 

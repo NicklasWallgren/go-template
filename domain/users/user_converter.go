@@ -11,7 +11,7 @@ import (
 func ResponseOf(event *events.Event) (any, error) {
 	user, ok := event.Payload.(*entities.User)
 	if !ok {
-		return response.UserResponse{}, fmt.Errorf("could not type cast event payload as entities.User")
+		return response.UserResponse{}, fmt.Errorf("could not type cast event payload as entities.User") // nolint:goerr113
 	}
 
 	return response.UserResponse{Name: user.Name, Email: user.Email}, nil

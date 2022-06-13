@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Env has environment stored
+// Env has environment stored.
 type Env struct {
 	ServerPort            string `mapstructure:"SERVER_PORT"`
 	Environment           string `mapstructure:"ENV"`
@@ -26,12 +26,12 @@ type Env struct {
 	RabbitMQHost          string `mapstructure:"RABBITMQ_HOST"`
 }
 
-// NewEnv creates a new environment
+// NewEnv creates a new environment.
 func NewEnv() Env {
 	return NewEnvWithPath(".env")
 }
 
-// NewEnvWithPath creates a new environment
+// NewEnvWithPath creates a new environment.
 func NewEnvWithPath(configFile string) Env {
 	v := enviper.New(viper.New()) // nolint: varnamelen
 	v.SetConfigFile(configFile)

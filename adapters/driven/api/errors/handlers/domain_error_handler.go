@@ -14,15 +14,15 @@ func NewDomainErrorTypeHandler() ErrorTypeResponseHandler {
 	return &DomainErrorTypeHandler{}
 }
 
-func (d DomainErrorTypeHandler) Handle(err error) response.ApiResponseEnvelop {
+func (d DomainErrorTypeHandler) Handle(err error) response.APIResponseEnvelop {
 	domainError := &domainErrors.DomainError{}
 	errors.As(err, &domainError)
 
-	errors := []response.ApiError{
-		response.NewApiError(domainError.Message),
+	errors := []response.APIError{
+		response.NewAPIError(domainError.Message),
 	}
 
-	return response.New(http.StatusBadRequest, response.WithResponse(response.NewApiErrorResponse(errors)))
+	return response.New(http.StatusBadRequest, response.WithResponse(response.NewAPIErrorResponse(errors)))
 }
 
 func (d DomainErrorTypeHandler) IsSupported(err error) bool {

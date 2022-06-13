@@ -13,7 +13,7 @@ import (
 
 type ExpectOption func(t *testing.T, response *http.Response)
 
-func ExpectHttpStatus(statusCode int) ExpectOption {
+func ExpectHTTPStatus(statusCode int) ExpectOption {
 	return func(t *testing.T, response *http.Response) {
 		t.Helper()
 
@@ -21,7 +21,7 @@ func ExpectHttpStatus(statusCode int) ExpectOption {
 	}
 }
 
-func NewHttpRequest(t *testing.T, method string, url string, body io.Reader) *http.Request {
+func NewHTTPRequest(t *testing.T, method string, url string, body io.Reader) *http.Request {
 	t.Helper()
 
 	request, err := http.NewRequest(method, url, body)
@@ -35,7 +35,7 @@ func NewHttpRequest(t *testing.T, method string, url string, body io.Reader) *ht
 	return request
 }
 
-func DoHttpRequest(t *testing.T, httpHandler http.Handler, request *http.Request, opts ...ExpectOption) {
+func DoHTTPRequest(t *testing.T, httpHandler http.Handler, request *http.Request, opts ...ExpectOption) {
 	t.Helper()
 
 	recorder := httptest.NewRecorder()
@@ -49,7 +49,9 @@ func DoHttpRequest(t *testing.T, httpHandler http.Handler, request *http.Request
 	}
 }
 
-func DoHttpRequestWithResponse[T any](t *testing.T, httpHandler http.Handler, request *http.Request, response T, opts ...ExpectOption) T {
+func DoHttpRequestWithResponse[T any](
+	t *testing.T, httpHandler http.Handler, request *http.Request, response T, opts ...ExpectOption,
+) T {
 	t.Helper()
 
 	recorder := httptest.NewRecorder()

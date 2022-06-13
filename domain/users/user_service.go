@@ -17,15 +17,15 @@ import (
 
 type UserService interface {
 	WithTx(tx *gorm.DB) UserService
-	FindOneUserById(ctx context.Context, id uint) (user *entities.User, err error)
-	FindOneUserByIdForUpdate(ctx context.Context, id uint) (*entities.User, error)
+	FindOneUserByID(ctx context.Context, id uint) (user *entities.User, err error)
+	FindOneUserByIDForUpdate(ctx context.Context, id uint) (*entities.User, error)
 	FindAllUser(ctx context.Context, pagination *models.Pagination) (users *models.Page[entities.User], err error)
 	CreateUser(ctx context.Context, toBeCreated entities.User) (user *entities.User, err error)
 	UpdateUser(ctx context.Context, updated *entities.User) (user *entities.User, err error)
-	DeleteUserById(ctx context.Context, id uint) error
+	DeleteUserByID(ctx context.Context, id uint) error
 }
 
-// userService service layer
+// userService service layer.
 type userService struct {
 	userValidator         validation.EntityValidator[entities.User]
 	logger                logger.Logger
@@ -33,8 +33,13 @@ type userService struct {
 	eventPublisherManager events.EventPublisherManager
 }
 
-// NewUserService creates a new userService
-func NewUserService(userValidator *UserValidator, logger logger.Logger, repository repository.UserRepository, eventPublisherManager events.EventPublisherManager) UserService {
+// NewUserService creates a new userService.
+func NewUserService(
+	userValidator *UserValidator,
+	logger logger.Logger,
+	repository repository.UserRepository,
+	eventPublisherManager events.EventPublisherManager,
+) UserService {
 	return userService{
 		userValidator:         userValidator,
 		logger:                logger,
@@ -43,7 +48,7 @@ func NewUserService(userValidator *UserValidator, logger logger.Logger, reposito
 	}
 }
 
-// WithTx delegates transaction to user repository
+// WithTx delegates transaction to user repository.
 func (s userService) WithTx(tx *gorm.DB) UserService {
 	// Ensures that the transaction (*gorm.DB) is only available in the returned UserRepository
 	// Otherwise we would pollute the main instance.
@@ -54,26 +59,28 @@ func (s userService) WithTx(tx *gorm.DB) UserService {
 	return cloned
 }
 
-// FindOneUserById gets one user
-func (s userService) FindOneUserById(ctx context.Context, id uint) (user *entities.User, err error) {
-	if user, err = s.repository.FindOneById(ctx, id); err != nil {
+// FindOneUserByID gets one user.
+func (s userService) FindOneUserByID(ctx context.Context, id uint) (user *entities.User, err error) {
+	if user, err = s.repository.FindOneByID(ctx, id); err != nil {
 		return nil, domainErrors.NewDomainError(fmt.Sprintf("could not retrieve the user id %d", id), err)
 	}
 
 	return user, nil
 }
 
-// FindOneUserByIdForUpdate gets one user
-func (s userService) FindOneUserByIdForUpdate(ctx context.Context, id uint) (user *entities.User, err error) {
-	if user, err = s.repository.FindOneByIdForUpdate(ctx, id); err != nil {
+// FindOneUserByIDForUpdate gets one user.
+func (s userService) FindOneUserByIDForUpdate(ctx context.Context, id uint) (user *entities.User, err error) {
+	if user, err = s.repository.FindOneByIDForUpdate(ctx, id); err != nil {
 		return nil, domainErrors.NewDomainError(fmt.Sprintf("could not retrieve the user id %d for update", id), err)
 	}
 
 	return user, nil
 }
 
-// FindAllUser get all the user
-func (s userService) FindAllUser(ctx context.Context, pagination *models.Pagination) (users *models.Page[entities.User], err error) {
+// FindAllUser get all the user.
+func (s userService) FindAllUser(
+	ctx context.Context, pagination *models.Pagination,
+) (users *models.Page[entities.User], err error) {
 	// TODO, support filter by predicate/criteria
 	if users, err = s.repository.FindAll(ctx, pagination); err != nil {
 		return nil, domainErrors.NewDomainError("unable to retrieve the available users", err)
@@ -82,7 +89,7 @@ func (s userService) FindAllUser(ctx context.Context, pagination *models.Paginat
 	return users, nil
 }
 
-// CreateUser call to create the user
+// CreateUser call to create the user.
 func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) (user *entities.User, err error) {
 	err = s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
 		txService := s.WithTx(tx).(userService) // nolint: forcetypeassert
@@ -106,13 +113,13 @@ func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) 
 	return user, nil
 }
 
-// UpdateUser updates the user
+// UpdateUser updates the user.
 func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (persistedUser *entities.User, err error) {
 	err = s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
 		txService := s.WithTx(tx).(userService) // nolint: forcetypeassert
 
 		// Apply optimistic locking before updating the user entity
-		originUser, err := txService.FindOneUserByIdForUpdate(ctx, uint(updated.ID))
+		originUser, err := txService.FindOneUserByIDForUpdate(ctx, uint(updated.ID))
 		if err != nil {
 			return domainErrors.NewDomainError("unable to retrieve the user before updating", err)
 		}
@@ -133,13 +140,13 @@ func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (pe
 	return persistedUser, err
 }
 
-// DeleteUserById deletes the user by id
-func (s userService) DeleteUserById(ctx context.Context, id uint) error {
+// DeleteUserByID deletes the user by id.
+func (s userService) DeleteUserByID(ctx context.Context, id uint) error {
 	err := s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
 		txService := s.WithTx(tx).(userService) // nolint: forcetypeassert
 
 		// Apply optimistic locking before updating the user entity
-		user, err := txService.FindOneUserByIdForUpdate(ctx, id)
+		user, err := txService.FindOneUserByIDForUpdate(ctx, id)
 		if err != nil {
 			return domainErrors.NewDomainError("unable to retrieve the user before deleting", err)
 		}
@@ -148,7 +155,7 @@ func (s userService) DeleteUserById(ctx context.Context, id uint) error {
 			return domainErrors.NewDomainError("unable to delete user", err)
 		}
 
-		return txService.repository.DeleteById(ctx, id)
+		return txService.repository.DeleteByID(ctx, id)
 	})
 
 	// Publish(s.eventPublisherManager, events.DELETED, persistedUser)
@@ -156,7 +163,12 @@ func (s userService) DeleteUserById(ctx context.Context, id uint) error {
 	return err
 }
 
-func Publish(ctx context.Context, eventPublisherManager events.EventPublisherManager, action events.EventAction, user *entities.User) error {
+func Publish(
+	ctx context.Context,
+	eventPublisherManager events.EventPublisherManager,
+	action events.EventAction,
+	user *entities.User,
+) error {
 	// TODO, handle error, retry, dead-letter queue?
 	return eventPublisherManager.Publish(ctx, events.NewEvent(action, user,
 		events.WithRouting("routing_key"),

@@ -7,18 +7,18 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// SwaggerRoutes struct
+// SwaggerRoutes struct.
 type SwaggerRoutes struct {
 	handler routes.RequestHandler
 }
 
-// Setup user routes
+// Setup user routes.
 func (s SwaggerRoutes) Setup() {
 	docs.SwaggerInfo.BasePath = ""
 	s.handler.Gin.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler)) // nolint: wsl
 }
 
-// NewSwaggerRoutes creates new user controller
+// NewSwaggerRoutes creates new user controller.
 func NewSwaggerRoutes(handler routes.RequestHandler) SwaggerRoutes {
 	return SwaggerRoutes{
 		handler: handler,

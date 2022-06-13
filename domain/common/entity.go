@@ -1,19 +1,19 @@
 package common
 
-type PrimaryId uint32
+type PrimaryID uint32
 
 type EntityConstraint interface {
-	Id() PrimaryId
+	Id() PrimaryID
 }
 
-//type EntityConstraint interface { // TODO, not available until GO 1.19
-//	~struct{ Entity }
-//}
+// type EntityConstraint interface { // TODO, not available until GO 1.19
+// 	~struct{ Entity }
+// }
 
 type Entity struct {
-	ID PrimaryId // Uid
+	ID PrimaryID // Uid
 }
 
-func (e Entity) Id() PrimaryId {
+func (e Entity) Id() PrimaryID { // nolint:revive
 	return e.ID
 }

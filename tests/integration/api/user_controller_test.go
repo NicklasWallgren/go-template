@@ -30,14 +30,15 @@ func Test(t *testing.T) {
 		testFunc := func(uf *factories.UserFactory, requestHandler common.RequestHandler) {
 			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) }) // nolint:wrapcheck
 
-			request := utils.NewHttpRequest(t, "GET", "/api/users/1", nil)
+			request := utils.NewHTTPRequest(t, "GET", "/api/users/1", nil)
 			userResponse := userResponse.UserResponse{}
-			utils.DoHttpRequestWithResponse(t, requestHandler.Gin, request, &userResponse, utils.ExpectHttpStatus(http.StatusOK))
+			utils.DoHttpRequestWithResponse(t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusOK))
 
 			snaps.MatchSnapshot(t, userResponse)
 		}
 
 		// Creates a unique database based on the test func name. Allows parallel execution
+		// nolint:typecheck
 		Runner(t, testFunc, WithApplicationAndApplyMigration(WithDatabaseName(t, t.Name())), InitializeMiddlewareAndRoutes)
 	})
 
@@ -45,13 +46,15 @@ func Test(t *testing.T) {
 		testFunc := func(uf *factories.UserFactory, requestHandler common.RequestHandler) {
 			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) }) // nolint:wrapcheck
 
-			request := utils.NewHttpRequest(t, "GET", "/api/users/", nil)
+			request := utils.NewHTTPRequest(t, "GET", "/api/users/", nil)
 			pageableUserResponse := response.PageableResponse[userResponse.UserResponse]{}
-			utils.DoHttpRequestWithResponse(t, requestHandler.Gin, request, &pageableUserResponse, utils.ExpectHttpStatus(http.StatusOK))
+			utils.DoHttpRequestWithResponse(
+				t, requestHandler.Gin, request, &pageableUserResponse, utils.ExpectHTTPStatus(http.StatusOK))
 
 			snaps.MatchSnapshot(t, pageableUserResponse)
 		}
 
+		// nolint:typecheck
 		Runner(t, testFunc, WithApplicationAndApplyMigration(), TruncateDatabase, InitializeMiddlewareAndRoutes)
 	})
 
@@ -67,13 +70,15 @@ func Test(t *testing.T) {
 				Birthday: types.Date(faker.Date()),
 			}
 
-			request := utils.NewHttpRequest(t, "POST", "/api/users/", utils.EncodeToJSON(t, &userRequest))
+			request := utils.NewHTTPRequest(t, "POST", "/api/users/", utils.EncodeToJSON(t, &userRequest))
 			userResponse := userResponse.UserResponse{}
-			utils.DoHttpRequestWithResponse(t, requestHandler.Gin, request, &userResponse, utils.ExpectHttpStatus(http.StatusCreated))
+			utils.DoHttpRequestWithResponse(
+				t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusCreated))
 
 			snaps.MatchSnapshot(t, userResponse)
 		}
 
+		// nolint:typecheck
 		Runner(t, testFunc, WithApplicationAndApplyMigration(), TruncateDatabase, InitializeMiddlewareAndRoutes)
 	})
 
@@ -90,13 +95,14 @@ func Test(t *testing.T) {
 				Birthday: types.Date(faker.Date()),
 			}
 
-			request := utils.NewHttpRequest(t, "POST", "/api/users/1", utils.EncodeToJSON(t, &updateUserRequest))
+			request := utils.NewHTTPRequest(t, "POST", "/api/users/1", utils.EncodeToJSON(t, &updateUserRequest))
 			userResponse := userResponse.UserResponse{}
-			utils.DoHttpRequestWithResponse(t, requestHandler.Gin, request, &userResponse, utils.ExpectHttpStatus(http.StatusOK))
+			utils.DoHttpRequestWithResponse(t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusOK))
 
 			snaps.MatchSnapshot(t, userResponse)
 		}
 
+		// nolint:typecheck
 		Runner(t, testFunc, WithApplicationAndApplyMigration(), TruncateDatabase, InitializeMiddlewareAndRoutes)
 	})
 
@@ -104,12 +110,13 @@ func Test(t *testing.T) {
 		testFunc := func(uf *factories.UserFactory, requestHandler common.RequestHandler) {
 			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) }) // nolint:wrapcheck
 
-			request := utils.NewHttpRequest(t, "DELETE", "/api/users/1", nil)
-			utils.DoHttpRequest(t, requestHandler.Gin, request, utils.ExpectHttpStatus(http.StatusNoContent))
+			request := utils.NewHTTPRequest(t, "DELETE", "/api/users/1", nil)
+			utils.DoHTTPRequest(t, requestHandler.Gin, request, utils.ExpectHTTPStatus(http.StatusNoContent))
 
 			// TODO, ensure that the user has been deleted in the database?
 		}
 
+		// nolint:typecheck
 		Runner(t, testFunc, WithApplicationAndApplyMigration(), TruncateDatabase, InitializeMiddlewareAndRoutes)
 	})
 }

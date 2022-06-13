@@ -37,7 +37,7 @@ func Test(t *testing.T) {
 		invoke := func(uf *factories.UserFactory, repository users.UserRepository) {
 			user := utils.ValueFromSupplierOrFail(t, uf.Any)
 
-			user, err := repository.FindOneByIdForUpdate(context.TODO(), uint(user.ID))
+			user, err := repository.FindOneByIDForUpdate(context.TODO(), uint(user.ID))
 
 			utils.AssertNilOrFail(t, err)
 			assert.Equal(t, 1, int(user.ID))
@@ -77,7 +77,7 @@ func Test(t *testing.T) {
 		invoke := func(uf *factories.UserFactory, repository users.UserRepository) {
 			user := utils.ValueFromSupplierOrFail(t, uf.Any)
 
-			err := repository.DeleteById(context.TODO(), uint(user.ID))
+			err := repository.DeleteByID(context.TODO(), uint(user.ID))
 			utils.AssertNilOrFail(t, err)
 
 			result, err := repository.Count(context.TODO())

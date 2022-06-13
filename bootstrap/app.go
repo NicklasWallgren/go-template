@@ -23,7 +23,7 @@ var CommonModules = fx.Options(
 	driver.Module,
 )
 
-// App root of application
+// App root of application.
 type App struct {
 	*cli.RootCommand
 	assets *config.Assets

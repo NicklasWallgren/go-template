@@ -41,7 +41,7 @@ func SuccessOrFailNow[T any](t *testing.T, tester func() (T, error)) {
 func Filename() (string, error) {
 	_, filename, _, ok := runtime.Caller(1)
 	if !ok {
-		return "", errors.New("unable to get the current filename")
+		return "", errors.New("unable to get the current filename") // nolint:goerr113
 	}
 
 	return filename, nil

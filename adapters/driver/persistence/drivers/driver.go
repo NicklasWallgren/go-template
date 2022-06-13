@@ -4,7 +4,7 @@ type Driver interface {
 	ConvertError(driverError error) error
 }
 
-// TODO, support other drivers
+// TODO, support other drivers.
 var drivers = map[string]Driver{
 	"mysql":    &MySQLDriver{},
 	"postgres": &PostgresDriver{},

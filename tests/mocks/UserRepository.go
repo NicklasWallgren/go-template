@@ -66,7 +66,7 @@ func (_m *UserRepository) Create(ctx context.Context, user *entities.User) (*ent
 }
 
 // DeleteById provides a mock function with given fields: id
-func (_m *UserRepository) DeleteById(ctx context.Context, id uint) error {
+func (_m *UserRepository) DeleteByID(ctx context.Context, id uint) error {
 	ret := _m.Called(id)
 
 	var r0 error
@@ -125,8 +125,8 @@ func (_m *UserRepository) FindOneByEmailWithExclusiveLock(ctx context.Context, e
 	return r0, r1
 }
 
-// FindOneById provides a mock function with given fields: id
-func (_m *UserRepository) FindOneById(ctx context.Context, id uint) (*entities.User, error) {
+// FindOneByID provides a mock function with given fields: id
+func (_m *UserRepository) FindOneByID(ctx context.Context, id uint) (*entities.User, error) {
 	ret := _m.Called(id)
 
 	var r0 *entities.User
@@ -148,8 +148,8 @@ func (_m *UserRepository) FindOneById(ctx context.Context, id uint) (*entities.U
 	return r0, r1
 }
 
-// FindOneByIdForUpdate provides a mock function with given fields: id
-func (_m *UserRepository) FindOneByIdForUpdate(ctx context.Context, id uint) (*entities.User, error) {
+// FindOneByIDForUpdate provides a mock function with given fields: id
+func (_m *UserRepository) FindOneByIDForUpdate(ctx context.Context, id uint) (*entities.User, error) {
 	ret := _m.Called(id)
 
 	var r0 *entities.User

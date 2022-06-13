@@ -2,7 +2,7 @@ package models
 
 import "math"
 
-// TODO next Pageable, map
+// TODO next Pageable, map.
 type Page[T any] struct {
 	Content               []T
 	Pageable              Pageable
@@ -55,7 +55,9 @@ func NewPageWith[T any](content []T, pageable Pageable, totalSupplier TotalSuppl
 	return newPageWithAdditionalContent(content, pageable, totalSupplier)
 }
 
-func newPageWithAdditionalContent[T any](content []T, pageable Pageable, totalSupplier TotalSupplier) (*Page[T], error) {
+func newPageWithAdditionalContent[T any](
+	content []T, pageable Pageable, totalSupplier TotalSupplier,
+) (*Page[T], error) {
 	total, err := totalSupplier()
 	if err != nil {
 		return nil, err

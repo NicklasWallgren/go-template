@@ -6,10 +6,10 @@ import (
 	"github.com/NicklasWallgren/go-template/domain/common"
 )
 
-// User model
+// User model.
 type User struct {
 	common.Entity
-	// ID        common.PrimaryId `json:"id"`
+	// ID        common.PrimaryID `json:"id"`
 	Name      string    `json:"name"`
 	Email     string    `json:"email"`
 	Age       uint8     `json:"age"`
@@ -22,11 +22,11 @@ func NewUser(name string, email string, age uint8, birthday time.Time) User {
 	return User{Name: name, Email: email, Age: age, Birthday: birthday}
 }
 
-func NewUserWithId(id common.PrimaryId, name string, email string, age uint8, birthday time.Time) User {
+func NewUserWithID(id common.PrimaryID, name string, email string, age uint8, birthday time.Time) User {
 	return User{Entity: common.Entity{ID: id}, Name: name, Email: email, Age: age, Birthday: birthday}
 }
 
-// TableName gives table name of model
+// TableName gives table name of model.
 func (u User) TableName() string {
 	return "users"
 }

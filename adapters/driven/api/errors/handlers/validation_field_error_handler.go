@@ -14,15 +14,15 @@ func NewValidationFieldErrorTypeHandler() ErrorTypeResponseHandler {
 	return &ValidationFieldErrorTypeHandler{}
 }
 
-func (a ValidationFieldErrorTypeHandler) Handle(err error) response.ApiResponseEnvelop {
+func (a ValidationFieldErrorTypeHandler) Handle(err error) response.APIResponseEnvelop {
 	validationFieldError := &validation.ValidationFieldError{}
 	errors.As(err, &validationFieldError)
 
-	errors := []response.ApiError{
-		response.NewApiFieldError(validationFieldError.Message, validationFieldError.Field, validationFieldError.Value),
+	errors := []response.APIError{
+		response.NewAPIWithFieldError(validationFieldError.Message, validationFieldError.Field, validationFieldError.Value),
 	}
 
-	return response.New(http.StatusBadRequest, response.WithResponse(response.NewApiErrorResponse(errors)))
+	return response.New(http.StatusBadRequest, response.WithResponse(response.NewAPIErrorResponse(errors)))
 }
 
 func (a ValidationFieldErrorTypeHandler) IsSupported(err error) bool {

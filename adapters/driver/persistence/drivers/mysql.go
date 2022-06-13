@@ -7,7 +7,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
-// To ensure that MySQLDriver implements the Driver interface
+// To ensure that MySQLDriver implements the Driver interface.
 var _ Driver = (*MySQLDriver)(nil)
 
 const (
@@ -26,9 +26,12 @@ func (m MySQLDriver) ConvertError(driverError error) error {
 
 	switch mysqlError.Number {
 	case mysqlDuplicateEntry:
-		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(false, dbErrors.DuplicateEntry, mysqlError)) // TODO, might be useful with retry?
+		// TODO, might be useful with retry?
+		return dbErrors.NewDBError(
+			dbErrors.WithRetryableAndTypeAndError(false, dbErrors.DuplicateEntry, mysqlError))
 	case mysqlLockWaitTimeout:
-		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(true, dbErrors.LockWaitTimeout, mysqlError))
+		return dbErrors.NewDBError(
+			dbErrors.WithRetryableAndTypeAndError(true, dbErrors.LockWaitTimeout, mysqlError))
 	}
 
 	return dbErrors.NewDBError(dbErrors.WithRetryableAndError(false, mysqlError))

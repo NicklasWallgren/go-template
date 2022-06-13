@@ -5,55 +5,58 @@ import (
 	"net/http"
 )
 
-type ApiError struct {
+type APIError struct {
 	err        error
-	HttpStatus int
+	HTTPStatus int
 	Message    string
 }
 
-// ApiErrorOption definition.
-type ApiErrorOption func(apiError *ApiError)
+// APIErrorOption definition.
+type APIErrorOption func(apiError *APIError)
 
-func WithError(err error) ApiErrorOption {
-	return func(apiError *ApiError) {
+func WithError(err error) APIErrorOption {
+	return func(apiError *APIError) {
 		apiError.err = err
 	}
 }
 
-func WithMessage(message string) ApiErrorOption {
-	return func(apiError *ApiError) {
+func WithMessage(message string) APIErrorOption {
+	return func(apiError *APIError) {
 		apiError.Message = message
 	}
 }
 
-func WithStatusAndError(httpStatus int, err error) ApiErrorOption {
-	return func(apiError *ApiError) {
-		apiError.HttpStatus = httpStatus
+func WithStatusAndError(httpStatus int, err error) APIErrorOption {
+	return func(apiError *APIError) {
+		apiError.HTTPStatus = httpStatus
 		apiError.err = err
 	}
 }
 
-func WithStatusAndMessage(httpStatus int, message string) ApiErrorOption {
-	return func(apiError *ApiError) {
-		apiError.HttpStatus = httpStatus
+func WithStatusAndMessage(httpStatus int, message string) APIErrorOption {
+	return func(apiError *APIError) {
+		apiError.HTTPStatus = httpStatus
 		apiError.Message = message
 	}
 }
 
-func WithStatusAndMessageAndError(httpStatus int, message string, err error) ApiErrorOption {
-	return func(apiError *ApiError) {
-		apiError.HttpStatus = httpStatus
+func WithStatusAndMessageAndError(httpStatus int, message string, err error) APIErrorOption {
+	return func(apiError *APIError) {
+		apiError.HTTPStatus = httpStatus
 		apiError.Message = message
 		apiError.err = err
 	}
 }
 
-func NewApiError(message string, httpStatus int) *ApiError {
-	return &ApiError{Message: message, HttpStatus: httpStatus}
+func NewAPIError(message string, httpStatus int) *APIError {
+	return &APIError{Message: message, HTTPStatus: httpStatus}
 }
 
-func NewApiErrorWith(options ...ApiErrorOption) *ApiError {
-	apiError := &ApiError{HttpStatus: http.StatusInternalServerError, Message: "Unable to process the request, please try again"}
+func NewApiErrorWith(options ...APIErrorOption) *APIError {
+	apiError := &APIError{
+		HTTPStatus: http.StatusInternalServerError,
+		Message:    "Unable to process the request, please try again",
+	}
 
 	for _, option := range options {
 		option(apiError)
@@ -62,11 +65,11 @@ func NewApiErrorWith(options ...ApiErrorOption) *ApiError {
 	return apiError
 }
 
-func (a ApiError) Error() string {
+func (a APIError) Error() string {
 	return fmt.Sprintf("%s %s", a.Message, a.err) // TODO
 }
 
-func (a ApiError) Unwrap() error {
+func (a APIError) Unwrap() error {
 	if a.err != nil {
 		return a.err
 	}

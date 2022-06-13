@@ -11,7 +11,7 @@ import (
 )
 
 type ErrorResponseManager interface {
-	Handle(err error) response.ApiResponseEnvelop
+	Handle(err error) response.APIResponseEnvelop
 }
 
 type errorResponseManager struct {
@@ -27,7 +27,7 @@ func NewErrorResponseManager(errorTypeHandlers []ErrorTypeResponseHandler) Error
 	return &errorResponseManager{errorTypeHandlers: sortedTypeHandlers}
 }
 
-func (e errorResponseManager) Handle(err error) response.ApiResponseEnvelop {
+func (e errorResponseManager) Handle(err error) response.APIResponseEnvelop {
 	for _, handler := range e.errorTypeHandlers {
 		if !handler.IsSupported(err) {
 			continue

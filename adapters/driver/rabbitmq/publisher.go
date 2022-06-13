@@ -15,7 +15,7 @@ import (
 	"github.com/wagslane/go-rabbitmq"
 )
 
-// To ensure that RabbitMQPublisher implements the pubsub.AMQPPublisher interface
+// To ensure that RabbitMQPublisher implements the pubsub.AMQPPublisher interface.
 var _ pubsub.AMQPPublisher = (*RabbitMQPublisher)(nil)
 
 type RabbitMQPublisher struct {

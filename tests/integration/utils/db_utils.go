@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"strings"
 
-	_ "github.com/lib/pq"
+	_ "github.com/lib/pq" // nolint:revive
 
 	"github.com/NicklasWallgren/go-template/infrastructure/database"
 

@@ -9,17 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// MigrationUp is a InvokeFunc that should be passed to fx.Invoke
+// MigrationUp is a InvokeFunc that should be passed to fx.Invoke.
 func MigrationUp(migrator database.Migrator) error {
 	return migrator.Up() // nolint:wrapcheck
 }
 
-// TruncateDatabase is a InvokeFunc that should be passed to fx.Invoke
+// TruncateDatabase is a InvokeFunc that should be passed to fx.Invoke.
 func TruncateDatabase(db database.Database, config *config.AppConfig) error {
 	return utils.TruncateDatabase(db, config) // nolint:wrapcheck
 }
 
-// InitializeMiddlewareAndRoutes is a InvokeFunc that should be passed to fx.Invoke
+// InitializeMiddlewareAndRoutes is a InvokeFunc that should be passed to fx.Invoke.
 func InitializeMiddlewareAndRoutes(middleware middlewares.Middlewares, route routes.Routes) error {
 	middleware.Setup()
 	route.Setup()

@@ -15,7 +15,7 @@ type GooseMigrator struct {
 	migrationDirectoryPath string
 }
 
-// ErrMigrationUp is returned when the available migrations could not be applied
+// ErrMigrationUp is returned when the available migrations could not be applied.
 var ErrMigrationUp = errors.New("could not apply the available migrations")
 
 func NewGooseMigrator(db Database, config *config.AppConfig) (Migrator, error) {
@@ -25,7 +25,9 @@ func NewGooseMigrator(db Database, config *config.AppConfig) (Migrator, error) {
 		return nil, err
 	}
 
-	return &GooseMigrator{db: db, filesystem: config.Assets.EmbedMigrations, migrationDirectoryPath: config.Database.MigrationDirectory}, nil
+	return &GooseMigrator{
+		db: db, filesystem: config.Assets.EmbedMigrations, migrationDirectoryPath: config.Database.MigrationDirectory,
+	}, nil
 }
 
 func (m GooseMigrator) Up() error {

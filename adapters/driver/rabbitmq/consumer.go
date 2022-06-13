@@ -55,7 +55,7 @@ func (c *RabbitMQConsumer) Consume(ctx context.Context, runner ConsumerRunner) {
 	)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	<-ctx.Done()

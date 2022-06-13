@@ -14,12 +14,12 @@ import (
 	"gorm.io/gorm"
 )
 
-// Database modal
+// Database modal.
 type Database struct {
 	*gorm.DB
 }
 
-// NewDatabase creates a new database instance
+// NewDatabase creates a new database instance.
 func NewDatabase(config *config.AppConfig, logger logger.Logger) (Database, error) {
 	db, err := connect(config.Database, logger)
 	if err != nil {
@@ -55,5 +55,5 @@ func gormDialector(config *config.Database) (gorm.Dialector, error) {
 		return postgresGorm.New(postgresGorm.Config{DSN: url}), nil
 	}
 
-	return nil, errors.New("unsupported db driver " + config.Driver)
+	return nil, errors.New("unsupported db driver " + config.Driver) // nolint:goerr113
 }

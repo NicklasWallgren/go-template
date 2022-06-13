@@ -24,9 +24,5 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 	defer cancel()
 
-	if err := app.ExecuteContext(ctx); err != nil {
-		os.Exit(1)
-	}
-
-	os.Exit(0)
+	app.ExecuteContext(ctx) // nolint:errcheck
 }

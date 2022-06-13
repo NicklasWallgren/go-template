@@ -11,37 +11,37 @@ import (
 
 type UserApiConverter interface {
 	converters.ApiResponseConverter[entities.User, response.UserResponse]
-	converters.ApiRequestCreateConverter[CreateUserRequest, entities.User]
-	converters.ApiRequestUpdateConverter[UpdateUserRequest, entities.User]
+	converters.APIRequestCreateConverter[CreateUserRequest, entities.User]
+	converters.APIRequestUpdateConverter[UpdateUserRequest, entities.User]
 }
 
-type userApiConverter struct {
+type userAPIConverter struct {
 	userService domain.UserService
 }
 
-func NewUserApiConverter(userService domain.UserService) UserApiConverter {
-	return &userApiConverter{userService}
+func NewUserAPIConverter(userService domain.UserService) UserApiConverter {
+	return &userAPIConverter{userService}
 }
 
-// To ensure that UserApiConverter implements the ApiResponseConverter interface
-var _ converters.ApiResponseConverter[entities.User, response.UserResponse] = (*userApiConverter)(nil)
+// To ensure that UserApiConverter implements the ApiResponseConverter interface.
+var _ converters.ApiResponseConverter[entities.User, response.UserResponse] = (*userAPIConverter)(nil)
 
-// To ensure that UserApiConverter implements the ApiRequestCreateConverter interface
-var _ converters.ApiRequestCreateConverter[CreateUserRequest, entities.User] = (*userApiConverter)(nil)
+// To ensure that UserApiConverter implements the APIRequestCreateConverter interface.
+var _ converters.APIRequestCreateConverter[CreateUserRequest, entities.User] = (*userAPIConverter)(nil)
 
-// To ensure that UserApiConverter implements the ApiRequestUpdateConverter interface
-var _ converters.ApiRequestUpdateConverter[UpdateUserRequest, entities.User] = (*userApiConverter)(nil)
+// To ensure that UserApiConverter implements the APIRequestUpdateConverter interface.
+var _ converters.APIRequestUpdateConverter[UpdateUserRequest, entities.User] = (*userAPIConverter)(nil)
 
-func (u userApiConverter) ResponseOf(user entities.User) response.UserResponse {
+func (u userAPIConverter) ResponseOf(user entities.User) response.UserResponse {
 	return response.UserResponse{Name: user.Name, Email: user.Name}
 }
 
-func (u userApiConverter) EntityOf(request *CreateUserRequest) entities.User {
+func (u userAPIConverter) EntityOf(request *CreateUserRequest) entities.User {
 	return entities.NewUser(request.Name, request.Email, request.Age, request.Birthday.ToTime())
 }
 
-func (u userApiConverter) UpdatedEntityOf(ctx context.Context, request *UpdateUserRequest) (*entities.User, error) {
-	user, err := u.userService.FindOneUserById(ctx, request.ID) // nolint:wrapcheck
+func (u userAPIConverter) UpdatedEntityOf(ctx context.Context, request *UpdateUserRequest) (*entities.User, error) {
+	user, err := u.userService.FindOneUserByID(ctx, request.ID) // nolint:wrapcheck
 	if err != nil {
 		return nil, err
 	}

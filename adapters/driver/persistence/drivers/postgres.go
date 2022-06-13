@@ -8,7 +8,7 @@ import (
 	dbErrors "github.com/NicklasWallgren/go-template/adapters/driver/persistence/errors"
 )
 
-// To ensure that PostgresDriver implements the Driver interface
+// To ensure that PostgresDriver implements the Driver interface.
 var _ Driver = (*PostgresDriver)(nil)
 
 const (
@@ -25,8 +25,9 @@ func (m PostgresDriver) ConvertError(driverError error) error {
 	}
 
 	switch postgresError.Code {
+	// TODO, might be useful with retry?
 	case postgresDuplicateEntry:
-		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(false, dbErrors.DuplicateEntry, postgresError)) // TODO, might be useful with retry?
+		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(false, dbErrors.DuplicateEntry, postgresError))
 	case postgresLockWaitTimeout:
 		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(true, dbErrors.LockWaitTimeout, postgresError))
 	}

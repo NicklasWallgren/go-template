@@ -15,18 +15,18 @@ func NewValidationGoPlaygroundErrorHandler() ErrorTypeResponseHandler {
 	return &ValidationGoPlaygroundErrorHandler{}
 }
 
-func (v ValidationGoPlaygroundErrorHandler) Handle(err error) response.ApiResponseEnvelop {
+func (v ValidationGoPlaygroundErrorHandler) Handle(err error) response.APIResponseEnvelop {
 	validationErrors := validator.ValidationErrors{}
 	errors.As(err, &validationErrors)
 
-	fieldErrors := make([]response.ApiError, len(validationErrors))
+	fieldErrors := make([]response.APIError, len(validationErrors))
 	for i, v := range validationErrors { // nolint: wsl
 		message := fmt.Sprintf("Invalid value for field '%s'. Cause: '%s'. Value: '%s'", v.Field(), v.Tag(), v.Value())
 
-		fieldErrors[i] = response.NewApiFieldError(message, v.Field(), v.Value())
+		fieldErrors[i] = response.NewAPIWithFieldError(message, v.Field(), v.Value())
 	}
 
-	return response.New(http.StatusBadRequest, response.WithResponse(response.NewApiErrorResponse(fieldErrors)))
+	return response.New(http.StatusBadRequest, response.WithResponse(response.NewAPIErrorResponse(fieldErrors)))
 }
 
 func (v ValidationGoPlaygroundErrorHandler) IsSupported(err error) bool {
