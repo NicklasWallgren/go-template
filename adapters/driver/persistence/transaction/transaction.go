@@ -12,6 +12,7 @@ import (
 )
 
 // Source https://github.com/mightyguava/autotx with added changes
+// nolint
 
 // DefaultMaxRetries configures the default number of max retries attempted by TransactWithRetry.
 var DefaultMaxRetries = 1
@@ -45,6 +46,7 @@ func TransactWithOptions(db *gorm.DB, txOpts *sql.TxOptions, operation func(tx *
 			if tx.Rollback(); tx.Error != nil {
 				p = fmt.Errorf("panic in transaction, AND rollback failed with error: %v, original panic: %v", tx.Error, p)
 			}
+
 			panic(p)
 		}
 		if err != nil {
@@ -58,6 +60,7 @@ func TransactWithOptions(db *gorm.DB, txOpts *sql.TxOptions, operation func(tx *
 		}
 		err = tx.Commit().Error
 	}()
+
 	err = operation(tx)
 	return
 }
@@ -99,18 +102,23 @@ func TransactWithRetryAndOptions(db *gorm.DB, txOpts *sql.TxOptions, retry Retry
 	if retry.MaxRetries == 0 {
 		retry.MaxRetries = DefaultMaxRetries
 	}
+
 	if retry.MaxRetries < 0 {
 		retry.MaxRetries = math.MaxInt32
 	}
+
 	if retry.BackOff == nil {
 		retry.BackOff = newSimpleExponentialBackOff().NextBackOff
 	}
+
 	if retry.IsRetryable == nil {
 		retry.IsRetryable = DefaultIsRetryable
 	}
+
 	if retry.Sleep == nil {
 		retry.Sleep = time.Sleep
 	}
+
 	var err error
 	for i := 0; i < retry.MaxRetries; i++ {
 		err = TransactWithOptions(db, txOpts, operation)
@@ -168,6 +176,7 @@ type RetryOptions struct {
 	Sleep func(duration time.Duration)
 }
 
+// nolint:deadcode
 func alwaysRetryable(error) bool {
 	return true
 }

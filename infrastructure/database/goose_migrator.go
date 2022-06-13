@@ -12,11 +12,8 @@ import (
 type GooseMigrator struct {
 	db                     Database
 	filesystem             fs.FS
-	migrationDirectoryPath string // TODO, as filesystem?
+	migrationDirectoryPath string
 }
-
-// To ensure that GooseMigrator implements the Migrator interface
-var _ Migrator = (*GooseMigrator)(nil)
 
 // ErrMigrationUp is returned when the available migrations could not be applied
 var ErrMigrationUp = errors.New("could not apply the available migrations")
@@ -52,6 +49,7 @@ func (m GooseMigrator) Down() error {
 
 	// down
 	// downTo
+
 }
 
 func (m GooseMigrator) Create(name string) error {

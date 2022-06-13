@@ -26,6 +26,8 @@ func MigrationFs() fs.FS {
 }
 
 func NewForTest(tb testing.TB, opts ...fx.Option) *fx.App {
+	tb.Helper()
+
 	testOpts := []fx.Option{
 		fx.Logger(fxtest.NewTestPrinter(tb)),
 		fx.WithLogger(func() fxevent.Logger { return fxtest.NewTestLogger(tb) }),

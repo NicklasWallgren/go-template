@@ -85,7 +85,7 @@ func (s userService) FindAllUser(ctx context.Context, pagination *models.Paginat
 // CreateUser call to create the user
 func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) (user *entities.User, err error) {
 	err = s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
-		txService := s.WithTx(tx).(userService)
+		txService := s.WithTx(tx).(userService) // nolint: forcetypeassert
 
 		if err := txService.userValidator.WithTx(tx).ValidateToCreate(ctx, &toBeCreated); err != nil {
 			return domainErrors.NewDomainError("unable to create user", err)
@@ -109,7 +109,7 @@ func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) 
 // UpdateUser updates the user
 func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (persistedUser *entities.User, err error) {
 	err = s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
-		txService := s.WithTx(tx).(userService)
+		txService := s.WithTx(tx).(userService) // nolint: forcetypeassert
 
 		// Apply optimistic locking before updating the user entity
 		originUser, err := txService.FindOneUserByIdForUpdate(ctx, uint(updated.ID))
@@ -136,7 +136,7 @@ func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (pe
 // DeleteUserById deletes the user by id
 func (s userService) DeleteUserById(ctx context.Context, id uint) error {
 	err := s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
-		txService := s.WithTx(tx).(userService)
+		txService := s.WithTx(tx).(userService) // nolint: forcetypeassert
 
 		// Apply optimistic locking before updating the user entity
 		user, err := txService.FindOneUserByIdForUpdate(ctx, id)

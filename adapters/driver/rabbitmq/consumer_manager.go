@@ -21,5 +21,5 @@ func (c ConsumerManager) Run(ctx context.Context) {
 	// Wait until all go routines has finished
 	<-ctx.Done()
 
-	fmt.Println("stopping consumer")
+	fmt.Println("stopping consumer") // nolint:forbidigo
 }

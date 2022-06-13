@@ -3,11 +3,12 @@ package rabbitmq
 import (
 	"context"
 	"encoding/json"
+	"log"
+
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/ext"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
-	"log"
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/infrastructure/pubsub"

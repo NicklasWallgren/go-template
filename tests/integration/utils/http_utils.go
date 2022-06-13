@@ -15,11 +15,15 @@ type ExpectOption func(t *testing.T, response *http.Response)
 
 func ExpectHttpStatus(statusCode int) ExpectOption {
 	return func(t *testing.T, response *http.Response) {
+		t.Helper()
+
 		assert.Equal(t, statusCode, response.StatusCode)
 	}
 }
 
 func NewHttpRequest(t *testing.T, method string, url string, body io.Reader) *http.Request {
+	t.Helper()
+
 	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		t.Errorf("unable to create http request %v", err)
@@ -31,11 +35,13 @@ func NewHttpRequest(t *testing.T, method string, url string, body io.Reader) *ht
 }
 
 func DoHttpRequest(t *testing.T, httpHandler http.Handler, request *http.Request, opts ...ExpectOption) {
+	t.Helper()
+
 	recorder := httptest.NewRecorder()
 	httpHandler.ServeHTTP(recorder, request)
 
 	result := recorder.Result()
-	defer result.Body.Close()
+	defer result.Body.Close() // nolint:errcheck
 
 	for _, opt := range opts {
 		opt(t, result)
@@ -43,11 +49,13 @@ func DoHttpRequest(t *testing.T, httpHandler http.Handler, request *http.Request
 }
 
 func DoHttpRequestWithResponse[T any](t *testing.T, httpHandler http.Handler, request *http.Request, response T, opts ...ExpectOption) T {
+	t.Helper()
+
 	recorder := httptest.NewRecorder()
 	httpHandler.ServeHTTP(recorder, request)
 
 	result := recorder.Result()
-	defer result.Body.Close()
+	defer result.Body.Close() // nolint:errcheck
 
 	decoder := json.NewDecoder(result.Body)
 	err := decoder.Decode(&response)
@@ -64,6 +72,8 @@ func DoHttpRequestWithResponse[T any](t *testing.T, httpHandler http.Handler, re
 }
 
 func EncodeToJSON(t *testing.T, subject any) io.Reader {
+	t.Helper()
+
 	var buf bytes.Buffer
 	err := json.NewEncoder(&buf).Encode(subject)
 	if err != nil {

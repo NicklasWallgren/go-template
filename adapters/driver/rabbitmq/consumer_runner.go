@@ -32,7 +32,7 @@ func (s SimpleConsumerRunner) Run(ctx context.Context) {
 }
 
 func (s SimpleConsumerRunner) Do(ctx context.Context) {
-	fmt.Println("Inside simple consumer runner")
+	fmt.Println("Inside simple consumer runner") // nolint:forbidigo
 
 	// TODO, unmarshall body
 	// TODO, return rabbitmq.action?

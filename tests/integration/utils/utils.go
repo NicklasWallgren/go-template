@@ -13,12 +13,16 @@ var (
 )
 
 func ValueFromOrFail[T any](t *testing.T, value T, err error) T {
+	t.Helper()
+
 	AssertNilOrFail(t, err)
 
 	return value
 }
 
 func ValueFromSupplierOrFail[T any](t *testing.T, supplier func() (T, error)) T {
+	t.Helper()
+
 	value, err := supplier()
 
 	AssertNilOrFail(t, err)
@@ -27,6 +31,8 @@ func ValueFromSupplierOrFail[T any](t *testing.T, supplier func() (T, error)) T 
 }
 
 func SuccessOrFailNow[T any](t *testing.T, tester func() (T, error)) {
+	t.Helper()
+
 	_, err := tester()
 
 	AssertNilOrFail(t, err)

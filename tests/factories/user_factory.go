@@ -43,5 +43,5 @@ func (u UserFactory) Many(numberOfEntities int) (users []entities.User, err erro
 }
 
 func (u UserFactory) Given(user entities.User) (*entities.User, error) {
-	return u.userRepository.Create(context.TODO(), &user)
+	return u.userRepository.Create(context.TODO(), &user) // nolint:wrapcheck
 }

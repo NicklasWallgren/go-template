@@ -41,7 +41,7 @@ func (u userApiConverter) EntityOf(request *CreateUserRequest) entities.User {
 }
 
 func (u userApiConverter) UpdatedEntityOf(ctx context.Context, request *UpdateUserRequest) (*entities.User, error) {
-	user, err := u.userService.FindOneUserById(ctx, request.ID)
+	user, err := u.userService.FindOneUserById(ctx, request.ID) // nolint:wrapcheck
 	if err != nil {
 		return nil, err
 	}

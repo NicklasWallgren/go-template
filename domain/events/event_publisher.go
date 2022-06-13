@@ -2,6 +2,7 @@ package events
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/infrastructure/pubsub"
 )
 

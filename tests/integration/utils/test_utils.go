@@ -7,6 +7,8 @@ import (
 )
 
 func AssertNilOrFail(t *testing.T, subject any) {
+	t.Helper()
+
 	if !assert.Nil(t, subject) {
 		t.FailNow()
 	}

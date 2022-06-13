@@ -13,6 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// nolint: funlen
 func Test(t *testing.T) {
 	t.Run("GivenInvalidName_whenValidateToCreate_thenExpectedValidationFieldError", func(t *testing.T) {
 		t.Parallel()

@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"errors"
+	"net/http"
+
 	"github.com/mariomac/gostream/order"
 	"github.com/mariomac/gostream/stream"
-	"net/http"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/response"
 )

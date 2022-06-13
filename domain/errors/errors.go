@@ -12,7 +12,7 @@ func NewDomainError(message string, err error) *DomainError {
 }
 
 func (d DomainError) Error() string {
-	return d.Message // TODO
+	return d.Message
 }
 
 func (d DomainError) Unwrap() error {

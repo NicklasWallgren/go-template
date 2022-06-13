@@ -22,12 +22,13 @@ func TestMain(m *testing.M) {
 	os.Exit(exitVal)
 }
 
+// nolint: funlen, paralleltest
 func Test(t *testing.T) {
 	t.Run("GivenUsers_WhenGetOneUser_ThenMatchSnapshot", func(t *testing.T) {
 		t.Parallel()
 
 		testFunc := func(uf *factories.UserFactory, requestHandler common.RequestHandler) {
-			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) })
+			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) }) // nolint:wrapcheck
 
 			request := utils.NewHttpRequest(t, "GET", "/api/users/1", nil)
 			userResponse := userResponse.UserResponse{}
@@ -42,7 +43,7 @@ func Test(t *testing.T) {
 
 	t.Run("GivenUsers_WhenGetUsers_ThenMatchSnapshot", func(t *testing.T) {
 		testFunc := func(uf *factories.UserFactory, requestHandler common.RequestHandler) {
-			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) })
+			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) }) // nolint:wrapcheck
 
 			request := utils.NewHttpRequest(t, "GET", "/api/users/", nil)
 			pageableUserResponse := response.PageableResponse[userResponse.UserResponse]{}
@@ -81,7 +82,7 @@ func Test(t *testing.T) {
 		faker := gofakeit.New(1)
 
 		testFunc := func(uf *factories.UserFactory, requestHandler common.RequestHandler) {
-			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Any() })
+			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Any() }) // nolint:wrapcheck
 
 			updateUserRequest := users.UpdateUserRequest{
 				Name:     faker.Name(),
@@ -101,7 +102,7 @@ func Test(t *testing.T) {
 
 	t.Run("GivenValidDeleteRequest_WhenDeleteUser_ThenExpectedHttpStatus", func(t *testing.T) {
 		testFunc := func(uf *factories.UserFactory, requestHandler common.RequestHandler) {
-			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) })
+			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) }) // nolint:wrapcheck
 
 			request := utils.NewHttpRequest(t, "DELETE", "/api/users/1", nil)
 			utils.DoHttpRequest(t, requestHandler.Gin, request, utils.ExpectHttpStatus(http.StatusNoContent))

@@ -14,7 +14,7 @@ linters:
     - errname
     - errorlint
     - exhaustive
-    - exhaustivestruct
+#    - exhaustruct
     - exportloopref
     - forbidigo
     - forcetypeassert
@@ -24,10 +24,9 @@ linters:
     - gochecknoinits
     - gocognit
     - goconst
-    - gocritic
     - gocyclo
-    - godot
-    - godox
+#    - godot temporary
+#    - godox temporary
     - gofmt
     - gofumpt
     - goheader
@@ -37,30 +36,23 @@ linters:
     - gomodguard
     - goprintffuncname
     - gosec
-    - gosimple
-    - govet
     - ifshort
     - importas
     - ineffassign
-    - interfacer
     - makezero
     - misspell
     - nakedret
     - nestif
     - nilerr
     - nilnil
-#    - nlreturn
     - noctx
     - paralleltest
     - prealloc
     - predeclared
     - promlinter
-    - revive
     - rowserrcheck
     - sqlclosecheck
-    - staticcheck
     - structcheck
-    - stylecheck
     - tagliatelle
     - tenv
     - testpackage
@@ -69,16 +61,15 @@ linters:
     - typecheck
     - unconvert
     - unparam
-    - unused
     - varcheck
     - varnamelen
     - wastedassign
     - whitespace
-    - wrapcheck
+#    - wrapcheck
     - wsl
 
   disable:
-    #    - interfacer
+    - interfacer
     - golint
     - scopelint
     - maligned
@@ -86,6 +77,19 @@ linters:
     - nolintlint
     - ireturn
     - goerr113
+    - govet
+    - staticcheck
+    - gocritic
+    - revive
+    - unused
+    - stylecheck
+    - gosimple
+    - godot # temporary
+    - wrapcheck # temporary
+    - exhaustruct
+    - godox # temporary
+    - nonamedreturns
+    - exhaustivestruct
 
   presets:
     - bugs
@@ -106,6 +110,7 @@ linters:
 linters-settings:
   check-shadowing: true
   enable-all: true
+
   govet:
     enable:
       - fieldalignment
@@ -114,4 +119,6 @@ issues:
   exclude-use-default: false
 
 run:
-  go: 1.18
+  go: '1.18'
+
+

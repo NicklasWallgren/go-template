@@ -34,7 +34,7 @@ func (c *RabbitMQConsumer) Consume(ctx context.Context, runner ConsumerRunner) {
 		log.Fatal(err)
 	}
 
-	defer consumer.Close()
+	defer consumer.Close() // nolint:errcheck
 
 	runnerOptions := runner.Options()
 
@@ -60,5 +60,5 @@ func (c *RabbitMQConsumer) Consume(ctx context.Context, runner ConsumerRunner) {
 
 	<-ctx.Done()
 
-	fmt.Println("The consumer is stopping")
+	fmt.Println("The consumer is stopping") // nolint:forbidigo
 }

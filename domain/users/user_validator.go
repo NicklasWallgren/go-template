@@ -9,6 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
+const requiredAge = 18
+
 type UserValidator struct {
 	userRepository repository.UserRepository
 }
@@ -68,7 +70,7 @@ func (u UserValidator) validateName(ctx context.Context, user *entities.User) er
 }
 
 func (u UserValidator) validateAge(ctx context.Context, user *entities.User) error {
-	if user.Age < 18 {
+	if user.Age < requiredAge {
 		return &validation.ValidationFieldError{Field: "Age", Message: "Invalid age", Value: user.Age}
 	}
 

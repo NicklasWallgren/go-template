@@ -14,8 +14,8 @@ type User struct {
 	Email     string    `json:"email"`
 	Age       uint8     `json:"age"`
 	Birthday  time.Time `json:"time"`
-	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"` // auditable
-	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"` // auditable
+	CreatedAt time.Time `gorm:"autoCreateTime" json:"createdAt"` // auditable
+	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated"`   // auditable
 }
 
 func NewUser(name string, email string, age uint8, birthday time.Time) User {

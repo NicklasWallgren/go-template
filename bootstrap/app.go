@@ -48,10 +48,8 @@ func (a App) boot(runner cli.CommandRunner) {
 	ctx := context.Background()
 	app := fx.New(fx.Provide(func() *config.Assets { return a.assets }), config.Module, CommonModules, opts)
 
-	err := app.Start(ctx)
-	defer app.Stop(ctx)
-
-	if err != nil {
+	if err := app.Start(ctx); err != nil {
 		log.Println(err)
 	}
+	defer app.Stop(ctx)
 }

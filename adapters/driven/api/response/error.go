@@ -11,7 +11,7 @@ func NewApiErrorResponse(errors []ApiErrorConstraint) *ApiErrorResponse {
 }
 
 type ApiError struct {
-	Message string `json:"Message"`
+	Message string `json:"message"`
 }
 
 func NewApiError(message string) *ApiError {

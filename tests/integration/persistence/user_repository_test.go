@@ -20,6 +20,7 @@ func TestMain(m *testing.M) {
 	os.Exit(exitVal)
 }
 
+// nolint:funlen, paralleltest
 func Test(t *testing.T) {
 	t.Run("GivenUser_WhenCreate_ThenIsCreated", func(t *testing.T) {
 		invoke := func(uf *factories.UserFactory, repository users.UserRepository) {

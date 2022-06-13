@@ -2,9 +2,10 @@ package database
 
 import (
 	"fmt"
+	"time"
+
 	gormtrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/gorm.io/gorm.v1"
 	mysqlgorm "gorm.io/driver/mysql"
-	"time"
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"

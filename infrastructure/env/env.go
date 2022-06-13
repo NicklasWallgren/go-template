@@ -33,13 +33,12 @@ func NewEnv() Env {
 
 // NewEnvWithPath creates a new environment
 func NewEnvWithPath(configFile string) Env {
-	v := enviper.New(viper.New())
+	v := enviper.New(viper.New()) // nolint: varnamelen
 	v.SetConfigFile(configFile)
 
 	// The environment variables has higher priority than the values defined in .env file
 	env := Env{}
-	err := v.Unmarshal(&env)
-	if err != nil {
+	if err := v.Unmarshal(&env); err != nil {
 		log.Fatal("☠️ environment can't be loaded: ", err)
 	}
 

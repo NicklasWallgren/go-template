@@ -39,8 +39,10 @@ func newSimpleExponentialBackOff() *simpleBackOff {
 func (b *simpleBackOff) NextBackOff() time.Duration {
 	next := b.min * time.Duration(math.Pow(float64(b.factor), float64(b.attempt)))
 	b.attempt++
+
 	if next > b.max {
 		return b.max
 	}
+
 	return next
 }

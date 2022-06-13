@@ -11,10 +11,12 @@ const formatYYYYMMDD = "2006-01-02"
 
 func (d *Date) UnmarshalJSON(b []byte) error {
 	date := strings.Trim(string(b), "\"")
+
 	time, err := time.Parse(formatYYYYMMDD, date)
 	if err != nil {
 		return err
 	}
+
 	*d = Date(time)
 	return nil
 }
