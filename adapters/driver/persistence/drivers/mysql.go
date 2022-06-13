@@ -13,7 +13,7 @@ var _ Driver = (*MySQLDriver)(nil)
 const (
 	mysqlDuplicateEntry   = 1062
 	mysqlLockWaitTimeout  = 1205
-	mysqlIncorrectInteger = 1366
+	mysqlIncorrectInteger = 1366 // nolint:deadcode, varcheck
 )
 
 type MySQLDriver struct{}

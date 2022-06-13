@@ -51,5 +51,5 @@ func (a App) boot(runner cli.CommandRunner) {
 	if err := app.Start(ctx); err != nil {
 		log.Println(err)
 	}
-	defer app.Stop(ctx)
+	defer app.Stop(ctx) // nolint:errcheck
 }

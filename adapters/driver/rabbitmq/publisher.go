@@ -46,7 +46,7 @@ func (r *RabbitMQPublisher) Publish(ctx context.Context, data any, routingKey st
 		tracer.Measured(),
 	}
 
-	span, ctx := tracer.StartSpanFromContext(ctx, "amqp.publish", opts...)
+	span, ctx := tracer.StartSpanFromContext(ctx, "amqp.publish", opts...) // nolint:ineffassign
 	defer span.Finish()
 
 	dataByteArray, err := json.Marshal(data)
@@ -77,7 +77,7 @@ func (r *RabbitMQPublisher) setup() (err error) {
 	}
 
 	confirmations := r.rabbitmqPublisher.NotifyPublish()
-	go func() {
+	go func() { // nolint: wsl
 		for c := range confirmations {
 			// TODO, handle confirmation from server. Retry on nack?
 			// TODO, use correct logger

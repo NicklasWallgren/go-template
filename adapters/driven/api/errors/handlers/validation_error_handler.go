@@ -25,6 +25,7 @@ func (a ValidationErrorTypeHandler) Handle(err error) response.ApiResponseEnvelo
 
 func (a ValidationErrorTypeHandler) IsSupported(err error) bool {
 	validationError := &validation.ValidationError{}
+
 	return errors.As(err, &validationError)
 }
 

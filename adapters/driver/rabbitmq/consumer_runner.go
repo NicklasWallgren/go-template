@@ -36,7 +36,7 @@ func (s SimpleConsumerRunner) Do(ctx context.Context) {
 
 	// TODO, unmarshall body
 	// TODO, return rabbitmq.action?
-}
+} // nolint: wsl
 
 func (s SimpleConsumerRunner) Options() ConsumerRunnerOptions {
 	return ConsumerRunnerOptions{

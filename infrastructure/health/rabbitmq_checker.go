@@ -17,7 +17,5 @@ func NewRabbitMQHealthChecker() HealthChecker {
 }
 
 func (r RabbitMQHealthChecker) Check(ctx context.Context) Health {
-	// TODO, implement
-
-	return NewHealth(Healthy, "rabbitmq")
+	return NewHealth(Healthy, "rabbitmq") // TODO, implement
 }

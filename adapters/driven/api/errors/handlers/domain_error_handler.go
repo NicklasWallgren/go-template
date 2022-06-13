@@ -27,6 +27,7 @@ func (d DomainErrorTypeHandler) Handle(err error) response.ApiResponseEnvelop {
 
 func (d DomainErrorTypeHandler) IsSupported(err error) bool {
 	domainError := &domainErrors.DomainError{}
+
 	return errors.As(err, &domainError)
 }
 

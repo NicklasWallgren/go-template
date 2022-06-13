@@ -15,7 +15,7 @@ type SwaggerRoutes struct {
 // Setup user routes
 func (s SwaggerRoutes) Setup() {
 	docs.SwaggerInfo.BasePath = ""
-	s.handler.Gin.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	s.handler.Gin.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler)) // nolint: wsl
 }
 
 // NewSwaggerRoutes creates new user controller

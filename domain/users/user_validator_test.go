@@ -79,7 +79,10 @@ func Test(t *testing.T) {
 }
 
 func assertValidationFieldError(t *testing.T, err error, field string, value any, message string) {
+	t.Helper()
+
 	assert.NotNil(t, err)
+
 	validationFieldError := &validation.ValidationFieldError{}
 	assert.ErrorAsf(t, err, &validationFieldError, "")
 

@@ -47,7 +47,7 @@ func (r repository[T]) WithTx(tx *gorm.DB) Repository[T] {
 	return cloned
 }
 
-func (r repository[T]) TransactWithDefaultRetry(operation func(tx *gorm.DB) error) error {
+func (r repository[T]) TransactWithDefaultRetry(operation func(tx *gorm.DB) error) error { // nolint: wsl
 	// TODO, pass repository instead of gorm.DB
 
 	return transaction.TransactWithDefaultRetry(r.DB, func(tx *gorm.DB) error {

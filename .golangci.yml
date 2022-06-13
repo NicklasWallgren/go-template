@@ -19,8 +19,8 @@ linters:
     - forbidigo
     - forcetypeassert
     - funlen
-    - gci
-    - gochecknoglobals
+#    - gci
+#    - gochecknoglobals
     - gochecknoinits
     - gocognit
     - goconst
@@ -31,7 +31,7 @@ linters:
     - gofumpt
     - goheader
     - goimports
-    - gomnd
+#    - gomnd
     - gomoddirectives
     - gomodguard
     - goprintffuncname
@@ -62,7 +62,7 @@ linters:
     - unconvert
     - unparam
     - varcheck
-    - varnamelen
+#    - varnamelen
     - wastedassign
     - whitespace
 #    - wrapcheck
@@ -90,6 +90,11 @@ linters:
     - godox # temporary
     - nonamedreturns
     - exhaustivestruct
+    - varnamelen
+    - nosprintfhostport
+    - gochecknoglobals
+    - gci
+    - gomnd
 
   presets:
     - bugs
@@ -120,5 +125,7 @@ issues:
 
 run:
   go: '1.18'
+  skip-dirs:
+    - adapters/driver/persistence/transaction
 
 

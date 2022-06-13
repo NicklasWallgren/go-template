@@ -37,8 +37,10 @@ func (u UserFactory) Many(numberOfEntities int) (users []entities.User, err erro
 		if err != nil {
 			return users, err
 		}
+
 		users = append(users, *user)
 	}
+
 	return
 }
 

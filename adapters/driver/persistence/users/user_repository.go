@@ -43,10 +43,11 @@ func (r userRepository) WithTx(tx *gorm.DB) UserRepository {
 	cloned := r
 	// Returns a copy of Repository with the TX applied
 	cloned.Repository = r.Repository.WithTx(tx)
+
 	return cloned
 }
 
-func (r userRepository) TransactWithDefaultRetry(ctx context.Context, operation func(tx *gorm.DB) error) error {
+func (r userRepository) TransactWithDefaultRetry(ctx context.Context, operation func(tx *gorm.DB) error) error { // nolint:wsl
 	// TODO, pass repository instead of gorm.DB?
 
 	return r.Repository.TransactWithDefaultRetry(func(tx *gorm.DB) error {

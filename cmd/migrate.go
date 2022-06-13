@@ -38,7 +38,7 @@ func (m MigrationCommand) Run(cmd *cobra.Command) cli.CommandRunner {
 		}
 
 		// TODO, handle unknown flag
-	}
+	} // nolint: wsl
 }
 
 func migrate(migrator database.Migrator) {

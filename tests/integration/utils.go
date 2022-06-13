@@ -29,6 +29,8 @@ func WithApplicationAndApplyMigration(opts ...fx.Option) fx.Option {
 }
 
 func WithDatabaseName(t *testing.T, testFuncName string) fx.Option {
+	t.Helper()
+
 	return fx.Decorate(func(appConfig *config.AppConfig) *config.AppConfig {
 		databaseName, err := utils.CreateDatabase(utils.ToDatabaseName(testFuncName), appConfig)
 
@@ -36,7 +38,7 @@ func WithDatabaseName(t *testing.T, testFuncName string) fx.Option {
 
 		t.Cleanup(func() {
 			// TODO, should we truncate instead? Add options to either truncate or drop, more performant to keep database
-			utils.DropDatabase(databaseName, appConfig) // nolint:errcheck
+			utils.DropDatabase(databaseName, appConfig) // nolint:errcheck, gosec
 		})
 
 		// Makes the new database name available in the application context
@@ -52,5 +54,6 @@ func Runner(tb testing.TB, test TestRunner, option fx.Option, initializers ...in
 	runner := tests.NewForTest(tb, option, fx.Invoke(initializers...), fx.Invoke(test))
 
 	require.NoError(tb, runner.Err())
+
 	return runner
 }

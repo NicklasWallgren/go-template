@@ -21,11 +21,13 @@ func (r RootHandler) Handle(handler RouteHandler) gin.HandlerFunc {
 		apiResponseEnvelop, err := handler(ctx)
 		if err != nil {
 			handleErrorResponse(ctx, err, r.ErrorHandler)
+
 			return
 		}
 
 		if apiResponseEnvelop.Response() != nil {
 			ctx.JSON(apiResponseEnvelop.Status(), apiResponseEnvelop.Response())
+
 			return
 		}
 

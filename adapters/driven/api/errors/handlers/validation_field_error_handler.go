@@ -27,6 +27,7 @@ func (a ValidationFieldErrorTypeHandler) Handle(err error) response.ApiResponseE
 
 func (a ValidationFieldErrorTypeHandler) IsSupported(err error) bool {
 	validationFieldError := &validation.ValidationFieldError{}
+
 	return errors.As(err, &validationFieldError)
 }
 

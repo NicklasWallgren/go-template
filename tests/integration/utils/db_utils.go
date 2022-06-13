@@ -17,8 +17,13 @@ func CreateDatabase(databaseName string, appConfig *config.AppConfig) (string, e
 		return "", err
 	}
 
-	_, err = db.Exec("DROP DATABASE IF EXISTS " + databaseName) // TODO, db dialect/driver specific
-	_, err = db.Exec("CREATE DATABASE " + databaseName)         // TODO, db dialect/driver specific
+	// TODO, db dialect/driver specific
+	if _, err = db.Exec("DROP DATABASE IF EXISTS " + databaseName); err != nil {
+		return "", err
+	}
+
+	_, err = db.Exec("CREATE DATABASE " + databaseName) // TODO, db dialect/driver specific
+
 	return databaseName, err
 }
 
@@ -29,7 +34,8 @@ func DropDatabase(databaseName string, appConfig *config.AppConfig) (string, err
 	}
 
 	_, err = db.Exec("DROP DATABASE IF EXISTS " + databaseName) // TODO, db dialect/driver specific
-	return databaseName, err
+
+	return databaseName, err // nolint:wsl
 }
 
 func SeedDatabase() {}

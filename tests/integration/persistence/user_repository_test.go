@@ -5,11 +5,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/NicklasWallgren/go-template/tests/fakers"
-
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/users"
 	"github.com/NicklasWallgren/go-template/tests/factories"
+	"github.com/NicklasWallgren/go-template/tests/fakers"
 	. "github.com/NicklasWallgren/go-template/tests/integration"
 	"github.com/NicklasWallgren/go-template/tests/integration/utils"
 	"github.com/stretchr/testify/assert"

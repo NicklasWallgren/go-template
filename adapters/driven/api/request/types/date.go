@@ -18,6 +18,7 @@ func (d *Date) UnmarshalJSON(b []byte) error {
 	}
 
 	*d = Date(time)
+
 	return nil
 }
 
@@ -31,5 +32,6 @@ func (d Date) ToTime() time.Time {
 
 func (d Date) Format(s string) string {
 	t := time.Time(d)
+
 	return t.Format(s)
 }

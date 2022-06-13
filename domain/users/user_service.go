@@ -101,7 +101,7 @@ func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) 
 		return nil, err
 	}
 
-	Publish(ctx, s.eventPublisherManager, events.CREATED, user)
+	Publish(ctx, s.eventPublisherManager, events.CREATED, user) // nolint: errcheck, gosec
 
 	return user, nil
 }
@@ -128,7 +128,7 @@ func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (pe
 		return nil
 	})
 
-	Publish(ctx, s.eventPublisherManager, events.UPDATED, persistedUser)
+	Publish(ctx, s.eventPublisherManager, events.UPDATED, persistedUser) // nolint:gosec, errcheck
 
 	return persistedUser, err
 }

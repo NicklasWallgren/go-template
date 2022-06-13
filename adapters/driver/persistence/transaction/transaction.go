@@ -12,18 +12,18 @@ import (
 )
 
 // Source https://github.com/mightyguava/autotx with added changes
-// nolint
+// nolint:wsl
 
 // DefaultMaxRetries configures the default number of max retries attempted by TransactWithRetry.
 var DefaultMaxRetries = 1
 
 // DefaultIsRetryable configures the default function for determining whether the error returned from the operation is
-// retryable. By default, applicable errors are retryable. A RollbackErr is never retryable..
+// retryable. By default, applicable errors are retryable. A RollbackError is never retryable..
 var DefaultIsRetryable = retryIfApplicable
 
 // Transact executes the operation inside a transaction, committing the transaction on completion. If the operation
 // returns an error or panic, the transaction will be rolled back, returning the original error or propagating the
-// original panic. If the rollback caused by an error also receives an error, a RollbackErr will be returned. If the
+// original panic. If the rollback caused by an error also receives an error, a RollbackError will be returned. If the
 // rollback caused by a panic returns an error, the error message and original panic merged and propagated as a new
 // panic.
 func Transact(db *gorm.DB, operation func(tx *gorm.DB) error) (err error) {
@@ -32,7 +32,7 @@ func Transact(db *gorm.DB, operation func(tx *gorm.DB) error) (err error) {
 
 // TransactWithOptions executes the operation inside a transaction, committing the transaction on completion. If the
 // operation returns an error or panic, the transaction will be rolled back, returning the original error or propagating
-// the original panic. If the rollback caused by an error also receives an error, a RollbackErr will be returned. If the
+// the original panic. If the rollback caused by an error also receives an error, a RollbackError will be returned. If the
 // rollback caused by a panic returns an error, the error message and original panic merged and propagated as a new
 // panic.
 //
@@ -51,7 +51,7 @@ func TransactWithOptions(db *gorm.DB, txOpts *sql.TxOptions, operation func(tx *
 		}
 		if err != nil {
 			if tx.Rollback(); tx.Error != nil {
-				err = &RollbackErr{
+				err = &RollbackError{
 					OriginalErr: err,
 					Err:         tx.Error,
 				}
@@ -67,7 +67,7 @@ func TransactWithOptions(db *gorm.DB, txOpts *sql.TxOptions, operation func(tx *
 
 // TransactWithRetry runs the operation using Transact, performing retries according to RetryOptions. If all retries
 // fail, the error from the last attempt will be returned. If a rollback fails, no further attempts will be made and the
-// RollbackErr will be returned.
+// RollbackError will be returned.
 //
 // Since the transaction operation may be executed multiple times, it is important that any mutations it applies
 // to application state (outside the database) be idempotent.
@@ -79,7 +79,7 @@ func TransactWithRetry(db *gorm.DB, retry RetryOptions, operation func(tx *gorm.
 
 // TransactWithDefaultRetry runs the operation using Transact, performing retries according to RetryOptions. If all retries
 // fail, the error from the last attempt will be returned. If a rollback fails, no further attempts will be made and the
-// RollbackErr will be returned.
+// RollbackError will be returned.
 //
 // Since the transaction operation may be executed multiple times, it is important that any mutations it applies
 // to application state (outside the database) be idempotent.
@@ -91,7 +91,7 @@ func TransactWithDefaultRetry(db *gorm.DB, operation func(tx *gorm.DB) error) er
 
 // TransactWithRetryAndOptions runs the operation using Transact, performing retries according to RetryOptions. If all
 // retries fail, the error from the last attempt will be returned. If a rollback fails, no further attempts will be made
-// and the RollbackErr will be returned.
+// and the RollbackError will be returned.
 //
 // Since the transaction operation may be executed multiple times, it is important that any mutations it applies to
 // application state (outside the database) be idempotent.
@@ -133,9 +133,9 @@ func TransactWithRetryAndOptions(db *gorm.DB, txOpts *sql.TxOptions, retry Retry
 	return err
 }
 
-// RollbackErr is the error returned if the transaction operation returned an error, and the rollback automatically
+// RollbackError is the error returned if the transaction operation returned an error, and the rollback automatically
 // attempted also returns an error.
-type RollbackErr struct {
+type RollbackError struct {
 	// The original error that the operation returned.
 	OriginalErr error
 	// The error returned by sql.Tx.Rollback()
@@ -143,17 +143,17 @@ type RollbackErr struct {
 }
 
 // Unwrap returns the OriginalErr.
-func (r *RollbackErr) Unwrap() error {
+func (r *RollbackError) Unwrap() error {
 	return r.OriginalErr
 }
 
 // Cause returns the OriginalErr.
-func (r *RollbackErr) Cause() error {
+func (r *RollbackError) Cause() error {
 	return r.Unwrap()
 }
 
-// Error returns a formatted error message containing both the OriginalErr and RollbackErr.
-func (r *RollbackErr) Error() string {
+// Error returns a formatted error message containing both the OriginalErr and RollbackError.
+func (r *RollbackError) Error() string {
 	return fmt.Sprintf("error rolling back failed transaction: %v, original transaction error: %v", r.Err, r.OriginalErr)
 }
 

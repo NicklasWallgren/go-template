@@ -71,6 +71,7 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (response.ApiResponseEnve
 
 	// TODO, inject converter
 	converter := converters.PageableResponseConverter[entities.User, userResponse.UserResponse]{}
+
 	return response.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
 }
 

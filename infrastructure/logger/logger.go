@@ -24,6 +24,7 @@ type GinLogger struct {
 // Write interface implementation for gin-framework
 func (l GinLogger) Write(p []byte) (n int, err error) {
 	l.Info(string(p)) // TODO
+
 	return len(p), nil
 }
 

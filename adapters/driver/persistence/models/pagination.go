@@ -16,7 +16,7 @@ type Pagination struct {
 }
 
 func NewPaginationWithDefaults() Pagination {
-	return Pagination{Page: 0, Limit: 100}
+	return Pagination{Page: 0, Limit: 100} // nolint:gomnd
 }
 
 func (p Pagination) PageNumber() int {

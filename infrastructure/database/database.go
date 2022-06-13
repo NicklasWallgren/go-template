@@ -2,10 +2,11 @@ package database
 
 import (
 	"errors"
+	"time"
+
 	gormTrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/gorm.io/gorm.v1"
 	mysqlGorm "gorm.io/driver/mysql"
 	postgresGorm "gorm.io/driver/postgres"
-	"time"
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
@@ -39,7 +40,7 @@ func connect(config *config.Database, logger logger.Logger) (db *gorm.DB, err er
 		db, err = gormTrace.Open(dialector, &gorm.Config{Logger: logger.GetGormLogger()}, gormTrace.WithServiceName("mysql"))
 
 		return err
-	}, retry.Delay(200*time.Millisecond), retry.Attempts(10))
+	}, retry.Delay(200*time.Millisecond), retry.Attempts(10)) // nolint:gomnd
 
 	return db, err
 }
@@ -53,5 +54,6 @@ func gormDialector(config *config.Database) (gorm.Dialector, error) {
 	case "postgres":
 		return postgresGorm.New(postgresGorm.Config{DSN: url}), nil
 	}
+
 	return nil, errors.New("unsupported db driver " + config.Driver)
 }

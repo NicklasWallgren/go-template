@@ -20,7 +20,7 @@ func (v ValidationGoPlaygroundErrorHandler) Handle(err error) response.ApiRespon
 	errors.As(err, &validationErrors)
 
 	fieldErrors := make([]response.ApiError, len(validationErrors))
-	for i, v := range validationErrors {
+	for i, v := range validationErrors { // nolint: wsl
 		message := fmt.Sprintf("Invalid value for field '%s'. Cause: '%s'. Value: '%s'", v.Field(), v.Tag(), v.Value())
 
 		fieldErrors[i] = response.NewApiFieldError(message, v.Field(), v.Value())

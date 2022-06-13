@@ -31,6 +31,7 @@ func NewHttpRequest(t *testing.T, method string, url string, body io.Reader) *ht
 	}
 
 	request.Header.Add("Accept", "application/json")
+
 	return request
 }
 
@@ -59,7 +60,7 @@ func DoHttpRequestWithResponse[T any](t *testing.T, httpHandler http.Handler, re
 
 	decoder := json.NewDecoder(result.Body)
 	err := decoder.Decode(&response)
-	if err != nil {
+	if err != nil { // nolint: wsl
 		t.Errorf("unable to successfully invoke http request %v", err)
 		t.FailNow()
 	}
@@ -75,6 +76,7 @@ func EncodeToJSON(t *testing.T, subject any) io.Reader {
 	t.Helper()
 
 	var buf bytes.Buffer
+
 	err := json.NewEncoder(&buf).Encode(subject)
 	if err != nil {
 		t.Errorf("unable to encode into JSON %v", err)

@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+
 	"github.com/NicklasWallgren/go-template/config"
 )
 
@@ -12,6 +13,7 @@ func DSN(config *config.Database) string {
 	case "postgres":
 		return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&lock_timeout=5000ms&TimeZone=UTC", config.User, config.Password, config.Host, config.Port, config.Name)
 	}
+
 	return ""
 }
 

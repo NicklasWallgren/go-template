@@ -2,6 +2,7 @@ package drivers
 
 import (
 	"errors"
+
 	"github.com/jackc/pgconn"
 
 	dbErrors "github.com/NicklasWallgren/go-template/adapters/driver/persistence/errors"

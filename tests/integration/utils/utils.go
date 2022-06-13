@@ -43,6 +43,7 @@ func Filename() (string, error) {
 	if !ok {
 		return "", errors.New("unable to get the current filename")
 	}
+
 	return filename, nil
 }
 
@@ -51,5 +52,6 @@ func Dirname() (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return filepath.Dir(filename), nil
 }

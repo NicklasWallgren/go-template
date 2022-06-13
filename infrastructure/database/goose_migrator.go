@@ -49,8 +49,7 @@ func (m GooseMigrator) Down() error {
 
 	// down
 	// downTo
-
-}
+} // nolint:wsl
 
 func (m GooseMigrator) Create(name string) error {
 	db, err := m.db.DB.DB()
