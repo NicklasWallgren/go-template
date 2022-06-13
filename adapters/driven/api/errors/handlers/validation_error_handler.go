@@ -18,9 +18,9 @@ func (a ValidationErrorTypeHandler) Handle(err error) response.ApiResponseEnvelo
 	validationError := &validation.ValidationError{}
 	errors.As(err, &validationError)
 
-	errors := []response.ApiErrorConstraint{response.NewApiError(validationError.Message)}
+	errors := []response.ApiError{response.NewApiError(validationError.Message)}
 
-	return response.NewApiResponseEnvelop(http.StatusBadRequest, response.WithPayload(response.NewApiErrorResponse(errors)))
+	return response.New(http.StatusBadRequest, response.WithResponse(response.NewApiErrorResponse(errors)))
 }
 
 func (a ValidationErrorTypeHandler) IsSupported(err error) bool {

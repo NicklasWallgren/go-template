@@ -18,11 +18,11 @@ func (d DomainErrorTypeHandler) Handle(err error) response.ApiResponseEnvelop {
 	domainError := &domainErrors.DomainError{}
 	errors.As(err, &domainError)
 
-	errors := []response.ApiErrorConstraint{
+	errors := []response.ApiError{
 		response.NewApiError(domainError.Message),
 	}
 
-	return response.NewApiResponseEnvelop(http.StatusBadRequest, response.WithPayload(response.NewApiErrorResponse(errors)))
+	return response.New(http.StatusBadRequest, response.WithResponse(response.NewApiErrorResponse(errors)))
 }
 
 func (d DomainErrorTypeHandler) IsSupported(err error) bool {
