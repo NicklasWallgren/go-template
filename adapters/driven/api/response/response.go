@@ -1,33 +1,35 @@
 package response
 
+type ApiResponse interface{}
+
 type ApiResponseEnvelop interface {
 	Status() int
-	Payload() ApiResponse
+	Response() ApiResponse
 }
 
-type ResponseEnvelop struct {
-	status  int
-	payload ApiResponse
+type responseEnvelop struct {
+	status   int
+	response ApiResponse
 }
 
-func (r ResponseEnvelop) Status() int {
+func (r responseEnvelop) Status() int {
 	return r.status
 }
 
-func (r ResponseEnvelop) Payload() ApiResponse {
-	return r.payload
+func (r responseEnvelop) Response() ApiResponse {
+	return r.response
 }
 
-type ResponseEnvelopOption func(envelop *ResponseEnvelop)
+type ResponseOption func(envelop *responseEnvelop)
 
-func WithPayload(payload ApiResponse) ResponseEnvelopOption {
-	return func(responseEnvelop *ResponseEnvelop) {
-		responseEnvelop.payload = payload
+func WithResponse(response ApiResponse) ResponseOption {
+	return func(responseEnvelop *responseEnvelop) {
+		responseEnvelop.response = response
 	}
 }
 
-func NewApiResponseEnvelop(status int, options ...ResponseEnvelopOption) ApiResponseEnvelop {
-	responseEnvelop := &ResponseEnvelop{status: status}
+func New(status int, options ...ResponseOption) ApiResponseEnvelop {
+	responseEnvelop := &responseEnvelop{status: status}
 
 	for _, option := range options {
 		option(responseEnvelop)
@@ -36,14 +38,8 @@ func NewApiResponseEnvelop(status int, options ...ResponseEnvelopOption) ApiResp
 	return responseEnvelop
 }
 
-func NewApiResponseWithPayload(status int, payload ApiResponse) ApiResponseEnvelop {
-	return NewApiResponseEnvelop(status, WithPayload(payload))
-}
-
-type ApiResponse interface{}
-
-type ApiPaginatedResponse interface {
-	*ApiResponse
+func NewWithResponse(status int, payload ApiResponse) ApiResponseEnvelop {
+	return New(status, WithResponse(payload))
 }
 
 type PageableResponse[T any] struct {

@@ -24,8 +24,8 @@ func (r RootHandler) Handle(handler RouteHandler) gin.HandlerFunc {
 			return
 		}
 
-		if apiResponseEnvelop.Payload() != nil {
-			ctx.JSON(apiResponseEnvelop.Status(), apiResponseEnvelop.Payload())
+		if apiResponseEnvelop.Response() != nil {
+			ctx.JSON(apiResponseEnvelop.Status(), apiResponseEnvelop.Response())
 			return
 		}
 
@@ -38,5 +38,5 @@ func handleErrorResponse(c *gin.Context, err error, errorHandler handlers.ErrorR
 
 	// TODO, should we use c.AbortWithStatus if 4xx,5xx?
 
-	c.JSON(apiResponse.Status(), apiResponse.Payload())
+	c.JSON(apiResponse.Status(), apiResponse.Response())
 }
