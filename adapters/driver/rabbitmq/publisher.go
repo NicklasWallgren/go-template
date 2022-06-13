@@ -56,20 +56,22 @@ func (r *RabbitMQPublisher) Publish(ctx context.Context, data any, routingKey st
 
 	r.logger.Info("Publishing to rabbitmq")
 
-	// TODO, the exchange isn't created by the publisher, see https://github.com/wagslane/go-rabbitmq/issues/43
-
 	return r.rabbitmqPublisher.Publish(
 		dataByteArray,
 		[]string{routingKey},
 		rabbitmq.WithPublishOptionsContentType("application/json"),
 		// rabbitmq.WithPublishOptionsMandatory,
 		rabbitmq.WithPublishOptionsPersistentDelivery,
-		rabbitmq.WithPublishOptionsExchange("events"),
 	)
 }
 
 func (r *RabbitMQPublisher) setup() (err error) {
-	r.rabbitmqPublisher, err = rabbitmq.NewPublisher(r.config.ToDsn(), rabbitmq.Config{}, rabbitmq.WithPublisherOptionsLogging)
+	r.rabbitmqPublisher, err = rabbitmq.NewPublisher(r.config.ToDsn(), rabbitmq.Config{},
+		rabbitmq.WithPublisherOptionsLogging,
+		rabbitmq.WithPublisherOptionsExchangeName("events"),
+		rabbitmq.WithPublisherOptionsExchangeKind("topic"),
+		rabbitmq.WithPublisherOptionsExchangeDurable,
+	)
 	if err != nil {
 		return err
 	}

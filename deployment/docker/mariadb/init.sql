@@ -1,0 +1,1 @@
+CREATE DATABASE IF NOT EXISTS go_template_test; GRANT ALL PRIVILEGES ON go_template_test.* TO 'root'@'%';

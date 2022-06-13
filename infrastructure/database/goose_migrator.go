@@ -21,7 +21,7 @@ var ErrMigrationUp = errors.New("could not apply the available migrations")
 func NewGooseMigrator(db Database, config *config.AppConfig) (Migrator, error) {
 	goose.SetBaseFS(config.Assets.EmbedMigrations)
 
-	if err := goose.SetDialect(config.Database.Dialect); err != nil {
+	if err := goose.SetDialect(config.Database.Driver); err != nil {
 		return nil, err
 	}
 

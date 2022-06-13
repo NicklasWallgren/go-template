@@ -19,7 +19,7 @@ type Env struct {
 	DBPort                string `mapstructure:"DB_PORT"`
 	DBName                string `mapstructure:"DB_NAME"`
 	DBMigrationsDirectory string `mapstructure:"DB_MIGRATION_DIR"`
-	DBDialect             string `mapstructure:"DB_DIALECT"` // TODO, rename to DBDriver?
+	DBDriver              string `mapstructure:"DB_DRIVER"`
 	JWTSecret             string `mapstructure:"JWT_SECRET"`
 	RabbitMQUser          string `mapstructure:"RABBITMQ_USER"`
 	RabbitMQPassword      string `mapstructure:"RABBITMQ_PASSWORD"`

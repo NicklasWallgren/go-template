@@ -18,11 +18,11 @@ func (a ValidationFieldErrorTypeHandler) Handle(err error) response.ApiResponseE
 	validationFieldError := &validation.ValidationFieldError{}
 	errors.As(err, &validationFieldError)
 
-	errors := []response.ApiErrorConstraint{
+	errors := []response.ApiError{
 		response.NewApiFieldError(validationFieldError.Message, validationFieldError.Field, validationFieldError.Value),
 	}
 
-	return response.NewApiResponseEnvelop(http.StatusBadRequest, response.WithPayload(response.NewApiErrorResponse(errors)))
+	return response.New(http.StatusBadRequest, response.WithResponse(response.NewApiErrorResponse(errors)))
 }
 
 func (a ValidationFieldErrorTypeHandler) IsSupported(err error) bool {

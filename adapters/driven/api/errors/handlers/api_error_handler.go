@@ -16,11 +16,11 @@ func NewApiErrorTypeHandler() ErrorTypeResponseHandler {
 func (a ApiErrorTypeHandler) Handle(err error) response.ApiResponseEnvelop {
 	actualError, _ := (err).(*errorTypes.ApiError)
 
-	errors := []response.ApiErrorConstraint{
+	errors := []response.ApiError{
 		response.NewApiError(actualError.Message),
 	}
 
-	return response.NewApiResponseEnvelop(actualError.HttpStatus, response.WithPayload(response.NewApiErrorResponse(errors)))
+	return response.New(actualError.HttpStatus, response.WithResponse(response.NewApiErrorResponse(errors)))
 }
 
 func (a ApiErrorTypeHandler) IsSupported(err error) bool {
