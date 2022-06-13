@@ -71,7 +71,7 @@ func (r userRepository) FindOneByEmailWithExclusiveLock(ctx context.Context, ema
 		Where("email = ?", email).
 		Clauses(clause.Locking{Strength: "UPDATE"}).
 		Find(&user).Error; err != nil {
-		return nil, err
+		return nil, r.WrapError(err)
 	}
 
 	return user, nil

@@ -25,6 +25,7 @@ type Repository[T common.EntityConstraint] interface {
 	DeleteByID(ctx context.Context, id uint) error
 	Count(ctx context.Context) (int64, error)
 	Gorm() *gorm.DB
+	WrapError(err error) error
 }
 
 type repository[T common.EntityConstraint] struct {
@@ -50,8 +51,6 @@ func (r repository[T]) WithTx(tx *gorm.DB) Repository[T] {
 }
 
 func (r repository[T]) TransactWithDefaultRetry(operation func(tx *gorm.DB) error) error { // nolint: wsl
-	// TODO, pass repository instead of gorm.DB
-
 	return transaction.TransactWithDefaultRetry(r.DB, func(tx *gorm.DB) error {
 		return operation(tx)
 	})
@@ -59,7 +58,7 @@ func (r repository[T]) TransactWithDefaultRetry(operation func(tx *gorm.DB) erro
 
 func (r repository[T]) FindOneByID(ctx context.Context, id uint) (entity *T, err error) {
 	if err := r.DB.WithContext(ctx).First(&entity, id).Error; err != nil {
-		return nil, r.wrapIntoDBError(err)
+		return nil, r.WrapError(err)
 	}
 
 	return entity, nil
@@ -67,7 +66,7 @@ func (r repository[T]) FindOneByID(ctx context.Context, id uint) (entity *T, err
 
 func (r repository[T]) FindOneByIDForUpdate(ctx context.Context, id uint) (entity *T, err error) {
 	if err := r.DB.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&entity, id).Error; err != nil {
-		return nil, r.wrapIntoDBError(err)
+		return nil, r.WrapError(err)
 	}
 
 	return entity, nil
@@ -78,12 +77,12 @@ func (r repository[T]) FindAll(ctx context.Context, pagination *models.Paginatio
 
 	content := &[]T{}
 	if tx.Find(content).Error != nil {
-		return page, r.wrapIntoDBError(err)
+		return page, r.WrapError(err)
 	}
 
 	newPage, err := models.NewPageWith[T](*content, pagination, func() (int, error) { return r.totalCountSupplier(ctx) })
 	if err != nil {
-		return page, r.wrapIntoDBError(err)
+		return page, r.WrapError(err)
 	}
 
 	return newPage, nil
@@ -91,7 +90,7 @@ func (r repository[T]) FindAll(ctx context.Context, pagination *models.Paginatio
 
 func (r repository[T]) Create(ctx context.Context, entity *T) (*T, error) {
 	if err := r.DB.WithContext(ctx).Create(entity).Error; err != nil {
-		return nil, r.wrapIntoDBError(err)
+		return nil, r.WrapError(err)
 	}
 
 	return entity, nil
@@ -99,7 +98,7 @@ func (r repository[T]) Create(ctx context.Context, entity *T) (*T, error) {
 
 func (r repository[T]) Save(ctx context.Context, entity *T) (*T, error) {
 	if err := r.DB.WithContext(ctx).Save(entity).Error; err != nil {
-		return nil, r.wrapIntoDBError(err)
+		return nil, r.WrapError(err)
 	}
 
 	return entity, nil
@@ -117,7 +116,7 @@ func (r repository[T]) DeleteByID(ctx context.Context, id uint) error {
 func (r repository[T]) Count(ctx context.Context) (int64, error) {
 	var totalCount int64
 	if err := r.DB.WithContext(ctx).Model(r.entity).Count(&totalCount).Error; err != nil {
-		return 0, r.wrapIntoDBError(err)
+		return 0, r.WrapError(err)
 	}
 
 	return totalCount, nil
@@ -127,7 +126,7 @@ func (r repository[T]) Gorm() *gorm.DB {
 	return r.DB
 }
 
-func (r *repository[T]) wrapIntoDBError(err error) error {
+func (r repository[T]) WrapError(err error) error {
 	nillableDriver := drivers.GetDriverOrNil(r.config.Database.Driver)
 	if nillableDriver == nil {
 		return err

@@ -87,4 +87,17 @@ func Test(t *testing.T) {
 
 		Runner(t, invoke, WithPersistenceAndApplyMigration(), TruncateDatabase)
 	})
+
+	t.Run("GivenUser_WhenFindOneByEmailWithExclusiveLock_ThenUserExists", func(t *testing.T) {
+		invoke := func(uf *factories.UserFactory, repository users.UserRepository) {
+			user := utils.ValueFromSupplierOrFail(t, uf.Any)
+
+			foundUser, err := repository.FindOneByEmailWithExclusiveLock(context.TODO(), user.Email)
+			utils.AssertNilOrFail(t, err)
+
+			assert.Equal(t, user.ID, foundUser.ID)
+		}
+
+		Runner(t, invoke, WithPersistenceAndApplyMigration(), TruncateDatabase)
+	})
 }
