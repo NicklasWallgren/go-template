@@ -19,7 +19,7 @@ type Repository[T common.EntityConstraint] interface {
 	TransactWithDefaultRetry(operation func(tx *gorm.DB) error) error
 	FindOneByID(ctx context.Context, id uint) (entity *T, err error)
 	FindOneByIDForUpdate(ctx context.Context, id uint) (entity *T, err error)
-	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[T], err error)
+	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[*T], err error)
 	Create(ctx context.Context, entity *T) (*T, error)
 	Save(ctx context.Context, entity *T) (*T, error)
 	DeleteByID(ctx context.Context, id uint) error
@@ -72,15 +72,15 @@ func (r repository[T]) FindOneByIDForUpdate(ctx context.Context, id uint) (entit
 	return entity, nil
 }
 
-func (r repository[T]) FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[T], err error) {
+func (r repository[T]) FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[*T], err error) {
 	tx := r.DB.WithContext(ctx).Offset(pagination.Offset()).Limit(pagination.Limit).Order(pagination.Order())
 
-	content := &[]T{}
+	content := &[]*T{}
 	if tx.Find(content).Error != nil {
 		return page, r.WrapError(err)
 	}
 
-	newPage, err := models.NewPageWith[T](*content, pagination, func() (int, error) { return r.totalCountSupplier(ctx) })
+	newPage, err := models.NewPageWith[*T](*content, pagination, func() (int, error) { return r.totalCountSupplier(ctx) })
 	if err != nil {
 		return page, r.WrapError(err)
 	}

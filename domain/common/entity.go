@@ -6,7 +6,7 @@ type EntityConstraint interface {
 	Id() PrimaryID
 }
 
-// type EntityConstraint interface { // TODO, not available until GO 1.19
+// type EntityConstraint interface { // TODO, not available until GO 1.19+
 // 	~struct{ Entity }
 // }
 

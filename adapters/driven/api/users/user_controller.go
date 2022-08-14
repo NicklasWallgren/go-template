@@ -52,9 +52,7 @@ func (u UserController) GetOneUserByID(ctx *gin.Context) (response.APIResponseEn
 		return nil, apiError.NewApiError(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	// TODO, pass user instead of copy of user?
-
-	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(*user)), nil
+	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(user)), nil
 }
 
 // FindAllUsers godoc
@@ -77,7 +75,7 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (response.APIResponseEnve
 	}
 
 	// TODO, inject converter
-	converter := converters.PageableResponseConverter[entities.User, userResponse.UserResponse]{}
+	converter := converters.PageableResponseConverter[*entities.User, userResponse.UserResponse]{}
 
 	return response.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
 }
@@ -94,9 +92,7 @@ func (u UserController) SaveUser(ctx *gin.Context) (response.APIResponseEnvelop,
 		return nil, apiError.NewApiError(apiError.WithError(err))
 	}
 
-	// TODO, do not pass copy of persisted user?
-
-	return response.NewWithResponse(http.StatusCreated, u.apiConverter.ResponseOf(*persistedUser)), nil
+	return response.NewWithResponse(http.StatusCreated, u.apiConverter.ResponseOf(persistedUser)), nil
 }
 
 // UpdateUser updates user.
@@ -118,7 +114,7 @@ func (u UserController) UpdateUser(ctx *gin.Context) (response.APIResponseEnvelo
 		return nil, apiError.NewApiError(apiError.WithError(err))
 	}
 
-	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(*persistedUser)), nil
+	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(persistedUser)), nil
 }
 
 // DeleteUserByID deletes user.

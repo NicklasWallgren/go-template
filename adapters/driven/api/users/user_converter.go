@@ -10,7 +10,7 @@ import (
 )
 
 type UserApiConverter interface {
-	converters.ApiResponseConverter[entities.User, response.UserResponse]
+	converters.ApiResponseConverter[*entities.User, response.UserResponse]
 	converters.APIRequestCreateConverter[CreateUserRequest, entities.User]
 	converters.APIRequestUpdateConverter[UpdateUserRequest, entities.User]
 }
@@ -23,7 +23,7 @@ func NewUserAPIConverter(userService domain.UserService) UserApiConverter {
 	return &userAPIConverter{userService}
 }
 
-func (u userAPIConverter) ResponseOf(user entities.User) response.UserResponse {
+func (u userAPIConverter) ResponseOf(user *entities.User) response.UserResponse {
 	return response.UserResponse{Name: user.Name, Email: user.Name}
 }
 
