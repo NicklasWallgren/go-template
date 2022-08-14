@@ -44,13 +44,15 @@ func NewUserController(
 func (u UserController) GetOneUserByID(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
-		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
+		return nil, apiError.NewApiError(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	user, err := u.service.FindOneUserByID(ctx.Request.Context(), uint(id))
 	if err != nil {
-		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
+		return nil, apiError.NewApiError(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
+
+	// TODO, pass user instead of copy of user?
 
 	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(*user)), nil
 }
@@ -61,7 +63,7 @@ func (u UserController) GetOneUserByID(ctx *gin.Context) (response.APIResponseEn
 // @Success		200 {object} response.PageableResponse[userResponse.UserResponse]
 // @Failure		400 {object} response.APIError
 // @Router 		/api/users [get]
-// TODO, support for generics https://github.com/swaggo/swag/issues/1170
+// TODO, proper support for import alias https://github.com/swaggo/swag/issues/1291
 func (u UserController) FindAllUsers(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	pagination, err := request.Into(ctx, models.NewPaginationWithDefaults())
 	if err != nil {
@@ -84,13 +86,15 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (response.APIResponseEnve
 func (u UserController) SaveUser(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, CreateUserRequest{})
 	if err != nil {
-		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
+		return nil, apiError.NewApiError(apiError.WithError(err))
 	}
 
 	persistedUser, err := u.service.CreateUser(ctx.Request.Context(), u.apiConverter.EntityOf(request))
 	if err != nil {
-		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
+		return nil, apiError.NewApiError(apiError.WithError(err))
 	}
+
+	// TODO, do not pass copy of persisted user?
 
 	return response.NewWithResponse(http.StatusCreated, u.apiConverter.ResponseOf(*persistedUser)), nil
 }
@@ -104,14 +108,14 @@ func (u UserController) UpdateUser(ctx *gin.Context) (response.APIResponseEnvelo
 
 	toBeUpdatedUser, err := u.apiConverter.UpdatedEntityOf(ctx.Request.Context(), request)
 	if err != nil {
-		return nil, apiError.NewApiErrorWith(
+		return nil, apiError.NewApiError(
 			apiError.WithStatusAndMessageAndError(
 				http.StatusInternalServerError, "unable to update user, please try again", err))
 	}
 
 	persistedUser, err := u.service.UpdateUser(ctx.Request.Context(), toBeUpdatedUser)
 	if err != nil {
-		return nil, apiError.NewApiErrorWith(apiError.WithError(err))
+		return nil, apiError.NewApiError(apiError.WithError(err))
 	}
 
 	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(*persistedUser)), nil
@@ -121,11 +125,11 @@ func (u UserController) UpdateUser(ctx *gin.Context) (response.APIResponseEnvelo
 func (u UserController) DeleteUserByID(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
-		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
+		return nil, apiError.NewApiError(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	if err := u.service.DeleteUserByID(ctx.Request.Context(), uint(id)); err != nil {
-		return nil, apiError.NewApiErrorWith(apiError.WithStatusAndError(http.StatusBadRequest, err))
+		return nil, apiError.NewApiError(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	return response.New(http.StatusNoContent), nil

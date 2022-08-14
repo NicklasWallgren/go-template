@@ -21,7 +21,7 @@ type PostgresDriver struct{}
 func (m PostgresDriver) ConvertError(driverError error) error {
 	postgresError := &pgconn.PgError{}
 	if !errors.As(driverError, &postgresError) {
-		return dbErrors.NewDBError(dbErrors.WithRetryableAndError(false, driverError))
+		return dbErrors.NewDBError(dbErrors.WithError(driverError))
 	}
 
 	switch postgresError.Code {
@@ -32,5 +32,5 @@ func (m PostgresDriver) ConvertError(driverError error) error {
 		return dbErrors.NewDBError(dbErrors.WithRetryableAndTypeAndError(true, dbErrors.LockWaitTimeout, postgresError))
 	}
 
-	return dbErrors.NewDBError(dbErrors.WithRetryableAndError(false, postgresError))
+	return dbErrors.NewDBError(dbErrors.WithError(postgresError))
 }

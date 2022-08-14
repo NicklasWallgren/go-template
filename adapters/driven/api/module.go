@@ -4,7 +4,7 @@ import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/common"
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/errors/handlers"
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/health"
-	"github.com/NicklasWallgren/go-template/adapters/driven/api/middlewares"
+	routeMiddlewares "github.com/NicklasWallgren/go-template/adapters/driven/api/middlewares"
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/routes"
 	routeHandlers "github.com/NicklasWallgren/go-template/adapters/driven/api/routes/handlers"
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/users"
@@ -12,25 +12,25 @@ import (
 	"go.uber.org/fx"
 )
 
-var routerModule = fx.Options(
+var routers = fx.Options(
 	fx.Provide(users.NewUserRoutes),
 	fx.Provide(health.NewHealthRoutes),
 	fx.Provide(routes.NewSwaggerRoutes),
 	fx.Provide(routes.NewRoutes),
 )
 
-var controllersModule = fx.Options(
+var controllers = fx.Options(
 	fx.Provide(users.NewUserController),
 	fx.Provide(health.NewHealthController),
 )
 
-var middlewareModule = fx.Options(
-	fx.Provide(middlewares.NewCorsMiddleware),
-	fx.Provide(middlewares.NewObservabilityMiddleware),
-	fx.Provide(middlewares.NewMiddlewares),
+var middlewares = fx.Options(
+	fx.Provide(routeMiddlewares.NewCorsMiddleware),
+	fx.Provide(routeMiddlewares.NewObservabilityMiddleware),
+	fx.Provide(routeMiddlewares.NewMiddlewares),
 )
 
-var converterModule = fx.Options(
+var apiConverters = fx.Options(
 	fx.Provide(users.NewUserAPIConverter),
 	fx.Provide(health.NewHealthAPIConverter),
 )
@@ -43,26 +43,26 @@ var errorTypeHandlers = fx.Provide(
 	fx.Annotate(handlers.NewApiErrorTypeHandler, fx.ResultTags(`group:"error_type_handlers"`)),
 )
 
-var errorResponseModule = fx.Provide(
+var errorResponseManager = fx.Provide(
 	fx.Annotate(handlers.NewErrorResponseManager, fx.ParamTags(`group:"error_type_handlers"`)),
 )
 
 // A copy of the validator so we can reuse it even if gin.DisableBindValidation() has been called.
 var validator binding.StructValidator = binding.Validator
 
-var validatorModule = fx.Options(
+var validators = fx.Options(
 	fx.Provide(func() binding.StructValidator { return validator }),
 )
 
 // Module exports dependency.
 var Module = fx.Options(
 	errorTypeHandlers,
-	errorResponseModule,
+	errorResponseManager,
 	fx.Provide(common.NewRequestHandler),
 	fx.Provide(routeHandlers.NewRootHandler),
-	routerModule,
-	controllersModule,
-	middlewareModule,
-	converterModule,
-	validatorModule,
+	routers,
+	controllers,
+	middlewares,
+	apiConverters,
+	validators,
 )

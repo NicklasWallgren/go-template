@@ -52,7 +52,12 @@ type PageableResponse[T any] struct {
 }
 
 func NewPageableResponse[T any](
-	content []T, empty bool, number int, numberOfElements int, totalElements int, totalPages int,
+	content []T,
+	empty bool,
+	number int,
+	numberOfElements int,
+	totalElements int,
+	totalPages int,
 ) *PageableResponse[T] {
 	return &PageableResponse[T]{
 		Content:          content,

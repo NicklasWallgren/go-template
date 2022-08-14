@@ -19,7 +19,7 @@ type errorResponseManager struct {
 }
 
 func NewErrorResponseManager(errorTypeHandlers []ErrorTypeResponseHandler) ErrorResponseManager {
-	// Sort the error handlers based on priority
+	// Sort the error handlers by priority
 	sortedTypeHandlers := stream.Sorted(stream.OfSlice(errorTypeHandlers), func(h1, h2 ErrorTypeResponseHandler) int {
 		return order.Natural(h1.Priority(), h2.Priority())
 	}).ToSlice()

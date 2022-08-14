@@ -14,7 +14,8 @@ type ApiResponseConverter[T common.EntityConstraint, R response.APIResponse] int
 type PageableResponseConverter[T common.EntityConstraint, R response.APIResponse] struct{}
 
 func (p PageableResponseConverter[T, R]) ResponseOf(
-	page *models.Page[T], converter ApiResponseConverter[T, R],
+	page *models.Page[T],
+	converter ApiResponseConverter[T, R],
 ) *response.PageableResponse[R] {
 	contentSlice := stream.Map(stream.OfSlice(page.Content), converter.ResponseOf).ToSlice()
 

@@ -5,9 +5,9 @@ type DomainError struct {
 	err     error
 }
 
-// TODO, pass options?
-
 func NewDomainError(message string, err error) *DomainError {
+	// TODO, use option withers instead of parameters?
+
 	return &DomainError{Message: message, err: err}
 }
 
