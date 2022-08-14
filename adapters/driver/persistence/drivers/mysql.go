@@ -34,5 +34,5 @@ func (m MySQLDriver) ConvertError(driverError error) error {
 			dbErrors.WithRetryableAndTypeAndError(true, dbErrors.LockWaitTimeout, mysqlError))
 	}
 
-	return dbErrors.NewDBError(dbErrors.WithRetryableAndError(false, mysqlError))
+	return dbErrors.NewDBError(dbErrors.WithError(mysqlError))
 }

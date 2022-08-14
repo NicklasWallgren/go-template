@@ -1,16 +1,51 @@
 definitions:
-  converters.PageableResponseConverter:
+  response.APIError:
+    properties:
+      field:
+        example: id
+        type: string
+      message:
+        example: invalid id
+        type: string
+      value: {}
+    type: object
+  response.PageableResponse-response_UserResponse:
+    properties:
+      content:
+        items:
+          $ref: '#/definitions/response.UserResponse'
+        type: array
+      empty:
+        type: boolean
+      number:
+        type: integer
+      numberOfElements:
+        type: integer
+      totalElements:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  response.UserResponse:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
     type: object
 info:
   contact: {}
 paths:
   /api/users:
     get:
-      description: Retrieve users endpoint
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/converters.PageableResponseConverter'
-      summary: Retrieve users
+            $ref: '#/definitions/response.PageableResponse-response_UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.APIError'
+      summary: Retrieve users paginated
 swagger: "2.0"

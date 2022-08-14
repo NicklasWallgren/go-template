@@ -11,7 +11,7 @@ func NewAPIErrorResponse(errors []APIError) APIResponse {
 type APIError struct {
 	Message string `json:"message" example:"invalid id"`
 	Field   string `json:"field,omitempty" example:"id"`
-	Value   any    `json:"value,omitempty" example:"1"`
+	Value   any    `json:"value,omitempty"`
 }
 
 func NewAPIError(message string) APIError {

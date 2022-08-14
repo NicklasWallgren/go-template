@@ -23,15 +23,6 @@ func NewUserAPIConverter(userService domain.UserService) UserApiConverter {
 	return &userAPIConverter{userService}
 }
 
-// To ensure that UserApiConverter implements the ApiResponseConverter interface.
-var _ converters.ApiResponseConverter[entities.User, response.UserResponse] = (*userAPIConverter)(nil)
-
-// To ensure that UserApiConverter implements the APIRequestCreateConverter interface.
-var _ converters.APIRequestCreateConverter[CreateUserRequest, entities.User] = (*userAPIConverter)(nil)
-
-// To ensure that UserApiConverter implements the APIRequestUpdateConverter interface.
-var _ converters.APIRequestUpdateConverter[UpdateUserRequest, entities.User] = (*userAPIConverter)(nil)
-
 func (u userAPIConverter) ResponseOf(user entities.User) response.UserResponse {
 	return response.UserResponse{Name: user.Name, Email: user.Name}
 }

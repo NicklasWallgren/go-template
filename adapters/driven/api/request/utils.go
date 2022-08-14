@@ -21,11 +21,11 @@ func GetParamInt(c *gin.Context, name string) (int, error) {
 
 func Into[T any](c *gin.Context, request T) (T, error) {
 	if err := c.ShouldBindUri(&request); err != nil {
-		return request, errorTypes.NewApiErrorWith(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
+		return request, errorTypes.NewApiError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	if err := c.ShouldBindQuery(&request); err != nil {
-		return request, errorTypes.NewApiErrorWith(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
+		return request, errorTypes.NewApiError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	if c.Request.ContentLength <= 0 {
@@ -33,13 +33,13 @@ func Into[T any](c *gin.Context, request T) (T, error) {
 	}
 
 	if err := c.ShouldBindJSON(&request); err != nil {
-		return request, errorTypes.NewApiErrorWith(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
+		return request, errorTypes.NewApiError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	return request, nil
 }
 
-func IntoWithDefault[T any](c *gin.Context, request T, decorator func(request *T) *T) (*T, error) {
+func IntoWithDecorator[T any](c *gin.Context, request T, decorator func(request *T) *T) (*T, error) {
 	request, err := Into[T](c, request)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func IntoAndValidate[T any](c *gin.Context, validator binding.StructValidator, r
 	}
 
 	if err := validator.ValidateStruct(&request); err != nil {
-		return nil, errorTypes.NewApiErrorWith(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
+		return nil, errorTypes.NewApiError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	return &request, nil

@@ -18,13 +18,18 @@ const docTemplate = `{
     "paths": {
         "/api/users": {
             "get": {
-                "description": "Retrieve users endpoint",
-                "summary": "Retrieve users",
+                "summary": "Retrieve users paginated",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/converters.PageableResponseConverter"
+                            "$ref": "#/definitions/response.PageableResponse-response_UserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.APIError"
                         }
                     }
                 }
@@ -32,8 +37,56 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "converters.PageableResponseConverter": {
-            "type": "object"
+        "response.APIError": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "type": "string",
+                    "example": "id"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "invalid id"
+                },
+                "value": {}
+            }
+        },
+        "response.PageableResponse-response_UserResponse": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.UserResponse"
+                    }
+                },
+                "empty": {
+                    "type": "boolean"
+                },
+                "number": {
+                    "type": "integer"
+                },
+                "numberOfElements": {
+                    "type": "integer"
+                },
+                "totalElements": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.UserResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`

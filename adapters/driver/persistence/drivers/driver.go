@@ -5,6 +5,7 @@ type Driver interface {
 }
 
 // TODO, support other drivers.
+// TODO, inject supported drivers?
 var drivers = map[string]Driver{
 	"mysql":    &MySQLDriver{},
 	"postgres": &PostgresDriver{},
