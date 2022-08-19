@@ -1,7 +1,6 @@
 package config
 
 import (
-	"embed"
 	"io/fs"
 )
 
@@ -10,6 +9,6 @@ type Assets struct {
 	EmbedMigrations fs.FS
 }
 
-func NewAssets(logo string, embedMigrations embed.FS) *Assets {
+func NewAssets(logo string, embedMigrations fs.FS) *Assets {
 	return &Assets{Logo: logo, EmbedMigrations: embedMigrations}
 }

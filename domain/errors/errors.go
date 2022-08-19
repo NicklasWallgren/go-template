@@ -5,7 +5,7 @@ type DomainError struct {
 	err     error
 }
 
-func NewDomainError(message string, err error) *DomainError {
+func NewDomainError(message string, err error) *DomainError { // nolint: wsl
 	// TODO, use option withers instead of parameters?
 
 	return &DomainError{Message: message, err: err}

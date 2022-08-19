@@ -7,5 +7,6 @@ func Test(t *testing.T) {
 
 	t.Run("", func(t *testing.T) {
 		// TODO
+		t.Parallel()
 	})
 }

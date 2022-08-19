@@ -20,6 +20,7 @@ type Middlewares []Middleware
 
 // NewMiddlewares creates new middlewares
 // Register the middleware that should be applied directly (globally).
+// nolint: interfacer
 func NewMiddlewares(corsMiddleware CorsMiddleware, observabilityMiddleware ObservabilityMiddleware) Middlewares {
 	return Middlewares{
 		corsMiddleware,

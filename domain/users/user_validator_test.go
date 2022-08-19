@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/NicklasWallgren/go-template/tests/mocks/adapters/driver/persistence/users"
+	mocks "github.com/NicklasWallgren/go-template/tests/mocks/adapters/driver/persistence/users"
 
 	"github.com/NicklasWallgren/go-template/domain/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
@@ -15,6 +15,8 @@ import (
 
 // nolint: funlen
 func Test(t *testing.T) {
+	t.Parallel()
+
 	t.Run("GivenInvalidName_whenValidateToCreate_thenExpectedValidationFieldError", func(t *testing.T) {
 		t.Parallel()
 
