@@ -58,7 +58,7 @@ func (s *HttpServerCommand) Run(cmd *cobra.Command) cli.CommandRunner {
 		// Disables the binding.StructValidator, use the one defined in FX context instead
 		gin.DisableBindValidation()
 
-		srv := &http.Server{Addr: ":" + config.HttpServer.Port, Handler: router.Gin}
+		srv := &http.Server{Addr: ":" + config.HttpServer.Port, ReadHeaderTimeout: 10 * time.Second, Handler: router.Gin}
 
 		// Initializing the server in a goroutine so that it won't block
 		// See validatorModule in adapters/driven/api/module.go
