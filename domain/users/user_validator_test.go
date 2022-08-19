@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/NicklasWallgren/go-template/tests/mocks"
+	"github.com/NicklasWallgren/go-template/tests/mocks/adapters/driver/persistence/users"
 
 	"github.com/NicklasWallgren/go-template/domain/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
@@ -69,7 +69,7 @@ func Test(t *testing.T) {
 		user := entities.NewUserWithID(1, gofakeit.Name(), gofakeit.Email(), uint8(gofakeit.Number(18, 150)), gofakeit.Date())
 
 		userRepository := mocks.NewUserRepository(t)
-		userRepository.On("FindOneByEmailWithExclusiveLock", user.Email).Return(&user, nil)
+		userRepository.EXPECT().FindOneByEmailWithExclusiveLock(context.TODO(), user.Email).Return(&user, nil)
 
 		validator := users.NewUserValidator(userRepository)
 		err := validator.ValidateToCreate(context.TODO(), &user)

@@ -75,3 +75,8 @@ go-template migrate --up
 ## Contributing
 
 ## License
+
+## TODO
+
+mockery --all --output ./tests/mocks --keeptree --case underscore --with-expecter
+
