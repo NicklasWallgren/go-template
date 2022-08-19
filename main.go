@@ -14,6 +14,7 @@ import (
 var embedMigrations embed.FS
 
 // logo is generated via https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=Go%20Template
+//
 //go:embed resources/assets/logo.ascii
 var logo string
 

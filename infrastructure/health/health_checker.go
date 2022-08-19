@@ -32,11 +32,11 @@ func NewHealthWithDetails(status HealthStatus, name string, details map[string]a
 	return &Health{Status: status, Name: name, Details: details}
 }
 
-func (h *Health) withDetail(key string, value any) {
+func (h *Health) withDetail(key string, value any) { // nolint: unused
 	h.Details[key] = value
 }
 
-func (h *Health) withDetails(details map[string]any) {
+func (h *Health) withDetails(details map[string]any) { // nolint: unused
 	h.Details = details
 }
 

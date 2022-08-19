@@ -9,7 +9,7 @@ import (
 // TODO, move to rabbitmq driver package?
 
 type RabbitMQHealthChecker struct {
-	rabbitmqPublisher *rabbitmq.Publisher
+	rabbitmqPublisher *rabbitmq.Publisher // nolint: unused
 }
 
 func NewRabbitMQHealthChecker() HealthChecker {

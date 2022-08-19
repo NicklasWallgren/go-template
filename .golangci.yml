@@ -4,10 +4,10 @@ linters:
     - maligned
     - nolintlint
     - ireturn
-    - staticcheck # does not support generics
-    - unused # does not support generics
-    - stylecheck # does not support generics
-    - gosimple # does not support generics
+#    - staticcheck # does not support generics
+#    - unused # does not support generics
+#    - stylecheck # does not support generics
+#    - gosimple # does not support generics
     - wrapcheck
     - exhaustruct
     - godox
@@ -20,6 +20,7 @@ linters:
     - gomnd
     - testpackage
     - gomoddirectives
+    - tparallel
 
   presets:
     - bugs
@@ -48,8 +49,9 @@ linters-settings:
         disabled: true
 
 run:
-  go: '1.18'
+  go: '1.19'
   skip-dirs:
     - adapters/driver/persistence/transaction
+    - tests/mocks
 
 

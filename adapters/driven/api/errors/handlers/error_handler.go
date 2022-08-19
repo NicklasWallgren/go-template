@@ -34,7 +34,7 @@ func (e errorResponseManager) Handle(err error) response.APIResponseEnvelop {
 		}
 
 		errorType := handler.ErrorType()
-		if !errors.As(err, &errorType) {
+		if !errors.As(err, &errorType) { // nolint: govet
 			// TODO, generic errors, UUID for error tracing, log
 			return response.New(http.StatusInternalServerError, response.WithResponse("INSERT MESSAGE AND UUID"))
 		}

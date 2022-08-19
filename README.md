@@ -80,3 +80,6 @@ go-template migrate --up
 
 mockery --all --output ./tests/mocks --keeptree --case underscore --with-expecter
 
+go fmt $(go list ./... | grep -v /test/mocks/)
+
+golangci-lint run --fix

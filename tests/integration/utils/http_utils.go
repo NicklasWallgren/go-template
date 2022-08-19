@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -24,7 +25,7 @@ func ExpectHTTPStatus(statusCode int) ExpectOption {
 func NewHTTPRequest(t *testing.T, method string, url string, body io.Reader) *http.Request {
 	t.Helper()
 
-	request, err := http.NewRequest(method, url, body)
+	request, err := http.NewRequestWithContext(context.TODO(), method, url, body)
 	if err != nil {
 		t.Errorf("unable to create http request %v", err)
 		t.FailNow()

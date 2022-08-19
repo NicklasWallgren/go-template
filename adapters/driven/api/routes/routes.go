@@ -14,6 +14,7 @@ type Route interface {
 }
 
 // NewRoutes sets up routes.
+// nolint: interfacer
 func NewRoutes(userRoutes users.UserRoutes, swaggerRoutes SwaggerRoutes, healthRoutes health.HealthRoutes) Routes {
 	return Routes{
 		userRoutes,

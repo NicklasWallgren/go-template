@@ -26,7 +26,7 @@ func (p Page[T]) TotalPages() int {
 		return 1
 	}
 
-	return int(math.Ceil(float64(p.TotalNumberOfElements / p.Pageable.PageSize())))
+	return int(math.Ceil(float64(p.TotalNumberOfElements / p.Pageable.PageSize()))) // nolint: staticcheck
 }
 
 func (p Page[T]) IsEmpty() bool {

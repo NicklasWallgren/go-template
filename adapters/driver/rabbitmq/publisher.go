@@ -46,7 +46,7 @@ func (r *RabbitMQPublisher) Publish(ctx context.Context, data any, routingKey st
 		tracer.Measured(),
 	}
 
-	span, ctx := tracer.StartSpanFromContext(ctx, "amqp.publish", opts...) // nolint:ineffassign
+	span, ctx := tracer.StartSpanFromContext(ctx, "amqp.publish", opts...) // nolint:ineffassign, staticcheck
 	defer span.Finish()
 
 	dataByteArray, err := json.Marshal(data)
