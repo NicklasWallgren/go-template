@@ -79,12 +79,7 @@ mockery --all --output ./tests/mocks --keeptree --case underscore --with-expecte
 ```
 
 ## Contributing
+If you find any problems or have suggestions about this template, please submit an issue. Moreover, any pull request, code review and feedback are welcome.
 
 ## License
-
-## TODO
-
-
-go fmt $(go list ./... | grep -v /test/mocks/)
-
-golangci-lint run --fix
+MIT
