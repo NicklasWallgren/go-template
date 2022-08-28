@@ -73,13 +73,17 @@ go-template migrate --create <NAME>
 go-template migrate --up
 ```
 
+## Re-generate mocks 
+```bash
+mockery --all --output ./tests/mocks --keeptree --case underscore --with-expecter
+```
+
 ## Contributing
 
 ## License
 
 ## TODO
 
-mockery --all --output ./tests/mocks --keeptree --case underscore --with-expecter
 
 go fmt $(go list ./... | grep -v /test/mocks/)
 

@@ -1,3 +1,4 @@
+basePath: /api/
 definitions:
   response.APIError:
     properties:
@@ -33,10 +34,14 @@ definitions:
       name:
         type: string
     type: object
+host: localhost:8080
 info:
   contact: {}
+  description: An template for implementing a hexagonal application.
+  title: GO template API
+  version: "1.0"
 paths:
-  /api/users:
+  /users:
     get:
       responses:
         "200":
@@ -44,8 +49,63 @@ paths:
           schema:
             $ref: '#/definitions/response.PageableResponse-response_UserResponse'
         "400":
-          description: Bad Request
+          description: in case of an error
           schema:
             $ref: '#/definitions/response.APIError'
-      summary: Retrieve users paginated
+      summary: Retrieve users by paginated response
+    post:
+      responses:
+        "201":
+          description: if a new user was created
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+        "400":
+          description: in case of a bad request
+          schema:
+            $ref: '#/definitions/response.APIError'
+      summary: Creates a user using the prerequisites provided
+  /users/{id}:
+    delete:
+      responses:
+        "204":
+          description: if the user is deleted successfully
+        "400":
+          description: in case of a bad request
+          schema:
+            $ref: '#/definitions/response.APIError'
+        "500":
+          description: in case of an internal error
+          schema:
+            $ref: '#/definitions/response.APIError'
+      summary: Deletes a user by id.
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PageableResponse-response_UserResponse'
+        "400":
+          description: in case of a bad request
+          schema:
+            $ref: '#/definitions/response.APIError'
+        "404":
+          description: if an invalid ID is provided
+          schema:
+            $ref: '#/definitions/response.APIError'
+      summary: Retrieves a user by the provided ID.
+    post:
+      responses:
+        "200":
+          description: the updated users
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+        "400":
+          description: in case of a bad request
+          schema:
+            $ref: '#/definitions/response.APIError'
+        "500":
+          description: in case of an internal error
+          schema:
+            $ref: '#/definitions/response.APIError'
+      summary: Updates an existing user.
 swagger: "2.0"
