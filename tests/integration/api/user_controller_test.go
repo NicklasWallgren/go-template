@@ -42,6 +42,18 @@ func Test(t *testing.T) {
 		Runner(t, testFunc, WithApplicationAndApplyMigration(WithDatabaseName(t, t.Name())), InitializeMiddlewareAndRoutes)
 	})
 
+	t.Run("GivenNoUsers_WhenGetOneUser_ThenHttpStatusNotFound", func(t *testing.T) {
+		testFunc := func(requestHandler common.RequestHandler) {
+			request := utils.NewHTTPRequest(t, "GET", "/api/users/1", nil)
+			userResponse := userResponse.UserResponse{}
+			utils.DoHttpRequestWithResponse(
+				t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusBadRequest))
+		}
+
+		// nolint:typecheck
+		Runner(t, testFunc, WithApplicationAndApplyMigration(), TruncateDatabase, InitializeMiddlewareAndRoutes)
+	})
+
 	t.Run("GivenUsers_WhenGetUsers_ThenMatchSnapshot", func(t *testing.T) {
 		testFunc := func(uf *factories.UserFactory, requestHandler common.RequestHandler) {
 			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) }) // nolint:wrapcheck

@@ -17,7 +17,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UserController data type.
+// UserController is a struct which handles the typical http requests for a user.
 type UserController struct {
 	service      services.UserService
 	logger       logger.Logger
@@ -25,7 +25,7 @@ type UserController struct {
 	validator    binding.StructValidator
 }
 
-// NewUserController creates new user controller.
+// NewUserController creates a new [NewUserController].
 func NewUserController(
 	userService services.UserService,
 	logger logger.Logger,
@@ -40,7 +40,12 @@ func NewUserController(
 	}
 }
 
-// GetOneUserByID gets one user.
+// GetOneUserByID retrieves a user by the provided ID.
+// @Summary 	Retrieves a user by the provided ID.
+// @Success		200 {object} response.PageableResponse[response.UserResponse]
+// @Failure		400 {object} response.APIError "in case of a bad request"
+// @Failure		404 {object} response.APIError "if an invalid ID is provided"
+// @Router 		/users/{id} [get].
 func (u UserController) GetOneUserByID(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
@@ -55,13 +60,11 @@ func (u UserController) GetOneUserByID(ctx *gin.Context) (response.APIResponseEn
 	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(user)), nil
 }
 
-// FindAllUsers godoc
-// @Summary 	Retrieve users paginated
-// @BasePath 	/api/users
-// @Success		200 {object} response.PageableResponse[userResponse.UserResponse]
-// @Failure		400 {object} response.APIError
-// @Router 		/api/users [get]
-// TODO, proper support for import alias https://github.com/swaggo/swag/issues/1291
+// FindAllUsers retrieves users by paginated response
+// @Summary 	Retrieve users by paginated response
+// @Success		200 {object} response.PageableResponse[response.UserResponse]
+// @Failure		400 {object} response.APIError "in case of an error"
+// @Router 		/users [get].
 func (u UserController) FindAllUsers(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	pagination, err := request.Into(ctx, models.NewPaginationWithDefaults())
 	if err != nil {
@@ -80,7 +83,11 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (response.APIResponseEnve
 	return response.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
 }
 
-// SaveUser saves the user.
+// SaveUser creates a user using the prerequisites provided.
+// @Summary 	Creates a user using the prerequisites provided
+// @Success		201 {object} response.UserResponse "if a new user was created"
+// @Failure		400 {object} response.APIError "in case of a bad request"
+// @Router 		/users [post].
 func (u UserController) SaveUser(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, CreateUserRequest{})
 	if err != nil {
@@ -95,7 +102,12 @@ func (u UserController) SaveUser(ctx *gin.Context) (response.APIResponseEnvelop,
 	return response.NewWithResponse(http.StatusCreated, u.apiConverter.ResponseOf(persistedUser)), nil
 }
 
-// UpdateUser updates user.
+// UpdateUser updates an existing user.
+// @Summary 	Updates an existing user.
+// @Success		200 {object} response.UserResponse "the updated users"
+// @Failure		400 {object} response.APIError "in case of a bad request"
+// @Failure		500 {object} response.APIError "in case of an internal error"
+// @Router 		/users/{id} [post].
 func (u UserController) UpdateUser(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, UpdateUserRequest{})
 	if err != nil {
@@ -117,7 +129,12 @@ func (u UserController) UpdateUser(ctx *gin.Context) (response.APIResponseEnvelo
 	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(persistedUser)), nil
 }
 
-// DeleteUserByID deletes user.
+// DeleteUserByID deletes a user by id.
+// @Summary 	Deletes a user by id.
+// @Success		204 "if the user is deleted successfully"
+// @Failure		400 {object} response.APIError "in case of a bad request"
+// @Failure		500 {object} response.APIError "in case of an internal error"
+// @Router 		/users/{id} [delete].
 func (u UserController) DeleteUserByID(ctx *gin.Context) (response.APIResponseEnvelop, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
