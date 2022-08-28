@@ -20,9 +20,10 @@ Go-template is an opinionated Hexagonal backend template written in GO.
 - Provides database migration with [pressly/gooose](https://github.com/pressly/goose).
 - Integrates [go-swagger](https://github.com/go-swagger/go-swagger) for compile-time generation of swagger.(yml|json).
 - Integrates [SwaggerUI](https://github.com/swagger-api/swagger-ui) for live-previewing Swagger v2 schema.
-- Comes with an initial MariaDB database structure (
+- Comes with an initial MariaDB and Postgres database structure (
   see [migrations](https://github.com/NicklasWallgren/go-template/tree/main/resources/database/migrations))
 - API endpoints for health and readiness probes.
+- Integration tests with support for snapshots.
 - K8s manifest files.
 - Provides support for parallel database integration tests.
 - Comes with support for AMQP publisher and consumer (via RabbitMQ).
