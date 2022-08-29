@@ -4,14 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-
-	"github.com/NicklasWallgren/go-template/domain/validation"
+	"time"
 
 	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/models"
 	repository "github.com/NicklasWallgren/go-template/adapters/driver/persistence/users"
 	domainErrors "github.com/NicklasWallgren/go-template/domain/errors"
-	"github.com/NicklasWallgren/go-template/domain/events"
+	"github.com/NicklasWallgren/go-template/domain/event"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
+	"github.com/NicklasWallgren/go-template/domain/validation"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"gorm.io/gorm"
 )
@@ -28,10 +28,10 @@ type UserService interface {
 
 // userService service layer.
 type userService struct {
-	userValidator         validation.EntityValidator[entities.User]
-	logger                logger.Logger
-	repository            repository.UserRepository
-	eventPublisherManager events.EventPublisherManager
+	userValidator   validation.EntityValidator[entities.User]
+	logger          logger.Logger
+	repository      repository.UserRepository
+	eventDispatcher *event.Dispatcher
 }
 
 // NewUserService creates a new [UserService].
@@ -39,13 +39,13 @@ func NewUserService(
 	userValidator *UserValidator,
 	logger logger.Logger,
 	repository repository.UserRepository,
-	eventPublisherManager events.EventPublisherManager,
+	eventDispatcher *event.Dispatcher,
 ) UserService {
 	return userService{
-		userValidator:         userValidator,
-		logger:                logger,
-		repository:            repository,
-		eventPublisherManager: eventPublisherManager,
+		userValidator:   userValidator,
+		logger:          logger,
+		repository:      repository,
+		eventDispatcher: eventDispatcher,
 	}
 }
 
@@ -111,11 +111,13 @@ func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) 
 
 		return nil
 	})
+
 	if err != nil {
 		return nil, err
 	}
 
-
+	s.eventDispatcher.Dispatch(
+		ctx, event.EntityEvent{Time: time.Now().UTC(), Entity: toBeCreated, Action: event.Created})
 
 	return user, nil
 }
@@ -142,8 +144,6 @@ func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (pe
 		return nil
 	})
 
-
-
 	return persistedUser, err
 }
 
@@ -165,20 +165,5 @@ func (s userService) DeleteUserByID(ctx context.Context, id uint) error {
 		return txService.repository.DeleteByID(ctx, id)
 	})
 
-	// Publish(s.eventPublisherManager, events.DELETED, persistedUser)
-
 	return err
-}
-
-func Publish(
-	ctx context.Context,
-	eventPublisherManager events.EventPublisherManager,
-	action events.EventAction,
-	user *entities.User,
-) error {
-	// TODO, handle error, retry, dead-letter queue?
-	return eventPublisherManager.Publish(ctx, events.NewEvent(action, user,
-		events.WithRouting("routing_key"),
-		events.WithConverter(ResponseOf),
-	))
 }

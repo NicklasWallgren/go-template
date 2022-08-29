@@ -29,13 +29,24 @@ const docTemplate = `{
                     "400": {
                         "description": "in case of an error",
                         "schema": {
-                            "$ref": "#/definitions/response.APIError"
+                            "$ref": "#/definitions/response.APIErrorResponse"
                         }
                     }
                 }
             },
             "post": {
                 "summary": "Creates a user using the prerequisites provided",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/users.CreateUserRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "if a new user was created",
@@ -46,7 +57,7 @@ const docTemplate = `{
                     "400": {
                         "description": "in case of a bad request",
                         "schema": {
-                            "$ref": "#/definitions/response.APIError"
+                            "$ref": "#/definitions/response.APIErrorResponse"
                         }
                     }
                 }
@@ -65,13 +76,13 @@ const docTemplate = `{
                     "400": {
                         "description": "in case of a bad request",
                         "schema": {
-                            "$ref": "#/definitions/response.APIError"
+                            "$ref": "#/definitions/response.APIErrorResponse"
                         }
                     },
                     "404": {
                         "description": "if an unknown ID is provided",
                         "schema": {
-                            "$ref": "#/definitions/response.APIError"
+                            "$ref": "#/definitions/response.APIErrorResponse"
                         }
                     }
                 }
@@ -88,13 +99,13 @@ const docTemplate = `{
                     "400": {
                         "description": "in case of a bad request",
                         "schema": {
-                            "$ref": "#/definitions/response.APIError"
+                            "$ref": "#/definitions/response.APIErrorResponse"
                         }
                     },
                     "500": {
                         "description": "in case of an internal error",
                         "schema": {
-                            "$ref": "#/definitions/response.APIError"
+                            "$ref": "#/definitions/response.APIErrorResponse"
                         }
                     }
                 }
@@ -108,13 +119,13 @@ const docTemplate = `{
                     "400": {
                         "description": "in case of a bad request",
                         "schema": {
-                            "$ref": "#/definitions/response.APIError"
+                            "$ref": "#/definitions/response.APIErrorResponse"
                         }
                     },
                     "500": {
                         "description": "in case of an internal error",
                         "schema": {
-                            "$ref": "#/definitions/response.APIError"
+                            "$ref": "#/definitions/response.APIErrorResponse"
                         }
                     }
                 }
@@ -134,6 +145,17 @@ const docTemplate = `{
                     "example": "invalid id"
                 },
                 "value": {}
+            }
+        },
+        "response.APIErrorResponse": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.APIError"
+                    }
+                }
             }
         },
         "response.PageableResponse-response_UserResponse": {
@@ -172,6 +194,34 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "users.CreateUserRequest": {
+            "type": "object",
+            "required": [
+                "age",
+                "birthday",
+                "email",
+                "name"
+            ],
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "example": 50
+                },
+                "birthday": {
+                    "type": "string",
+                    "example": "2022-06-10"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "Name@name.com"
+                },
+                "name": {
+                    "description": "TODO, apply validation",
+                    "type": "string",
+                    "example": "Name"
+                }
+            }
         }
     }
 }`
@@ -180,7 +230,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/api/.",
+	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GO template API",
 	Description:      "An template for implementing a hexagonal application.",

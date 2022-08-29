@@ -22,7 +22,7 @@ var logo string
 // @description An template for implementing a hexagonal application.
 // @version 1.0
 // @host localhost:8080
-// @BasePath /api/.
+// @BasePath /api.
 func main() {
 	assets := config.NewAssets(logo, embedMigrations)
 	app := bootstrap.NewApp(assets)

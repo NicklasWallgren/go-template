@@ -2,7 +2,7 @@ package routes
 
 import (
 	routes "github.com/NicklasWallgren/go-template/adapters/driven/api/common"
-	docs "github.com/NicklasWallgren/go-template/docs"
+	"github.com/NicklasWallgren/go-template/docs"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -14,7 +14,7 @@ type SwaggerRoutes struct {
 
 // Setup user routes.
 func (s SwaggerRoutes) Setup() {
-	docs.SwaggerInfo.BasePath = ""
+	docs.SwaggerInfo.BasePath = "/api"
 	s.handler.Gin.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler)) // nolint: wsl
 }
 

@@ -18,6 +18,7 @@ require (
 	github.com/gkampitakis/go-snaps v0.3.2
 	github.com/go-playground/validator/v10 v10.10.1
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/hashicorp/go.net v0.0.1
 	github.com/iamolegga/enviper v1.4.0
 	github.com/jackc/pgconn v1.12.1
 	github.com/lib/pq v1.10.4

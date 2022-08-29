@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
+
+	"github.com/google/uuid"
 
 	"github.com/mariomac/gostream/order"
 	"github.com/mariomac/gostream/stream"
@@ -32,15 +35,9 @@ func (e errorResponseManager) Handle(err error) *response.APIResponseEnvelope {
 			continue
 		}
 
-		// errorType := handler.ErrorType()
-		// if !errors.As(err, &errorType) { // nolint: govet
-		//	// TODO, generic errors, UUID for error tracing, log
-		//	return response.NewEnvelope(http.StatusInternalServerError, response.WithResponse("INSERT MESSAGE AND UUID"))
-		//}
-
 		return handler.Handle(err)
 	}
 
-	// TODO, generic errors, UUID for error tracing, log
-	return response.NewEnvelope(http.StatusInternalServerError, response.WithResponse("INSERT MESSAGE AND UUID"))
+	return response.NewEnvelope(http.StatusInternalServerError,
+		response.WithResponse(fmt.Sprintf("Error occurred with id %s, please try again", uuid.New())))
 }

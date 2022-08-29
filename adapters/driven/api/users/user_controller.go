@@ -43,8 +43,8 @@ func NewUserController(
 // FindOneUserByID retrieves a user by the provided ID.
 // @Summary 	Retrieves a user by the provided ID.
 // @Success		200 {object} response.PageableResponse[response.UserResponse]
-// @Failure		400 {object} response.APIError "in case of a bad request"
-// @Failure		404 {object} response.APIError "if an unknown ID is provided"
+// @Failure		400 {object} response.APIErrorResponse "in case of a bad request"
+// @Failure		404 {object} response.APIErrorResponse "if an unknown ID is provided"
 // @Router 		/users/{id} [get].
 func (u UserController) FindOneUserByID(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	id, err := request.GetParamInt(ctx, "id")
@@ -63,7 +63,7 @@ func (u UserController) FindOneUserByID(ctx *gin.Context) (*response.APIResponse
 // FindAllUsers retrieves paginated response of users.
 // @Summary 	Retrieves paginated response of users
 // @Success		200 {object} response.PageableResponse[response.UserResponse]
-// @Failure		400 {object} response.APIError "in case of an error"
+// @Failure		400 {object} response.APIErrorResponse "in case of an error"
 // @Router 		/users [get].
 func (u UserController) FindAllUsers(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	pagination, err := request.Into(ctx, models.NewPaginationWithDefaults())
@@ -84,14 +84,15 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (*response.APIResponseEnv
 }
 
 // CreateUser creates a user using the prerequisites provided.
+// @Param 		request body CreateUserRequest true "query params"
 // @Summary 	Creates a user using the prerequisites provided
 // @Success		201 {object} response.UserResponse "if a new user was created"
-// @Failure		400 {object} response.APIError "in case of a bad request"
+// @Failure		400 {object} response.APIErrorResponse "in case of a bad request"
 // @Router 		/users [post].
 func (u UserController) CreateUser(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, CreateUserRequest{})
 	if err != nil {
-		return nil, apiError.NewApiError(apiError.WithError(err))
+		return nil, err
 	}
 
 	persistedUser, err := u.service.CreateUser(ctx.Request.Context(), u.apiConverter.EntityOf(request))
@@ -105,8 +106,8 @@ func (u UserController) CreateUser(ctx *gin.Context) (*response.APIResponseEnvel
 // UpdateUser updates an existing user.
 // @Summary 	Updates an existing user.
 // @Success		200 {object} response.UserResponse "the updated users"
-// @Failure		400 {object} response.APIError "in case of a bad request"
-// @Failure		500 {object} response.APIError "in case of an internal error"
+// @Failure		400 {object} response.APIErrorResponse "in case of a bad request"
+// @Failure		500 {object} response.APIErrorResponse "in case of an internal error"
 // @Router 		/users/{id} [post].
 func (u UserController) UpdateUser(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, UpdateUserRequest{})
@@ -132,8 +133,8 @@ func (u UserController) UpdateUser(ctx *gin.Context) (*response.APIResponseEnvel
 // DeleteUserByID deletes a user by id.
 // @Summary 	Deletes a user by id.
 // @Success		204 "if the user is deleted successfully"
-// @Failure		400 {object} response.APIError "in case of a bad request"
-// @Failure		500 {object} response.APIError "in case of an internal error"
+// @Failure		400 {object} response.APIErrorResponse "in case of a bad request"
+// @Failure		500 {object} response.APIErrorResponse "in case of an internal error"
 // @Router 		/users/{id} [delete].
 func (u UserController) DeleteUserByID(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	id, err := request.GetParamInt(ctx, "id")

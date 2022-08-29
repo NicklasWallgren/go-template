@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"testing"
@@ -49,8 +48,6 @@ func Test(t *testing.T) {
 			response := response.APIErrorResponse{}
 			utils.DoHttpRequestWithResponse(
 				t, requestHandler.Gin, request, &response, utils.ExpectHTTPStatus(http.StatusNotFound))
-
-			fmt.Println(response)
 		}
 
 		// nolint:typecheck

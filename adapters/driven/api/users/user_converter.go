@@ -24,7 +24,7 @@ func NewUserAPIConverter(userService domain.UserService) UserApiConverter {
 }
 
 func (u userAPIConverter) ResponseOf(user *entities.User) response.UserResponse {
-	return response.UserResponse{Name: user.Name, Email: user.Name}
+	return response.UserResponse{Name: user.Name, Email: user.Email}
 }
 
 func (u userAPIConverter) EntityOf(request *CreateUserRequest) entities.User {
