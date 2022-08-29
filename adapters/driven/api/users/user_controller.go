@@ -40,13 +40,13 @@ func NewUserController(
 	}
 }
 
-// GetOneUserByID retrieves a user by the provided ID.
+// FindOneUserByID retrieves a user by the provided ID.
 // @Summary 	Retrieves a user by the provided ID.
 // @Success		200 {object} response.PageableResponse[response.UserResponse]
 // @Failure		400 {object} response.APIError "in case of a bad request"
-// @Failure		404 {object} response.APIError "if an invalid ID is provided"
+// @Failure		404 {object} response.APIError "if an unknown ID is provided"
 // @Router 		/users/{id} [get].
-func (u UserController) GetOneUserByID(ctx *gin.Context) (response.APIResponseEnvelop, error) {
+func (u UserController) FindOneUserByID(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
 		return nil, apiError.NewApiError(apiError.WithStatusAndError(http.StatusBadRequest, err))
@@ -60,12 +60,12 @@ func (u UserController) GetOneUserByID(ctx *gin.Context) (response.APIResponseEn
 	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(user)), nil
 }
 
-// FindAllUsers retrieves users by paginated response
-// @Summary 	Retrieve users by paginated response
+// FindAllUsers retrieves paginated response of users.
+// @Summary 	Retrieves paginated response of users
 // @Success		200 {object} response.PageableResponse[response.UserResponse]
 // @Failure		400 {object} response.APIError "in case of an error"
 // @Router 		/users [get].
-func (u UserController) FindAllUsers(ctx *gin.Context) (response.APIResponseEnvelop, error) {
+func (u UserController) FindAllUsers(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	pagination, err := request.Into(ctx, models.NewPaginationWithDefaults())
 	if err != nil {
 		return nil, err
@@ -83,12 +83,12 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (response.APIResponseEnve
 	return response.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
 }
 
-// SaveUser creates a user using the prerequisites provided.
+// CreateUser creates a user using the prerequisites provided.
 // @Summary 	Creates a user using the prerequisites provided
 // @Success		201 {object} response.UserResponse "if a new user was created"
 // @Failure		400 {object} response.APIError "in case of a bad request"
 // @Router 		/users [post].
-func (u UserController) SaveUser(ctx *gin.Context) (response.APIResponseEnvelop, error) {
+func (u UserController) CreateUser(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, CreateUserRequest{})
 	if err != nil {
 		return nil, apiError.NewApiError(apiError.WithError(err))
@@ -108,7 +108,7 @@ func (u UserController) SaveUser(ctx *gin.Context) (response.APIResponseEnvelop,
 // @Failure		400 {object} response.APIError "in case of a bad request"
 // @Failure		500 {object} response.APIError "in case of an internal error"
 // @Router 		/users/{id} [post].
-func (u UserController) UpdateUser(ctx *gin.Context) (response.APIResponseEnvelop, error) {
+func (u UserController) UpdateUser(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, UpdateUserRequest{})
 	if err != nil {
 		return nil, err
@@ -135,7 +135,7 @@ func (u UserController) UpdateUser(ctx *gin.Context) (response.APIResponseEnvelo
 // @Failure		400 {object} response.APIError "in case of a bad request"
 // @Failure		500 {object} response.APIError "in case of an internal error"
 // @Router 		/users/{id} [delete].
-func (u UserController) DeleteUserByID(ctx *gin.Context) (response.APIResponseEnvelop, error) {
+func (u UserController) DeleteUserByID(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
 		return nil, apiError.NewApiError(apiError.WithStatusAndError(http.StatusBadRequest, err))
@@ -145,5 +145,5 @@ func (u UserController) DeleteUserByID(ctx *gin.Context) (response.APIResponseEn
 		return nil, apiError.NewApiError(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	return response.New(http.StatusNoContent), nil
+	return response.NewEnvelope(http.StatusNoContent), nil
 }

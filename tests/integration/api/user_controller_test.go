@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"testing"
@@ -45,9 +46,11 @@ func Test(t *testing.T) {
 	t.Run("GivenNoUsers_WhenGetOneUser_ThenHttpStatusNotFound", func(t *testing.T) {
 		testFunc := func(requestHandler common.RequestHandler) {
 			request := utils.NewHTTPRequest(t, "GET", "/api/users/1", nil)
-			userResponse := userResponse.UserResponse{}
+			response := response.APIErrorResponse{}
 			utils.DoHttpRequestWithResponse(
-				t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusBadRequest))
+				t, requestHandler.Gin, request, &response, utils.ExpectHTTPStatus(http.StatusNotFound))
+
+			fmt.Println(response)
 		}
 
 		// nolint:typecheck

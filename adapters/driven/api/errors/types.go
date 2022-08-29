@@ -62,7 +62,11 @@ func NewApiError(options ...APIErrorOption) *APIError {
 }
 
 func (a APIError) Error() string {
-	return fmt.Sprintf("%s %s", a.Message, a.err) // TODO
+	if a.err != nil {
+		return fmt.Sprintf("%s Cause: %s", a.Message, a.err)
+	}
+
+	return a.Message
 }
 
 func (a APIError) Unwrap() error {

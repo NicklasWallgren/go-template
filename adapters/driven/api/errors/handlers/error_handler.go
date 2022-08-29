@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/mariomac/gostream/order"
@@ -11,7 +10,7 @@ import (
 )
 
 type ErrorResponseManager interface {
-	Handle(err error) response.APIResponseEnvelop
+	Handle(err error) *response.APIResponseEnvelope
 }
 
 type errorResponseManager struct {
@@ -27,21 +26,21 @@ func NewErrorResponseManager(errorTypeHandlers []ErrorTypeResponseHandler) Error
 	return &errorResponseManager{errorTypeHandlers: sortedTypeHandlers}
 }
 
-func (e errorResponseManager) Handle(err error) response.APIResponseEnvelop {
+func (e errorResponseManager) Handle(err error) *response.APIResponseEnvelope {
 	for _, handler := range e.errorTypeHandlers {
 		if !handler.IsSupported(err) {
 			continue
 		}
 
-		errorType := handler.ErrorType()
-		if !errors.As(err, &errorType) { // nolint: govet
-			// TODO, generic errors, UUID for error tracing, log
-			return response.New(http.StatusInternalServerError, response.WithResponse("INSERT MESSAGE AND UUID"))
-		}
+		// errorType := handler.ErrorType()
+		// if !errors.As(err, &errorType) { // nolint: govet
+		//	// TODO, generic errors, UUID for error tracing, log
+		//	return response.NewEnvelope(http.StatusInternalServerError, response.WithResponse("INSERT MESSAGE AND UUID"))
+		//}
 
-		return handler.Handle(errorType)
+		return handler.Handle(err)
 	}
 
 	// TODO, generic errors, UUID for error tracing, log
-	return response.New(http.StatusInternalServerError, response.WithResponse("INSERT MESSAGE AND UUID"))
+	return response.NewEnvelope(http.StatusInternalServerError, response.WithResponse("INSERT MESSAGE AND UUID"))
 }

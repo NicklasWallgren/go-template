@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type RouteHandler func(c *gin.Context) (response.APIResponseEnvelop, error)
+type RouteHandler func(c *gin.Context) (*response.APIResponseEnvelope, error)
 
 type RootHandler struct {
 	ErrorHandler handlers.ErrorResponseManager

@@ -13,20 +13,21 @@ func NewApiErrorTypeHandler() ErrorTypeResponseHandler {
 	return &ApiErrorTypeHandler{}
 }
 
-func (a ApiErrorTypeHandler) Handle(err error) response.APIResponseEnvelop {
-	actualError, _ := (err).(*errorTypes.APIError) // nolint:errorlint
+func (a ApiErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
+	actualError := &errorTypes.APIError{}
+	errors.As(err, &actualError)
 
 	errorList := []response.APIError{
 		response.NewAPIError(actualError.Message),
 	}
 
-	return response.New(actualError.HTTPStatus, response.WithResponse(response.NewAPIErrorResponse(errorList)))
+	return response.NewEnvelope(actualError.HTTPStatus, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 }
 
 func (a ApiErrorTypeHandler) IsSupported(err error) bool {
-	domainError := &errorTypes.APIError{}
+	apiError := &errorTypes.APIError{}
 
-	return errors.As(err, &domainError)
+	return errors.As(err, &apiError)
 }
 
 func (a ApiErrorTypeHandler) ErrorType() error {

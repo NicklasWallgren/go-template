@@ -53,3 +53,7 @@ func NewDBError(options ...DBErrorOption) *DBError {
 func (d DBError) Error() string {
 	return fmt.Sprintf("persistence error. cause: %s", d.err.Error())
 }
+
+func (d DBError) Unwrap() error {
+	return d.err
+}

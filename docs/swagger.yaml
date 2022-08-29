@@ -1,4 +1,4 @@
-basePath: /api/
+basePath: /api/.
 definitions:
   response.APIError:
     properties:
@@ -52,7 +52,7 @@ paths:
           description: in case of an error
           schema:
             $ref: '#/definitions/response.APIError'
-      summary: Retrieve users by paginated response
+      summary: Retrieves paginated response of users
     post:
       responses:
         "201":
@@ -89,7 +89,7 @@ paths:
           schema:
             $ref: '#/definitions/response.APIError'
         "404":
-          description: if an invalid ID is provided
+          description: if an unknown ID is provided
           schema:
             $ref: '#/definitions/response.APIError'
       summary: Retrieves a user by the provided ID.

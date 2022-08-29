@@ -18,6 +18,10 @@ func NewAPIError(message string) APIError {
 	return APIError{Message: message}
 }
 
-func NewAPIWithFieldError(message string, field string, value any) APIError {
+func NewAPIErrorWithValue(message string, value any) APIError {
+	return APIError{Message: message, Value: value}
+}
+
+func NewAPIErrorWithField(message string, field string, value any) APIError {
 	return APIError{Message: message, Field: field, Value: value}
 }
