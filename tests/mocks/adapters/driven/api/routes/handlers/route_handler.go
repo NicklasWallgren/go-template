@@ -24,15 +24,15 @@ func (_m *RouteHandler) EXPECT() *RouteHandler_Expecter {
 }
 
 // Execute provides a mock function with given fields: c
-func (_m *RouteHandler) Execute(c *gin.Context) (response.APIResponseEnvelop, error) {
+func (_m *RouteHandler) Execute(c *gin.Context) (response.APIResponseEnvelope, error) {
 	ret := _m.Called(c)
 
-	var r0 response.APIResponseEnvelop
-	if rf, ok := ret.Get(0).(func(*gin.Context) response.APIResponseEnvelop); ok {
+	var r0 response.APIResponseEnvelope
+	if rf, ok := ret.Get(0).(func(*gin.Context) response.APIResponseEnvelope); ok {
 		r0 = rf(c)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(response.APIResponseEnvelop)
+			r0 = ret.Get(0).(response.APIResponseEnvelope)
 		}
 	}
 
@@ -64,7 +64,7 @@ func (_c *RouteHandler_Execute_Call) Run(run func(c *gin.Context)) *RouteHandler
 	return _c
 }
 
-func (_c *RouteHandler_Execute_Call) Return(_a0 response.APIResponseEnvelop, _a1 error) *RouteHandler_Execute_Call {
+func (_c *RouteHandler_Execute_Call) Return(_a0 response.APIResponseEnvelope, _a1 error) *RouteHandler_Execute_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }

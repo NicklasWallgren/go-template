@@ -18,7 +18,7 @@ const docTemplate = `{
     "paths": {
         "/users": {
             "get": {
-                "summary": "Retrieve users by paginated response",
+                "summary": "Retrieves paginated response of users",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -69,7 +69,7 @@ const docTemplate = `{
                         }
                     },
                     "404": {
-                        "description": "if an invalid ID is provided",
+                        "description": "if an unknown ID is provided",
                         "schema": {
                             "$ref": "#/definitions/response.APIError"
                         }
@@ -180,7 +180,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/api/",
+	BasePath:         "/api/.",
 	Schemes:          []string{},
 	Title:            "GO template API",
 	Description:      "An template for implementing a hexagonal application.",

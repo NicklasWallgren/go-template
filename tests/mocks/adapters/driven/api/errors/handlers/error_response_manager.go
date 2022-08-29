@@ -21,15 +21,15 @@ func (_m *ErrorResponseManager) EXPECT() *ErrorResponseManager_Expecter {
 }
 
 // Handle provides a mock function with given fields: err
-func (_m *ErrorResponseManager) Handle(err error) response.APIResponseEnvelop {
+func (_m *ErrorResponseManager) Handle(err error) response.APIResponseEnvelope {
 	ret := _m.Called(err)
 
-	var r0 response.APIResponseEnvelop
-	if rf, ok := ret.Get(0).(func(error) response.APIResponseEnvelop); ok {
+	var r0 response.APIResponseEnvelope
+	if rf, ok := ret.Get(0).(func(error) response.APIResponseEnvelope); ok {
 		r0 = rf(err)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(response.APIResponseEnvelop)
+			r0 = ret.Get(0).(response.APIResponseEnvelope)
 		}
 	}
 
@@ -54,7 +54,7 @@ func (_c *ErrorResponseManager_Handle_Call) Run(run func(err error)) *ErrorRespo
 	return _c
 }
 
-func (_c *ErrorResponseManager_Handle_Call) Return(_a0 response.APIResponseEnvelop) *ErrorResponseManager_Handle_Call {
+func (_c *ErrorResponseManager_Handle_Call) Return(_a0 response.APIResponseEnvelope) *ErrorResponseManager_Handle_Call {
 	_c.Call.Return(_a0)
 	return _c
 }

@@ -7,11 +7,11 @@
         "version": "1.0"
     },
     "host": "localhost:8080",
-    "basePath": "/api/",
+    "basePath": "/api/.",
     "paths": {
         "/users": {
             "get": {
-                "summary": "Retrieve users by paginated response",
+                "summary": "Retrieves paginated response of users",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -62,7 +62,7 @@
                         }
                     },
                     "404": {
-                        "description": "if an invalid ID is provided",
+                        "description": "if an unknown ID is provided",
                         "schema": {
                             "$ref": "#/definitions/response.APIError"
                         }

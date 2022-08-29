@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/NicklasWallgren/go-template/domain/validation"
@@ -33,7 +34,7 @@ type userService struct {
 	eventPublisherManager events.EventPublisherManager
 }
 
-// NewUserService creates a new userService.
+// NewUserService creates a new [UserService].
 func NewUserService(
 	userValidator *UserValidator,
 	logger logger.Logger,
@@ -59,16 +60,21 @@ func (s userService) WithTx(tx *gorm.DB) UserService {
 	return cloned
 }
 
-// FindOneUserByID gets one user.
+// FindOneUserByID retrieves a user by the provided ID.
 func (s userService) FindOneUserByID(ctx context.Context, id uint) (user *entities.User, err error) {
 	if user, err = s.repository.FindOneByID(ctx, id); err != nil {
-		return nil, domainErrors.NewDomainError(fmt.Sprintf("could not retrieve the user id %d", id), err)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, domainErrors.NewEntityNotFoundError(id)
+		}
+
+		return nil, domainErrors.NewDomainError(fmt.Sprintf("could not retrieve the user with id %d", id), err)
 	}
 
 	return user, nil
 }
 
-// FindOneUserByIDForUpdate gets one user.
+// FindOneUserByIDForUpdate retrieves a user by the provided ID.
+// Applies a database row lock if executed in a transaction.
 func (s userService) FindOneUserByIDForUpdate(ctx context.Context, id uint) (user *entities.User, err error) {
 	if user, err = s.repository.FindOneByIDForUpdate(ctx, id); err != nil {
 		return nil, domainErrors.NewDomainError(fmt.Sprintf("could not retrieve the user id %d for update", id), err)
@@ -77,7 +83,7 @@ func (s userService) FindOneUserByIDForUpdate(ctx context.Context, id uint) (use
 	return user, nil
 }
 
-// FindAllUser get all the user.
+// FindAllUser retrieves a paginated list of users.
 func (s userService) FindAllUser(
 	ctx context.Context,
 	pagination *models.Pagination,
@@ -90,7 +96,7 @@ func (s userService) FindAllUser(
 	return users, nil
 }
 
-// CreateUser call to create the user.
+// CreateUser creates a new user.
 func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) (user *entities.User, err error) {
 	err = s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
 		txService := s.WithTx(tx).(userService) // nolint: forcetypeassert
@@ -109,12 +115,12 @@ func (s userService) CreateUser(ctx context.Context, toBeCreated entities.User) 
 		return nil, err
 	}
 
-	Publish(ctx, s.eventPublisherManager, events.CREATED, user) // nolint: errcheck, gosec
+
 
 	return user, nil
 }
 
-// UpdateUser updates the user.
+// UpdateUser updates the provided user.
 func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (persistedUser *entities.User, err error) {
 	err = s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
 		txService := s.WithTx(tx).(userService) // nolint: forcetypeassert
@@ -136,12 +142,12 @@ func (s userService) UpdateUser(ctx context.Context, updated *entities.User) (pe
 		return nil
 	})
 
-	Publish(ctx, s.eventPublisherManager, events.UPDATED, persistedUser) // nolint:gosec, errcheck
+
 
 	return persistedUser, err
 }
 
-// DeleteUserByID deletes the user by id.
+// DeleteUserByID deletes a user by ID.
 func (s userService) DeleteUserByID(ctx context.Context, id uint) error {
 	err := s.repository.TransactWithDefaultRetry(ctx, func(tx *gorm.DB) error {
 		txService := s.WithTx(tx).(userService) // nolint: forcetypeassert

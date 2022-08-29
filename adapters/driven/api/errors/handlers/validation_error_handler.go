@@ -14,13 +14,13 @@ func NewValidationErrorTypeHandler() ErrorTypeResponseHandler {
 	return &ValidationErrorTypeHandler{}
 }
 
-func (a ValidationErrorTypeHandler) Handle(err error) response.APIResponseEnvelop {
+func (a ValidationErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
 	validationError := &validation.ValidationError{}
 	errors.As(err, &validationError)
 
-	errors := []response.APIError{response.NewAPIError(validationError.Message)}
+	errorList := []response.APIError{response.NewAPIError(validationError.Message)}
 
-	return response.New(http.StatusBadRequest, response.WithResponse(response.NewAPIErrorResponse(errors)))
+	return response.NewEnvelope(http.StatusBadRequest, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 }
 
 func (a ValidationErrorTypeHandler) IsSupported(err error) bool {

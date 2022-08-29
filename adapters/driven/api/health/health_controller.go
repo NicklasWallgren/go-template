@@ -21,10 +21,10 @@ func NewHealthController(
 	}
 }
 
-func (h HealthController) Health(ctx *gin.Context) (response.APIResponseEnvelop, error) {
+func (h HealthController) Health(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	healthResult := h.healthCheckerManager.Check(ctx.Request.Context())
 
-	return response.New(
+	return response.NewEnvelope(
 		HealthToHttpStatus(healthResult.Status), response.WithResponse(h.apiConverter.ResponseOf(healthResult))), nil
 }
 
