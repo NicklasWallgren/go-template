@@ -57,15 +57,15 @@ func (_c *ErrorTypeResponseHandler_ErrorType_Call) Return(_a0 error) *ErrorTypeR
 }
 
 // Handle provides a mock function with given fields: err
-func (_m *ErrorTypeResponseHandler) Handle(err error) response.APIResponseEnvelope {
+func (_m *ErrorTypeResponseHandler) Handle(err error) *response.APIResponseEnvelope {
 	ret := _m.Called(err)
 
-	var r0 response.APIResponseEnvelope
-	if rf, ok := ret.Get(0).(func(error) response.APIResponseEnvelope); ok {
+	var r0 *response.APIResponseEnvelope
+	if rf, ok := ret.Get(0).(func(error) *response.APIResponseEnvelope); ok {
 		r0 = rf(err)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(response.APIResponseEnvelope)
+			r0 = ret.Get(0).(*response.APIResponseEnvelope)
 		}
 	}
 
@@ -90,7 +90,7 @@ func (_c *ErrorTypeResponseHandler_Handle_Call) Run(run func(err error)) *ErrorT
 	return _c
 }
 
-func (_c *ErrorTypeResponseHandler_Handle_Call) Return(_a0 response.APIResponseEnvelope) *ErrorTypeResponseHandler_Handle_Call {
+func (_c *ErrorTypeResponseHandler_Handle_Call) Return(_a0 *response.APIResponseEnvelope) *ErrorTypeResponseHandler_Handle_Call {
 	_c.Call.Return(_a0)
 	return _c
 }
