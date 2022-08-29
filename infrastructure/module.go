@@ -1,7 +1,7 @@
 package infrastructure
 
 import (
-	database "github.com/NicklasWallgren/go-template/infrastructure/database"
+	"github.com/NicklasWallgren/go-template/infrastructure/database"
 	"github.com/NicklasWallgren/go-template/infrastructure/env"
 	"github.com/NicklasWallgren/go-template/infrastructure/health"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"

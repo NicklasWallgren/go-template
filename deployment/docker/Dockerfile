@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM golang:1.18-alpine as builder
+FROM golang:1.19-alpine as builder
 
 RUN apk --no-cache add git ca-certificates
 ENV CGO_ENABLED=0
