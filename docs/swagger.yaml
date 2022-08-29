@@ -1,4 +1,4 @@
-basePath: /api/.
+basePath: /api
 definitions:
   response.APIError:
     properties:
@@ -9,6 +9,13 @@ definitions:
         example: invalid id
         type: string
       value: {}
+    type: object
+  response.APIErrorResponse:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/response.APIError'
+        type: array
     type: object
   response.PageableResponse-response_UserResponse:
     properties:
@@ -34,6 +41,27 @@ definitions:
       name:
         type: string
     type: object
+  users.CreateUserRequest:
+    properties:
+      age:
+        example: 50
+        type: integer
+      birthday:
+        example: "2022-06-10"
+        type: string
+      email:
+        example: Name@name.com
+        type: string
+      name:
+        description: TODO, apply validation
+        example: Name
+        type: string
+    required:
+    - age
+    - birthday
+    - email
+    - name
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -51,9 +79,16 @@ paths:
         "400":
           description: in case of an error
           schema:
-            $ref: '#/definitions/response.APIError'
+            $ref: '#/definitions/response.APIErrorResponse'
       summary: Retrieves paginated response of users
     post:
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/users.CreateUserRequest'
       responses:
         "201":
           description: if a new user was created
@@ -62,7 +97,7 @@ paths:
         "400":
           description: in case of a bad request
           schema:
-            $ref: '#/definitions/response.APIError'
+            $ref: '#/definitions/response.APIErrorResponse'
       summary: Creates a user using the prerequisites provided
   /users/{id}:
     delete:
@@ -72,11 +107,11 @@ paths:
         "400":
           description: in case of a bad request
           schema:
-            $ref: '#/definitions/response.APIError'
+            $ref: '#/definitions/response.APIErrorResponse'
         "500":
           description: in case of an internal error
           schema:
-            $ref: '#/definitions/response.APIError'
+            $ref: '#/definitions/response.APIErrorResponse'
       summary: Deletes a user by id.
     get:
       responses:
@@ -87,11 +122,11 @@ paths:
         "400":
           description: in case of a bad request
           schema:
-            $ref: '#/definitions/response.APIError'
+            $ref: '#/definitions/response.APIErrorResponse'
         "404":
           description: if an unknown ID is provided
           schema:
-            $ref: '#/definitions/response.APIError'
+            $ref: '#/definitions/response.APIErrorResponse'
       summary: Retrieves a user by the provided ID.
     post:
       responses:
@@ -102,10 +137,10 @@ paths:
         "400":
           description: in case of a bad request
           schema:
-            $ref: '#/definitions/response.APIError'
+            $ref: '#/definitions/response.APIErrorResponse'
         "500":
           description: in case of an internal error
           schema:
-            $ref: '#/definitions/response.APIError'
+            $ref: '#/definitions/response.APIErrorResponse'
       summary: Updates an existing user.
 swagger: "2.0"

@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	events "github.com/NicklasWallgren/go-template/domain/events"
+	events "github.com/NicklasWallgren/go-template/domain/event"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -49,7 +49,7 @@ type EventPayloadConverter_Execute_Call struct {
 }
 
 // Execute is a helper method to define mock.On call
-//  - event *events.Event
+//  - event *event.Event
 func (_e *EventPayloadConverter_Expecter) Execute(event interface{}) *EventPayloadConverter_Execute_Call {
 	return &EventPayloadConverter_Execute_Call{Call: _e.mock.On("Execute", event)}
 }

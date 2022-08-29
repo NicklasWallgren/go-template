@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 
-	events "github.com/NicklasWallgren/go-template/domain/events"
+	events "github.com/NicklasWallgren/go-template/domain/event"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -43,7 +43,7 @@ type EventPublisher_Publish_Call struct {
 
 // Publish is a helper method to define mock.On call
 //  - ctx context.Context
-//  - event *events.Event
+//  - event *event.Event
 func (_e *EventPublisher_Expecter) Publish(ctx interface{}, event interface{}) *EventPublisher_Publish_Call {
 	return &EventPublisher_Publish_Call{Call: _e.mock.On("Publish", ctx, event)}
 }

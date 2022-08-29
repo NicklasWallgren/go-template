@@ -32,6 +32,7 @@ func Into[T any](c *gin.Context, request T) (T, error) {
 		return request, nil
 	}
 
+	// TODO, should handle json.UnmarshalTypeError
 	if err := c.ShouldBindJSON(&request); err != nil {
 		return request, errorTypes.NewApiError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
 	}

@@ -25,6 +25,7 @@ func (d DomainErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope 
 	errors.As(err, &domainError)
 
 	errorList := []response.APIError{response.NewAPIError(domainError.Message)}
+
 	return response.NewEnvelope(http.StatusBadRequest, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 }
 
