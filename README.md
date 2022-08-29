@@ -41,7 +41,7 @@ Requires the following prerequisites for development in a local environment
 
 - Docker CE (v20.10+)
 - Docker Compose (v1.27+)
-- Go 1.18
+- Go 1.19
 
 ## Quickstart
 Initialize a new git repository through [GitHub Template feature](https://github.com/allaboutapps/go-starter/generate)

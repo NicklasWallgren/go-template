@@ -1,15 +1,5 @@
 package middlewares
 
-import "go.uber.org/fx"
-
-// Module Middleware exported.
-var Module = fx.Options(
-// fx.Provide(NewCorsMiddleware),
-// fx.Provide(NewJWTAuthMiddleware),
-// fx.Provide(NewDatabaseTrx),
-// fx.Provide(NewMiddlewares),
-)
-
 // Middleware interface.
 type Middleware interface {
 	Setup()
