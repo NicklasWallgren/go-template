@@ -9,8 +9,8 @@ import (
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
 )
 
-type UserApiConverter interface {
-	converters.ApiResponseConverter[*entities.User, response.UserResponse]
+type UserAPIConverter interface {
+	converters.APIResponseConverter[*entities.User, response.UserResponse]
 	converters.APIRequestCreateConverter[CreateUserRequest, entities.User]
 	converters.APIRequestUpdateConverter[UpdateUserRequest, entities.User]
 }
@@ -19,7 +19,7 @@ type userAPIConverter struct {
 	userService domain.UserService
 }
 
-func NewUserAPIConverter(userService domain.UserService) UserApiConverter {
+func NewUserAPIConverter(userService domain.UserService) UserAPIConverter {
 	return &userAPIConverter{userService}
 }
 

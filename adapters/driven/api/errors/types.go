@@ -48,7 +48,7 @@ func WithStatusAndMessageAndError(httpStatus int, message string, err error) API
 	}
 }
 
-func NewApiError(options ...APIErrorOption) *APIError {
+func NewAPIError(options ...APIErrorOption) *APIError {
 	apiError := &APIError{
 		HTTPStatus: http.StatusInternalServerError,
 		Message:    "Unable to process the request, please try again",

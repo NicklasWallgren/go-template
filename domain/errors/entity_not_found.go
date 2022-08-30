@@ -5,13 +5,13 @@ import (
 )
 
 type EntityNotFoundError struct {
-	Id uint
+	ID uint
 }
 
 func NewEntityNotFoundError(id uint) *EntityNotFoundError {
-	return &EntityNotFoundError{Id: id}
+	return &EntityNotFoundError{ID: id}
 }
 
 func (e EntityNotFoundError) Error() string {
-	return fmt.Sprintf("entity not found with Id %d", e.Id)
+	return fmt.Sprintf("entity not found with ID %d", e.ID)
 }

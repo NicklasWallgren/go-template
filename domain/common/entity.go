@@ -14,6 +14,6 @@ type Entity struct {
 	ID PrimaryID // Uid
 }
 
-func (e Entity) Id() PrimaryID { // nolint:revive
+func (e Entity) Id() PrimaryID { // nolint:revive,stylecheck
 	return e.ID
 }

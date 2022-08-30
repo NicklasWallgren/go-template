@@ -7,13 +7,13 @@ import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/api/response"
 )
 
-type ApiErrorTypeHandler struct{}
+type APIErrorTypeHandler struct{}
 
-func NewApiErrorTypeHandler() ErrorTypeResponseHandler {
-	return &ApiErrorTypeHandler{}
+func NewAPIErrorTypeHandler() ErrorTypeResponseHandler {
+	return &APIErrorTypeHandler{}
 }
 
-func (a ApiErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
+func (a APIErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
 	actualError := &errorTypes.APIError{}
 	errors.As(err, &actualError)
 
@@ -24,16 +24,16 @@ func (a ApiErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
 	return response.NewEnvelope(actualError.HTTPStatus, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 }
 
-func (a ApiErrorTypeHandler) IsSupported(err error) bool {
+func (a APIErrorTypeHandler) IsSupported(err error) bool {
 	apiError := &errorTypes.APIError{}
 
 	return errors.As(err, &apiError)
 }
 
-func (a ApiErrorTypeHandler) ErrorType() error {
+func (a APIErrorTypeHandler) ErrorType() error {
 	return &errorTypes.APIError{}
 }
 
-func (a ApiErrorTypeHandler) Priority() int {
+func (a APIErrorTypeHandler) Priority() int {
 	return 5
 }

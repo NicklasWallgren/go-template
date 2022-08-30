@@ -21,11 +21,11 @@ func GetParamInt(c *gin.Context, name string) (int, error) {
 
 func Into[T any](c *gin.Context, request T) (T, error) {
 	if err := c.ShouldBindUri(&request); err != nil {
-		return request, errorTypes.NewApiError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
+		return request, errorTypes.NewAPIError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	if err := c.ShouldBindQuery(&request); err != nil {
-		return request, errorTypes.NewApiError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
+		return request, errorTypes.NewAPIError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	if c.Request.ContentLength <= 0 {
@@ -34,7 +34,7 @@ func Into[T any](c *gin.Context, request T) (T, error) {
 
 	// TODO, should handle json.UnmarshalTypeError
 	if err := c.ShouldBindJSON(&request); err != nil {
-		return request, errorTypes.NewApiError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
+		return request, errorTypes.NewAPIError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	return request, nil
@@ -56,7 +56,7 @@ func IntoAndValidate[T any](c *gin.Context, validator binding.StructValidator, r
 	}
 
 	if err := validator.ValidateStruct(&request); err != nil {
-		return nil, errorTypes.NewApiError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
+		return nil, errorTypes.NewAPIError(errorTypes.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
 	return &request, nil

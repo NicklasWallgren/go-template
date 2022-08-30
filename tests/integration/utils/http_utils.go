@@ -50,7 +50,7 @@ func DoHTTPRequest(t *testing.T, httpHandler http.Handler, request *http.Request
 	}
 }
 
-func DoHttpRequestWithResponse[T any](
+func DoHTTPRequestWithResponse[T any](
 	t *testing.T, httpHandler http.Handler, request *http.Request, response T, opts ...ExpectOption,
 ) T {
 	t.Helper()

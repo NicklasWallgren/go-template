@@ -65,7 +65,7 @@ type AppConfig struct {
 	Assets     *Assets
 	Database   *Database
 	Log        Log
-	HttpServer HTTPServer
+	HTTPServer HTTPServer
 	RabbitMQ   *RabbitMQ
 }
 
@@ -77,7 +77,7 @@ func NewAppConfig(assets *Assets, env env.Env) *AppConfig {
 		Assets:     assets,
 		Database:   db,
 		Log:        *NewLog(""),
-		HttpServer: *NewHTTPServer(env.ServerPort, env.JWTSecret),
+		HTTPServer: *NewHTTPServer(env.ServerPort, env.JWTSecret),
 		RabbitMQ:   NewRabbitMQ(env.RabbitMQUser, env.RabbitMQPassword, env.RabbitMQHost),
 	}
 }

@@ -32,7 +32,7 @@ func Test(t *testing.T) {
 
 			request := utils.NewHTTPRequest(t, "GET", "/api/users/1", nil)
 			userResponse := userResponse.UserResponse{}
-			utils.DoHttpRequestWithResponse(t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusOK))
+			utils.DoHTTPRequestWithResponse(t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusOK))
 
 			snaps.MatchSnapshot(t, userResponse)
 		}
@@ -46,7 +46,7 @@ func Test(t *testing.T) {
 		testFunc := func(requestHandler common.RequestHandler) {
 			request := utils.NewHTTPRequest(t, "GET", "/api/users/1", nil)
 			response := response.APIErrorResponse{}
-			utils.DoHttpRequestWithResponse(
+			utils.DoHTTPRequestWithResponse(
 				t, requestHandler.Gin, request, &response, utils.ExpectHTTPStatus(http.StatusNotFound))
 		}
 
@@ -60,7 +60,7 @@ func Test(t *testing.T) {
 
 			request := utils.NewHTTPRequest(t, "GET", "/api/users/", nil)
 			pageableUserResponse := response.PageableResponse[userResponse.UserResponse]{}
-			utils.DoHttpRequestWithResponse(
+			utils.DoHTTPRequestWithResponse(
 				t, requestHandler.Gin, request, &pageableUserResponse, utils.ExpectHTTPStatus(http.StatusOK))
 
 			snaps.MatchSnapshot(t, pageableUserResponse)
@@ -84,7 +84,7 @@ func Test(t *testing.T) {
 
 			request := utils.NewHTTPRequest(t, "POST", "/api/users/", utils.EncodeToJSON(t, &userRequest))
 			userResponse := userResponse.UserResponse{}
-			utils.DoHttpRequestWithResponse(
+			utils.DoHTTPRequestWithResponse(
 				t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusCreated))
 
 			snaps.MatchSnapshot(t, userResponse)
@@ -109,7 +109,7 @@ func Test(t *testing.T) {
 
 			request := utils.NewHTTPRequest(t, "POST", "/api/users/1", utils.EncodeToJSON(t, &updateUserRequest))
 			userResponse := userResponse.UserResponse{}
-			utils.DoHttpRequestWithResponse(t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusOK))
+			utils.DoHTTPRequestWithResponse(t, requestHandler.Gin, request, &userResponse, utils.ExpectHTTPStatus(http.StatusOK))
 
 			snaps.MatchSnapshot(t, userResponse)
 		}
