@@ -16,7 +16,7 @@ func NewDomainErrorTypeHandler() ErrorTypeResponseHandler {
 
 func (d DomainErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
 	if entityNotFoundError := AsEntityNotFoundError(err); entityNotFoundError != nil {
-		errorList := []response.APIError{response.NewAPIErrorWithValue(entityNotFoundError.Error(), entityNotFoundError.Id)}
+		errorList := []response.APIError{response.NewAPIErrorWithValue(entityNotFoundError.Error(), entityNotFoundError.ID)}
 
 		return response.NewEnvelope(http.StatusNotFound, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 	}
@@ -35,6 +35,7 @@ func (d DomainErrorTypeHandler) IsSupported(err error) bool {
 	}
 
 	domainError := &domainErrors.DomainError{}
+
 	return errors.As(err, &domainError)
 }
 

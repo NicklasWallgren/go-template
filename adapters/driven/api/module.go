@@ -40,7 +40,7 @@ var errorTypeHandlers = fx.Provide(
 	fx.Annotate(handlers.NewValidationErrorTypeHandler, fx.ResultTags(`group:"error_type_handlers"`)),
 	fx.Annotate(handlers.NewValidationGoPlaygroundErrorHandler, fx.ResultTags(`group:"error_type_handlers"`)),
 	fx.Annotate(handlers.NewDomainErrorTypeHandler, fx.ResultTags(`group:"error_type_handlers"`)),
-	fx.Annotate(handlers.NewApiErrorTypeHandler, fx.ResultTags(`group:"error_type_handlers"`)),
+	fx.Annotate(handlers.NewAPIErrorTypeHandler, fx.ResultTags(`group:"error_type_handlers"`)),
 )
 
 var errorResponseManager = fx.Provide(

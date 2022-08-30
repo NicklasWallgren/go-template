@@ -34,8 +34,8 @@ func (u EntityEventListener) Listen(ctx context.Context, event Event) {
 }
 
 func (u EntityEventListener) handleEvent(ctx context.Context, event EntityEvent) {
-	switch entity := event.Entity.(type) {
+	switch entity := event.Entity.(type) { // nolint: gocritic
 	case entities.User:
-		u.publisher.Publish(ctx, userEvent.ResponseOf(entity), "routing_key")
+		u.publisher.Publish(ctx, userEvent.ResponseOf(entity), "routing_key") // nolint: errcheck
 	}
 }

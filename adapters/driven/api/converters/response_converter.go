@@ -7,7 +7,7 @@ import (
 	"github.com/mariomac/gostream/stream"
 )
 
-type ApiResponseConverter[T common.EntityConstraint, R response.APIResponse] interface {
+type APIResponseConverter[T common.EntityConstraint, R response.APIResponse] interface {
 	ResponseOf(T) R
 }
 
@@ -15,7 +15,7 @@ type PageableResponseConverter[T common.EntityConstraint, R response.APIResponse
 
 func (p PageableResponseConverter[T, R]) ResponseOf(
 	page *models.Page[T],
-	converter ApiResponseConverter[T, R],
+	converter APIResponseConverter[T, R],
 ) *response.PageableResponse[R] {
 	contentSlice := stream.Map(stream.OfSlice(page.Content), converter.ResponseOf).ToSlice()
 

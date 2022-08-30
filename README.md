@@ -15,6 +15,15 @@
 
 Go-template is an opinionated Hexagonal backend template written in GO.
 
+## Architecture
+
+The template is inspired by:
+ - Hexagonal Architecture (also known as Port And Adapters)
+ - Domain-Driven Design (DDD)
+ - Clean Architecture
+ - SOLID Principles
+ - 12 Factor Methodology
+
 ## Features
 
 - Provides database migration with [pressly/gooose](https://github.com/pressly/goose).
@@ -23,7 +32,8 @@ Go-template is an opinionated Hexagonal backend template written in GO.
 - Comes with an initial MariaDB and Postgres database structure (
   see [migrations](https://github.com/NicklasWallgren/go-template/tree/main/resources/database/migrations))
 - API endpoints for health and readiness probes.
-- Integration tests with support for snapshots.
+- Easily testable. Integration tests with support for snapshots.
+- Mocks via [mockery](https://github.com/vektra/mockery)
 - K8s manifest files.
 - Provides support for parallel database integration tests.
 - Comes with support for AMQP publisher and consumer (via RabbitMQ).
@@ -34,6 +44,7 @@ Go-template is an opinionated Hexagonal backend template written in GO.
     - Command to serve the http server.
     - Command to launch amqp consumer.
 - Support for observability via [dd-trace-go](https://github.com/DataDog/dd-trace-go/)
+- Dependency injection via [fx](https://github.com/uber-go/fx)
 
 ## Prerequisites
 
@@ -80,7 +91,7 @@ mockery --all --output ./tests/mocks --keeptree --case underscore --with-expecte
 
 ### Code Guide
 
-We use GitHub Actions to make sure the codebase is consistent (`golangci-lint run`) and continuously tested (`go test $(go list ./...)`). We try to keep comments at a maximum of 120 characters of length and code at 120.
+We use GitHub Actions to make sure the codebase is consistent (`golangci-lint run`) and continuously tested (`go test $(go list ./...) -p 1`). We try to keep comments at a maximum of 120 characters of length and code at 120.
 
 ## Contributing
 If you find any problems or have suggestions about this template, please submit an issue. Moreover, any pull request, code review and feedback are welcome.

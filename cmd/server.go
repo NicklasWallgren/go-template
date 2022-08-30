@@ -19,23 +19,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type HttpServerCommand struct{}
+type HTTPServerCommand struct{}
 
-func NewHttpServerCommand() cli.Command {
-	return &HttpServerCommand{}
+func NewHTTPServerCommand() cli.Command {
+	return &HTTPServerCommand{}
 }
 
-func (s *HttpServerCommand) Use() string {
+func (s *HTTPServerCommand) Use() string {
 	return "start"
 }
 
-func (s *HttpServerCommand) Short() string {
+func (s *HTTPServerCommand) Short() string {
 	return "serve application"
 }
 
-func (s *HttpServerCommand) Setup(cmd *cobra.Command) {}
+func (s *HTTPServerCommand) Setup(cmd *cobra.Command) {}
 
-func (s *HttpServerCommand) Run(cmd *cobra.Command) cli.CommandRunner {
+func (s *HTTPServerCommand) Run(cmd *cobra.Command) cli.CommandRunner {
 	return func(
 		middleware middlewares.Middlewares,
 		router common.RequestHandler,
@@ -58,7 +58,7 @@ func (s *HttpServerCommand) Run(cmd *cobra.Command) cli.CommandRunner {
 		// Disables the binding.StructValidator, use the one defined in FX context instead
 		gin.DisableBindValidation()
 
-		srv := &http.Server{Addr: ":" + config.HttpServer.Port, ReadHeaderTimeout: 10 * time.Second, Handler: router.Gin}
+		srv := &http.Server{Addr: ":" + config.HTTPServer.Port, ReadHeaderTimeout: 10 * time.Second, Handler: router.Gin}
 
 		// Initializing the server in a goroutine so that it won't block
 		// See validatorModule in adapters/driven/api/module.go

@@ -31,7 +31,7 @@ type App struct {
 
 func NewApp(assets *config.Assets) *App {
 	app := &App{RootCommand: cli.NewRootCommand(assets), assets: assets}
-	app.RootCommand.Add(cmd.NewHttpServerCommand(), app.boot)
+	app.RootCommand.Add(cmd.NewHTTPServerCommand(), app.boot)
 	app.RootCommand.Add(cmd.NewMigrationCommand(), app.boot)
 	app.RootCommand.Add(cmd.NewRabbitMQCommand(), app.boot)
 
