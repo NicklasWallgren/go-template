@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/config"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"github.com/wagslane/go-rabbitmq"
 )
 

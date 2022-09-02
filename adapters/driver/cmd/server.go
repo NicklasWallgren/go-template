@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/middlewares"
@@ -15,7 +16,6 @@ import (
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 
 	"github.com/NicklasWallgren/go-template/config"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 )

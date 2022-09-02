@@ -1,9 +1,9 @@
 package health
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
 	routeHandlers "github.com/NicklasWallgren/go-template/adapters/driver/api/routes/handlers"
-	logger "github.com/NicklasWallgren/go-template/infrastructure/logger"
 )
 
 // HealthRoutes struct.

@@ -4,6 +4,8 @@ import (
 	"context"
 	"os"
 	"testing"
+
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
 

@@ -3,7 +3,8 @@ package logger
 import (
 	"fmt"
 
-	"github.com/NicklasWallgren/go-template/infrastructure/env"
+	"github.com/NicklasWallgren/go-template/adapters/driven/env"
+
 	"go.uber.org/fx/fxevent"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

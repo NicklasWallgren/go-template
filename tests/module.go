@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
-	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
+	"github.com/NicklasWallgren/go-template/adapters/driven/env"
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
@@ -18,9 +18,6 @@ import (
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain"
-	infra "github.com/NicklasWallgren/go-template/infrastructure"
-	"github.com/NicklasWallgren/go-template/infrastructure/env"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"github.com/NicklasWallgren/go-template/tests/factories"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
@@ -62,7 +59,6 @@ var ApplicationModule = fx.Options(
 	fx.Provide(func(env env.Env) *config.AppConfig {
 		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs()}, env)
 	}),
-	infra.Module,
 	domain.Module,
 	api.Module,
 	driven.Module,

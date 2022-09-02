@@ -1,9 +1,9 @@
 package middlewares
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driven/env"
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
-	"github.com/NicklasWallgren/go-template/infrastructure/env"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	cors "github.com/rs/cors/wrapper/gin"
 )
 

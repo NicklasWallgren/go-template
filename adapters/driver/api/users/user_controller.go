@@ -2,6 +2,7 @@ package users
 
 import (
 	"net/http"
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/converters"
@@ -12,7 +13,6 @@ import (
 
 	services "github.com/NicklasWallgren/go-template/domain/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"github.com/gin-gonic/gin/binding"
 
 	"github.com/gin-gonic/gin"

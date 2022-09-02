@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/NicklasWallgren/go-template/infrastructure/env"
+	"github.com/NicklasWallgren/go-template/adapters/driven/env"
 )
 
 type Database struct {
