@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/rabbitmq"
-	"github.com/NicklasWallgren/go-template/infrastructure/cli"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"github.com/spf13/cobra"
 )
@@ -23,7 +22,7 @@ func (s *RabbitMQCommand) Short() string {
 
 func (s *RabbitMQCommand) Setup(cmd *cobra.Command) {}
 
-func (s *RabbitMQCommand) Run(cmd *cobra.Command) cli.CommandRunner {
+func (s *RabbitMQCommand) Run(cmd *cobra.Command) CommandRunner {
 	return func(
 		logger logger.Logger,
 		consumerManager *rabbitmq.ConsumerManager, // TODO, generic pub sub consumer, not rabbitmq specific?

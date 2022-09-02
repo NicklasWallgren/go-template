@@ -1,4 +1,4 @@
-package cli
+package cmd
 
 import (
 	"github.com/NicklasWallgren/go-template/config"
@@ -8,8 +8,6 @@ import (
 type RootCommand struct {
 	*cobra.Command
 }
-
-// TODO, move?
 
 func NewRootCommand(assets *config.Assets) *RootCommand {
 	return &RootCommand{&cobra.Command{

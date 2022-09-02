@@ -3,17 +3,16 @@ package cmd
 import (
 	"context"
 	"errors"
-	"log"
-	"net/http"
-	"time"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/middlewares"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/routes"
+	"log"
+	"net/http"
+	"time"
 
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 
 	"github.com/NicklasWallgren/go-template/config"
-	"github.com/NicklasWallgren/go-template/infrastructure/cli"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -21,7 +20,7 @@ import (
 
 type HTTPServerCommand struct{}
 
-func NewHTTPServerCommand() cli.Command {
+func NewHTTPServerCommand() Command {
 	return &HTTPServerCommand{}
 }
 
@@ -35,7 +34,7 @@ func (s *HTTPServerCommand) Short() string {
 
 func (s *HTTPServerCommand) Setup(cmd *cobra.Command) {}
 
-func (s *HTTPServerCommand) Run(cmd *cobra.Command) cli.CommandRunner {
+func (s *HTTPServerCommand) Run(cmd *cobra.Command) CommandRunner {
 	return func(
 		middleware middlewares.Middlewares,
 		router common.RequestHandler,

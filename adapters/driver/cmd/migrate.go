@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"github.com/NicklasWallgren/go-template/infrastructure/cli"
 	"github.com/NicklasWallgren/go-template/infrastructure/database"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/cobra"
@@ -9,7 +8,7 @@ import (
 
 type MigrationCommand struct{}
 
-func NewMigrationCommand() cli.Command {
+func NewMigrationCommand() Command {
 	return &MigrationCommand{}
 }
 
@@ -26,7 +25,7 @@ func (m MigrationCommand) Setup(cmd *cobra.Command) {
 	cmd.Flags().String("create", "", "Creates a new migration file")
 }
 
-func (m MigrationCommand) Run(cmd *cobra.Command) cli.CommandRunner {
+func (m MigrationCommand) Run(cmd *cobra.Command) CommandRunner {
 	return func(migrator database.Migrator) {
 		upFlag, _ := cmd.Flags().GetBool("up")
 		createFlag, _ := cmd.Flags().GetString("create")

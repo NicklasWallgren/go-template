@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	cli "github.com/NicklasWallgren/go-template/infrastructure/cli"
+	cli "github.com/NicklasWallgren/go-template/adapters/driver/cmd"
 	cobra "github.com/spf13/cobra"
 
 	mock "github.com/stretchr/testify/mock"
@@ -26,12 +26,12 @@ func (_m *Command) EXPECT() *Command_Expecter {
 func (_m *Command) Run(cmd *cobra.Command) cli.CommandRunner {
 	ret := _m.Called(cmd)
 
-	var r0 cli.CommandRunner
-	if rf, ok := ret.Get(0).(func(*cobra.Command) cli.CommandRunner); ok {
+	var r0 cmd.CommandRunner
+	if rf, ok := ret.Get(0).(func(*cobra.Command) cmd.CommandRunner); ok {
 		r0 = rf(cmd)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(cli.CommandRunner)
+			r0 = ret.Get(0).(cmd.CommandRunner)
 		}
 	}
 
