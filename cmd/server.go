@@ -3,12 +3,12 @@ package cmd
 import (
 	"context"
 	"errors"
-	"log"
-	"net/http"
-	"time"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/middlewares"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/routes"
+	"log"
+	"net/http"
+	"time"
 
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 
