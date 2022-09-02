@@ -46,7 +46,4 @@ spec:
             failureThreshold: 30
             periodSeconds: 10
 
-      nodeSelector:
-        stim.se/feature: apm
-
       terminationGracePeriodSeconds: 900

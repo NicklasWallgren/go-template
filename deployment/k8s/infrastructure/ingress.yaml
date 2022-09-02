@@ -5,17 +5,16 @@ metadata:
   namespace: go-template
   annotations:
     kubernetes.io/ingress.class: traefik
-    cert-manager.io/cluster-issuer: stimtechdev-issuer
-    external-dns.alpha.kubernetes.io/hostname: gotemplate.stimtech.dev
+    cert-manager.io/cluster-issuer: INSERT_ISSUER
+    external-dns.alpha.kubernetes.io/hostname: INSERT_URL
     external-dns.alpha.kubernetes.io/ttl: "1"
-    external-dns.alpha.kubernetes.io/target: "10.144.100.38,10.144.100.39"
 spec:
   tls:
     - secretName: go-template-k3s-tls
       hosts:
-        - gotemplate.stimtech.dev
+        - INSERT_URL
   rules:
-    - host: gotemplate.stimtech.dev
+    - host: INSERT_URL
       http:
         paths:
           - path: /api

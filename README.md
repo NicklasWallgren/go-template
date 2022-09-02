@@ -89,6 +89,10 @@ go-template migrate --up
 mockery --all --output ./tests/mocks --keeptree --case underscore --with-expecter
 ```
 
+### Backlog
+- Use https://github.com/RichardKnop/machinery for queue handling
+- Implement gRPC api
+
 ### Code Guide
 
 We use GitHub Actions to make sure the codebase is consistent (`golangci-lint run`) and continuously tested (`go test $(go list ./...) -p 1`). We try to keep comments at a maximum of 120 characters of length and code at 120.

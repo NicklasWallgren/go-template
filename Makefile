@@ -69,26 +69,30 @@ clean: prerequisite prompt-continue
 status: prerequisite
 	- docker-compose -f docker-compose.yml ps
 
-# Drop and creates a new database
-database-setup:
+# Drop and creates a new database in MariaDB
+database-setup-mariadb:
 	- mysql -u root -p$(DB_ROOT_PASSWORD) -h 127.0.0.1 -e "DROP DATABASE IF EXISTS ${DB_DATABASE}; CREATE DATABASE ${DB_DATABASE};"
 	# TODO, apply migration and seed
 
-# Drop and creates a new test database
-database-test-setup:
+# Drop and creates a new test database in MariaDB
+database-test-setup-mariadb:
 	- mysql -u root -p$(DB_ROOT_PASSWORD) -h 127.0.0.1 -e "DROP DATABASE IF EXISTS ${DB_DATABASE}_test; CREATE DATABASE ${DB_DATABASE}_test;"
 
 #####################################################
 # BASH CLI TARGETS			 						#
 #####################################################
 
-# Opens a bash prompt to the php cli container
+# Opens a bash prompt to the app cli container
 bash-app: prerequisite
 	- docker-compose -f docker-compose.yml exec --env COLUMNS=`tput cols` --env LINES=`tput lines` app bash
 
-# Opens a bash prompt to the php fpm container
+# Opens a bash prompt to the mariadb container
 bash-mariadb: prerequisite
 	- docker-compose -f docker-compose.yml exec --env COLUMNS=`tput cols` --env LINES=`tput lines` mariadb bash
+
+# Opens a bash prompt to the postgres container
+bash-postgres: prerequisite
+	- docker-compose -f docker-compose.yml exec --env COLUMNS=`tput cols` --env LINES=`tput lines` postgres bash
 
 # Opens the rabbitmq bash cli
 bash-rabbitmq: prerequisite
@@ -104,7 +108,7 @@ bash-postgres: prerequisite
 
 # Opens the mysql cli
 cli-mariadb:
-	- docker-compose -f docker-compose.yml exec mysql mysql -u root -p$(DB_ROOT_PASSWORD)
+	- docker-compose -f docker-compose.yml exec mariadb mysql -u root -p$(DB_ROOT_PASSWORD)
 
 # Opens the mysql cli
 cli-psql:
@@ -135,11 +139,6 @@ check-environment:
 # Check whether the docker binary is available
 ifeq (, $(shell which docker-compose))
 	$(error "No docker-compose in $(PATH), consider installing docker")
-endif
-
-# Check whether the mysql-cli binary is available
-ifeq (, $(shell which mysql))
-	$(error "No mysql-cli in $(PATH), consider installing mysql-cli")
 endif
 
 # Validates the containers
