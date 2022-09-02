@@ -1,8 +1,10 @@
 package health
 
 import (
-	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	"net/http"
+
+
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 
 	"github.com/NicklasWallgren/go-template/infrastructure/health"
 	"github.com/gin-gonic/gin"
