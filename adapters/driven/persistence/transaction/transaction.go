@@ -4,9 +4,10 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	dbErrors "github.com/NicklasWallgren/go-template/adapters/driven/persistence/errors"
 	"math"
 	"time"
+
+	dbErrors "github.com/NicklasWallgren/go-template/adapters/driven/persistence/errors"
 
 	"gorm.io/gorm"
 )

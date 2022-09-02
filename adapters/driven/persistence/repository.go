@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/drivers"
 	models2 "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/transaction"
@@ -72,7 +73,9 @@ func (r repository[T]) FindOneByIDForUpdate(ctx context.Context, id uint) (entit
 	return entity, nil
 }
 
-func (r repository[T]) FindAll(ctx context.Context, pagination *models2.Pagination) (page *models2.Page[*T], err error) {
+func (r repository[T]) FindAll(
+	ctx context.Context, pagination *models2.Pagination,
+) (page *models2.Page[*T], err error) {
 	tx := r.DB.WithContext(ctx).Offset(pagination.Offset()).Limit(pagination.Limit).Order(pagination.Order())
 
 	content := &[]*T{}

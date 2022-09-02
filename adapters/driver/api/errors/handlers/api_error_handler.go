@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"errors"
+
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
+
 	errorTypes "github.com/NicklasWallgren/go-template/adapters/driver/api/errors"
-	response2 "github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 )
 
 type APIErrorTypeHandler struct{}
@@ -12,15 +14,15 @@ func NewAPIErrorTypeHandler() ErrorTypeResponseHandler {
 	return &APIErrorTypeHandler{}
 }
 
-func (a APIErrorTypeHandler) Handle(err error) *response2.APIResponseEnvelope {
+func (a APIErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
 	actualError := &errorTypes.APIError{}
 	errors.As(err, &actualError)
 
-	errorList := []response2.APIError{
-		response2.NewAPIError(actualError.Message),
+	errorList := []response.APIError{
+		response.NewAPIError(actualError.Message),
 	}
 
-	return response2.NewEnvelope(actualError.HTTPStatus, response2.WithResponse(response2.NewAPIErrorResponse(errorList)))
+	return response.NewEnvelope(actualError.HTTPStatus, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 }
 
 func (a APIErrorTypeHandler) IsSupported(err error) bool {

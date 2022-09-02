@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+
 	repository "github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
 
 	"github.com/NicklasWallgren/go-template/domain/users/entities"

@@ -2,9 +2,10 @@ package request
 
 import (
 	"errors"
-	errorTypes "github.com/NicklasWallgren/go-template/adapters/driver/api/errors"
 	"net/http"
 	"strconv"
+
+	errorTypes "github.com/NicklasWallgren/go-template/adapters/driver/api/errors"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"

@@ -1,13 +1,14 @@
 package users
 
 import (
+	"net/http"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/converters"
 	apiError "github.com/NicklasWallgren/go-template/adapters/driver/api/errors"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/request"
 	response2 "github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	userResponse "github.com/NicklasWallgren/go-template/adapters/driver/api/users/response"
-	"net/http"
 
 	services "github.com/NicklasWallgren/go-template/domain/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"

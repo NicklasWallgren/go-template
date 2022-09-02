@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"errors"
-	response2 "github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	"net/http"
+
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 
 	"github.com/NicklasWallgren/go-template/domain/validation"
 )
@@ -14,13 +15,13 @@ func NewValidationErrorTypeHandler() ErrorTypeResponseHandler {
 	return &ValidationErrorTypeHandler{}
 }
 
-func (a ValidationErrorTypeHandler) Handle(err error) *response2.APIResponseEnvelope {
+func (a ValidationErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
 	validationError := &validation.ValidationError{}
 	errors.As(err, &validationError)
 
-	errorList := []response2.APIError{response2.NewAPIError(validationError.Message)}
+	errorList := []response.APIError{response.NewAPIError(validationError.Message)}
 
-	return response2.NewEnvelope(http.StatusBadRequest, response2.WithResponse(response2.NewAPIErrorResponse(errorList)))
+	return response.NewEnvelope(http.StatusBadRequest, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 }
 
 func (a ValidationErrorTypeHandler) IsSupported(err error) bool {

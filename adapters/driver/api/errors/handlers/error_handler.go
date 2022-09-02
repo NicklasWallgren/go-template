@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"fmt"
-	response2 "github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	"net/http"
+
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 
 	"github.com/google/uuid"
 
@@ -12,7 +13,7 @@ import (
 )
 
 type ErrorResponseManager interface {
-	Handle(err error) *response2.APIResponseEnvelope
+	Handle(err error) *response.APIResponseEnvelope
 }
 
 type errorResponseManager struct {
@@ -28,7 +29,7 @@ func NewErrorResponseManager(errorTypeHandlers []ErrorTypeResponseHandler) Error
 	return &errorResponseManager{errorTypeHandlers: sortedTypeHandlers}
 }
 
-func (e errorResponseManager) Handle(err error) *response2.APIResponseEnvelope {
+func (e errorResponseManager) Handle(err error) *response.APIResponseEnvelope {
 	for _, handler := range e.errorTypeHandlers {
 		if !handler.IsSupported(err) {
 			continue
@@ -37,6 +38,6 @@ func (e errorResponseManager) Handle(err error) *response2.APIResponseEnvelope {
 		return handler.Handle(err)
 	}
 
-	return response2.NewEnvelope(http.StatusInternalServerError,
-		response2.WithResponse(fmt.Sprintf("Error occurred with id %s, please try again", uuid.New())))
+	return response.NewEnvelope(http.StatusInternalServerError,
+		response.WithResponse(fmt.Sprintf("Error occurred with id %s, please try again", uuid.New())))
 }

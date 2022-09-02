@@ -51,7 +51,7 @@ linters-settings:
 run:
   go: '1.19'
   skip-dirs:
-    - adapters/driver/persistence/transaction
+    - adapters/driven/persistence/transaction
     - tests/mocks
 
 

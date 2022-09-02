@@ -2,6 +2,7 @@ package factories
 
 import (
 	"context"
+
 	pUser "github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
 
 	"github.com/NicklasWallgren/go-template/domain/users/entities"

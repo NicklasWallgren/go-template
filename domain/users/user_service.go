@@ -4,9 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
+
 	models2 "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 	repository "github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
-	"time"
 
 	domainErrors "github.com/NicklasWallgren/go-template/domain/errors"
 	"github.com/NicklasWallgren/go-template/domain/event"

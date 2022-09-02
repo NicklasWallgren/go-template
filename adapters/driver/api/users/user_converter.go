@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+
 	converters2 "github.com/NicklasWallgren/go-template/adapters/driver/api/converters"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/users/response"
 

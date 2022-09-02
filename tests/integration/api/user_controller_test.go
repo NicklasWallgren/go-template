@@ -1,14 +1,15 @@
 package api
 
 import (
+	"net/http"
+	"os"
+	"testing"
+
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/request/types"
 	response2 "github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/users"
 	userResponse "github.com/NicklasWallgren/go-template/adapters/driver/api/users/response"
-	"net/http"
-	"os"
-	"testing"
 
 	"github.com/NicklasWallgren/go-template/tests/factories"
 	. "github.com/NicklasWallgren/go-template/tests/integration"

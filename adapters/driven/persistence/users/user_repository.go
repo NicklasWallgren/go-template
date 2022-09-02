@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
 	models2 "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 

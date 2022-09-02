@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"errors"
-	response2 "github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	"net/http"
+
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 
 	domainErrors "github.com/NicklasWallgren/go-template/domain/errors"
 )
@@ -14,19 +15,19 @@ func NewDomainErrorTypeHandler() ErrorTypeResponseHandler {
 	return &DomainErrorTypeHandler{}
 }
 
-func (d DomainErrorTypeHandler) Handle(err error) *response2.APIResponseEnvelope {
+func (d DomainErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
 	if entityNotFoundError := AsEntityNotFoundError(err); entityNotFoundError != nil {
-		errorList := []response2.APIError{response2.NewAPIErrorWithValue(entityNotFoundError.Error(), entityNotFoundError.ID)}
+		errorList := []response.APIError{response.NewAPIErrorWithValue(entityNotFoundError.Error(), entityNotFoundError.ID)}
 
-		return response2.NewEnvelope(http.StatusNotFound, response2.WithResponse(response2.NewAPIErrorResponse(errorList)))
+		return response.NewEnvelope(http.StatusNotFound, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 	}
 
 	domainError := &domainErrors.DomainError{}
 	errors.As(err, &domainError)
 
-	errorList := []response2.APIError{response2.NewAPIError(domainError.Message)}
+	errorList := []response.APIError{response.NewAPIError(domainError.Message)}
 
-	return response2.NewEnvelope(http.StatusBadRequest, response2.WithResponse(response2.NewAPIErrorResponse(errorList)))
+	return response.NewEnvelope(http.StatusBadRequest, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 }
 
 func (d DomainErrorTypeHandler) IsSupported(err error) bool {
