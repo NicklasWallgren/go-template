@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	mocks "github.com/NicklasWallgren/go-template/tests/mocks/adapters/driver/persistence/users"
+	mocks "github.com/NicklasWallgren/go-template/tests/mocks/adapters/driven/persistence/users"
 
 	"github.com/NicklasWallgren/go-template/domain/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
