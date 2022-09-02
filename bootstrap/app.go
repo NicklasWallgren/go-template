@@ -4,10 +4,11 @@ import (
 	"context"
 	"log"
 
+	"github.com/NicklasWallgren/go-template/adapters/driver/cmd"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api"
 
-	"github.com/NicklasWallgren/go-template/cmd"
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain"
 	infra "github.com/NicklasWallgren/go-template/infrastructure"
