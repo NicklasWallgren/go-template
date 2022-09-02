@@ -20,8 +20,8 @@ services:
     image: library/mariadb:10.5.10
     container_name: mariadb
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=go_template
+      - MYSQL_ROOT_PASSWORD=secret # Only for local development, define as secret in ci-pipeline
+      - MYSQL_DATABASE=go_template # Only for local development, define as secret in ci-pipeline
     ports:
       - 3306:3306
     networks:
@@ -36,8 +36,8 @@ services:
     image: postgres:14
     container_name: postgres
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=root # Only for local development, define as secret in ci-pipeline
+      - POSTGRES_PASSWORD=secret # Only for local development, define as secret in ci-pipeline
       - POSTGRES_MULTIPLE_DATABASES=go_template,go_template_test
     ports:
       - 5432:5432
