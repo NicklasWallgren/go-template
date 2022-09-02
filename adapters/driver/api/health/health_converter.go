@@ -1,7 +1,7 @@
 package health
 
 import (
-	"github.com/NicklasWallgren/go-template/infrastructure/health"
+	"github.com/NicklasWallgren/go-template/adapters/driven/health"
 	"github.com/mariomac/gostream/stream"
 )
 

@@ -1,11 +1,15 @@
 package tests
 
 import (
-	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
-	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
 	"io/fs"
 	"os"
 	"testing"
+
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
+
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api"
