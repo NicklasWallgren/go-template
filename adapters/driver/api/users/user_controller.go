@@ -2,6 +2,8 @@ package users
 
 import (
 	"net/http"
+
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"

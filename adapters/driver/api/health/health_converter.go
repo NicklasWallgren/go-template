@@ -2,6 +2,7 @@ package health
 
 import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/health"
+	"github.com/NicklasWallgren/go-template/adapters/driven/health/checker"
 	"github.com/mariomac/gostream/stream"
 )
 
@@ -17,6 +18,6 @@ func (h HealthAPIConverter) ResponseOf(result health.HealthResult) HealthRespons
 	return HealthResponse{result.Status.String(), componentSlice}
 }
 
-func HealthToResponseHealth(health health.Health) Health {
+func HealthToResponseHealth(health checker.Health) Health {
 	return Health{Status: health.Status.String(), Name: health.Name, Details: health.Details}
 }

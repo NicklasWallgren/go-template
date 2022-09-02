@@ -1,22 +1,26 @@
 package health
 
-import "context"
+import (
+	"context"
+
+	"github.com/NicklasWallgren/go-template/adapters/driven/health/checker"
+)
 
 type HealthResult struct {
-	Status     HealthStatus
-	Components []Health
+	Status     checker.HealthStatus
+	Components []checker.Health
 }
 
 type HealthCheckerManager struct {
-	healthCheckers []HealthChecker
+	healthCheckers []checker.HealthChecker
 }
 
-func NewHealthCheckerManager(healthCheckers []HealthChecker) *HealthCheckerManager {
+func NewHealthCheckerManager(healthCheckers []checker.HealthChecker) *HealthCheckerManager {
 	return &HealthCheckerManager{healthCheckers: healthCheckers}
 }
 
 func (h HealthCheckerManager) Check(ctx context.Context) HealthResult {
-	result := HealthResult{Status: Unknown, Components: make([]Health, len(h.healthCheckers))}
+	result := HealthResult{Status: checker.Unknown, Components: make([]checker.Health, len(h.healthCheckers))}
 
 	for index, checker := range h.healthCheckers {
 		health := checker.Check(ctx)

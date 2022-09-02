@@ -1,4 +1,4 @@
-package health
+package checker
 
 type HealthStatus int
 
