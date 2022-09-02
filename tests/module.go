@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driven"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api"
 	"io/fs"
 	"os"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/NicklasWallgren/go-template/tests/integration/utils"
 
-	"github.com/NicklasWallgren/go-template/adapters/driver"
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain"
 	infra "github.com/NicklasWallgren/go-template/infrastructure"
@@ -45,7 +45,7 @@ var TestPersistenceModule = fx.Options(
 	}),
 	fx.Provide(database.NewDatabase), // retrieve from infrastructure module?
 	fx.Provide(logger.NewLogger),
-	driver.PersistenceModule,
+	driven.PersistenceModule,
 	fx.Provide(factories.NewUserFactory),
 	fx.Provide(database.NewGooseMigrator),
 )
@@ -59,6 +59,6 @@ var ApplicationModule = fx.Options(
 	infra.Module,
 	domain.Module,
 	api.Module,
-	driver.Module,
+	driven.Module,
 	fx.Provide(factories.NewUserFactory),
 )

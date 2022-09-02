@@ -1,4 +1,4 @@
-package driver
+package driven
 
 import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"

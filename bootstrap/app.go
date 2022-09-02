@@ -2,10 +2,10 @@ package bootstrap
 
 import (
 	"context"
+	"github.com/NicklasWallgren/go-template/adapters/driven"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api"
 	"log"
 
-	"github.com/NicklasWallgren/go-template/adapters/driver"
 	"github.com/NicklasWallgren/go-template/cmd"
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain"
@@ -20,7 +20,7 @@ var CommonModules = fx.Options(
 	infra.Module,
 	domain.Module,
 	api.Module,
-	driver.Module,
+	driven.Module,
 )
 
 // App root of application.
