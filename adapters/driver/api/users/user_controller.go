@@ -7,7 +7,7 @@ import (
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/converters"
 	apiError "github.com/NicklasWallgren/go-template/adapters/driver/api/errors"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/request"
-	response2 "github.com/NicklasWallgren/go-template/adapters/driver/api/response"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	userResponse "github.com/NicklasWallgren/go-template/adapters/driver/api/users/response"
 
 	services "github.com/NicklasWallgren/go-template/domain/users"
@@ -47,7 +47,7 @@ func NewUserController(
 // @Failure		400 {object} response.APIErrorResponse "in case of a bad request"
 // @Failure		404 {object} response.APIErrorResponse "if an unknown ID is provided"
 // @Router 		/users/{id} [get].
-func (u UserController) FindOneUserByID(ctx *gin.Context) (*response2.APIResponseEnvelope, error) {
+func (u UserController) FindOneUserByID(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
 		return nil, apiError.NewAPIError(apiError.WithStatusAndError(http.StatusBadRequest, err))
@@ -58,7 +58,7 @@ func (u UserController) FindOneUserByID(ctx *gin.Context) (*response2.APIRespons
 		return nil, apiError.NewAPIError(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	return response2.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(user)), nil
+	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(user)), nil
 }
 
 // FindAllUsers retrieves paginated response of users.
@@ -66,7 +66,7 @@ func (u UserController) FindOneUserByID(ctx *gin.Context) (*response2.APIRespons
 // @Success		200 {object} response.PageableResponse[response.UserResponse]
 // @Failure		400 {object} response.APIErrorResponse "in case of an error"
 // @Router 		/users [get].
-func (u UserController) FindAllUsers(ctx *gin.Context) (*response2.APIResponseEnvelope, error) {
+func (u UserController) FindAllUsers(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	pagination, err := request.Into(ctx, models.NewPaginationWithDefaults())
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (*response2.APIResponseEn
 	// TODO, inject converter
 	converter := converters.PageableResponseConverter[*entities.User, userResponse.UserResponse]{}
 
-	return response2.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
+	return response.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
 }
 
 // CreateUser creates a user using the prerequisites provided.
@@ -90,7 +90,7 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (*response2.APIResponseEn
 // @Success		201 {object} response.UserResponse "if a new user was created"
 // @Failure		400 {object} response.APIErrorResponse "in case of a bad request"
 // @Router 		/users [post].
-func (u UserController) CreateUser(ctx *gin.Context) (*response2.APIResponseEnvelope, error) {
+func (u UserController) CreateUser(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, CreateUserRequest{})
 	if err != nil {
 		return nil, err
@@ -101,7 +101,7 @@ func (u UserController) CreateUser(ctx *gin.Context) (*response2.APIResponseEnve
 		return nil, apiError.NewAPIError(apiError.WithError(err))
 	}
 
-	return response2.NewWithResponse(http.StatusCreated, u.apiConverter.ResponseOf(persistedUser)), nil
+	return response.NewWithResponse(http.StatusCreated, u.apiConverter.ResponseOf(persistedUser)), nil
 }
 
 // UpdateUser updates an existing user.
@@ -110,7 +110,7 @@ func (u UserController) CreateUser(ctx *gin.Context) (*response2.APIResponseEnve
 // @Failure		400 {object} response.APIErrorResponse "in case of a bad request"
 // @Failure		500 {object} response.APIErrorResponse "in case of an internal error"
 // @Router 		/users/{id} [post].
-func (u UserController) UpdateUser(ctx *gin.Context) (*response2.APIResponseEnvelope, error) {
+func (u UserController) UpdateUser(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	request, err := request.IntoAndValidate(ctx, u.validator, UpdateUserRequest{})
 	if err != nil {
 		return nil, err
@@ -128,7 +128,7 @@ func (u UserController) UpdateUser(ctx *gin.Context) (*response2.APIResponseEnve
 		return nil, apiError.NewAPIError(apiError.WithError(err))
 	}
 
-	return response2.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(persistedUser)), nil
+	return response.NewWithResponse(http.StatusOK, u.apiConverter.ResponseOf(persistedUser)), nil
 }
 
 // DeleteUserByID deletes a user by id.
@@ -137,7 +137,7 @@ func (u UserController) UpdateUser(ctx *gin.Context) (*response2.APIResponseEnve
 // @Failure		400 {object} response.APIErrorResponse "in case of a bad request"
 // @Failure		500 {object} response.APIErrorResponse "in case of an internal error"
 // @Router 		/users/{id} [delete].
-func (u UserController) DeleteUserByID(ctx *gin.Context) (*response2.APIResponseEnvelope, error) {
+func (u UserController) DeleteUserByID(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	id, err := request.GetParamInt(ctx, "id")
 	if err != nil {
 		return nil, apiError.NewAPIError(apiError.WithStatusAndError(http.StatusBadRequest, err))
@@ -147,5 +147,5 @@ func (u UserController) DeleteUserByID(ctx *gin.Context) (*response2.APIResponse
 		return nil, apiError.NewAPIError(apiError.WithStatusAndError(http.StatusBadRequest, err))
 	}
 
-	return response2.NewEnvelope(http.StatusNoContent), nil
+	return response.NewEnvelope(http.StatusNoContent), nil
 }

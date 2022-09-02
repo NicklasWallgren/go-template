@@ -1,8 +1,8 @@
 package health
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	"net/http"
-	response2 "github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 
 	"github.com/NicklasWallgren/go-template/infrastructure/health"
 	"github.com/gin-gonic/gin"
@@ -21,11 +21,11 @@ func NewHealthController(
 	}
 }
 
-func (h HealthController) Health(ctx *gin.Context) (*response2.APIResponseEnvelope, error) {
+func (h HealthController) Health(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
 	healthResult := h.healthCheckerManager.Check(ctx.Request.Context())
 
-	return response2.NewEnvelope(
-		HealthToHTTPStatus(healthResult.Status), response2.WithResponse(h.apiConverter.ResponseOf(healthResult))), nil
+	return response.NewEnvelope(
+		HealthToHTTPStatus(healthResult.Status), response.WithResponse(h.apiConverter.ResponseOf(healthResult))), nil
 }
 
 func HealthToHTTPStatus(status health.HealthStatus) int {
