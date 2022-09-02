@@ -4,15 +4,16 @@ import (
 	"database/sql"
 	"strings"
 
-	_ "github.com/lib/pq" // nolint:revive
 
-	"github.com/NicklasWallgren/go-template/infrastructure/database"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
+
+	_ "github.com/lib/pq" // nolint:revive
 
 	"github.com/NicklasWallgren/go-template/config"
 )
 
 func CreateDatabase(databaseName string, appConfig *config.AppConfig) (string, error) {
-	db, err := sql.Open(appConfig.Database.Driver, database.DSN(appConfig.Database))
+	db, err := sql.Open(appConfig.Database.Driver, persistence.DSN(appConfig.Database))
 	if err != nil {
 		return "", err
 	}
@@ -28,7 +29,7 @@ func CreateDatabase(databaseName string, appConfig *config.AppConfig) (string, e
 }
 
 func DropDatabase(databaseName string, appConfig *config.AppConfig) (string, error) {
-	db, err := sql.Open(appConfig.Database.Driver, database.DSN(appConfig.Database))
+	db, err := sql.Open(appConfig.Database.Driver, persistence.DSN(appConfig.Database))
 	if err != nil {
 		return "", err
 	}
@@ -40,7 +41,7 @@ func DropDatabase(databaseName string, appConfig *config.AppConfig) (string, err
 
 func SeedDatabase() {}
 
-func TruncateDatabase(db database.Database, config *config.AppConfig) error {
+func TruncateDatabase(db persistence.Database, config *config.AppConfig) error {
 	// Truncates all tables except the goose specific table
 	sql := "call truncate_tables('go_template_test')"
 

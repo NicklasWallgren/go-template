@@ -9,7 +9,6 @@ import (
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain/common"
-	"github.com/NicklasWallgren/go-template/infrastructure/database"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -30,14 +29,14 @@ type Repository[T common.EntityConstraint] interface {
 }
 
 type repository[T common.EntityConstraint] struct {
-	database.Database
+	Database
 	Logger logger.Logger
 	config *config.AppConfig
 	entity T
 }
 
 func NewRepository[T common.EntityConstraint](
-	database database.Database, entity T, logger logger.Logger, config *config.AppConfig,
+	database Database, entity T, logger logger.Logger, config *config.AppConfig,
 ) Repository[T] {
 	return &repository[T]{Database: database, entity: entity, Logger: logger, config: config}
 }

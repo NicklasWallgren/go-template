@@ -8,7 +8,6 @@ import (
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
-	"github.com/NicklasWallgren/go-template/infrastructure/database"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -33,7 +32,7 @@ type userRepository struct {
 }
 
 // NewUserRepository creates a new user repository.
-func NewUserRepository(db database.Database, logger logger.Logger, config *config.AppConfig) UserRepository {
+func NewUserRepository(db persistence.Database, logger logger.Logger, config *config.AppConfig) UserRepository {
 	return &userRepository{persistence.NewRepository[entities.User](db, entities.User{}, logger, config)}
 }
 

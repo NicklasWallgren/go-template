@@ -1,21 +1,22 @@
 package integration
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/middlewares"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/routes"
 	"github.com/NicklasWallgren/go-template/config"
-	"github.com/NicklasWallgren/go-template/infrastructure/database"
 	"github.com/NicklasWallgren/go-template/tests/integration/utils"
 	"github.com/gin-gonic/gin"
 )
 
 // MigrationUp is a InvokeFunc that should be passed to fx.Invoke.
-func MigrationUp(migrator database.Migrator) error {
+func MigrationUp(migrator migration.Migrator) error {
 	return migrator.Up() // nolint:wrapcheck
 }
 
 // TruncateDatabase is a InvokeFunc that should be passed to fx.Invoke.
-func TruncateDatabase(db database.Database, config *config.AppConfig) error {
+func TruncateDatabase(db persistence.Database, config *config.AppConfig) error {
 	return utils.TruncateDatabase(db, config) // nolint:wrapcheck
 }
 

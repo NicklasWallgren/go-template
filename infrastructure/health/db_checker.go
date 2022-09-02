@@ -3,18 +3,19 @@ package health
 import (
 	"context"
 
-	"github.com/NicklasWallgren/go-template/infrastructure/database"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
+
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 )
 
 type DBHealthChecker struct {
-	database database.Database
+	database persistence.Database
 	logger   logger.Logger
 }
 
 // TODO, move to persistence driver package?
 
-func NewDBHealthChecker(database database.Database, logger logger.Logger) HealthChecker {
+func NewDBHealthChecker(database persistence.Database, logger logger.Logger) HealthChecker {
 	return &DBHealthChecker{database: database, logger: logger}
 }
 

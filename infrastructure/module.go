@@ -1,7 +1,8 @@
 package infrastructure
 
 import (
-	"github.com/NicklasWallgren/go-template/infrastructure/database"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
 	"github.com/NicklasWallgren/go-template/infrastructure/env"
 	"github.com/NicklasWallgren/go-template/infrastructure/health"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
@@ -21,8 +22,8 @@ var healthCheckerManager = fx.Provide(
 var Module = fx.Options(
 	fx.Provide(env.NewEnv),
 	fx.Provide(logger.NewLogger),
-	fx.Provide(database.NewDatabase),
-	fx.Provide(database.NewGooseMigrator),
+	fx.Provide(persistence.NewDatabase),
+	fx.Provide(migration.NewGooseMigrator),
 	healthCheckers,
 	healthCheckerManager,
 )

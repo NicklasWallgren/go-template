@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/NicklasWallgren/go-template/infrastructure/database"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/cobra"
 )
@@ -26,7 +26,7 @@ func (m MigrationCommand) Setup(cmd *cobra.Command) {
 }
 
 func (m MigrationCommand) Run(cmd *cobra.Command) CommandRunner {
-	return func(migrator database.Migrator) {
+	return func(migrator migration.Migrator) {
 		upFlag, _ := cmd.Flags().GetBool("up")
 		createFlag, _ := cmd.Flags().GetString("create")
 
@@ -40,14 +40,14 @@ func (m MigrationCommand) Run(cmd *cobra.Command) CommandRunner {
 	} // nolint: wsl
 }
 
-func migrate(migrator database.Migrator) {
+func migrate(migrator migration.Migrator) {
 	if err := migrator.Up(); err != nil {
 		// TODO, handle error properly
 		panic(err)
 	}
 }
 
-func create(migrator database.Migrator, filename string) {
+func create(migrator migration.Migrator, filename string) {
 	if err := migrator.Create(filename); err != nil {
 		// TODO, handle error properly
 		panic(err)
