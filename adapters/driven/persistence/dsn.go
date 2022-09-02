@@ -1,4 +1,4 @@
-package database
+package persistence
 
 import (
 	"fmt"
@@ -17,14 +17,4 @@ func DSN(config *config.Database) string {
 	}
 
 	return ""
-}
-
-func MysqlDSN(config *config.Database) string {
-	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&multiStatements=true",
-		config.User, config.Password, config.Host, config.Port, config.Name)
-}
-
-func PostgresDSN(config *config.Database) string {
-	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&lock_timeout=5000ms&TimeZone=UTC",
-		config.User, config.Password, config.Host, config.Port, config.Name)
 }

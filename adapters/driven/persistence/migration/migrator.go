@@ -1,4 +1,4 @@
-package database
+package migration
 
 type Migrator interface {
 	Up() error

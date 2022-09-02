@@ -1,16 +1,19 @@
-package database
+package migration
 
 import (
 	"errors"
 	"fmt"
 	"io/fs"
 
+
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
+
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/pressly/goose/v3"
 )
 
 type GooseMigrator struct {
-	db                     Database
+	db                     persistence.Database
 	filesystem             fs.FS
 	migrationDirectoryPath string
 }
@@ -18,7 +21,7 @@ type GooseMigrator struct {
 // ErrMigrationUp is returned when the available migrations could not be applied.
 var ErrMigrationUp = errors.New("could not apply the available migrations")
 
-func NewGooseMigrator(db Database, config *config.AppConfig) (Migrator, error) {
+func NewGooseMigrator(db persistence.Database, config *config.AppConfig) (Migrator, error) {
 	goose.SetBaseFS(config.Assets.EmbedMigrations)
 
 	if err := goose.SetDialect(config.Database.Driver); err != nil {

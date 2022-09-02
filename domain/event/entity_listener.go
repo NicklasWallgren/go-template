@@ -2,11 +2,11 @@ package event
 
 import (
 	"context"
+	"github.com/NicklasWallgren/go-template/adapters/driven/pubsub"
 	"log"
 
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
 	userEvent "github.com/NicklasWallgren/go-template/domain/users/event"
-	"github.com/NicklasWallgren/go-template/infrastructure/pubsub"
 )
 
 type EntityConverter[T any] func(entity T) any

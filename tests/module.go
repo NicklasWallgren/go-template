@@ -1,6 +1,8 @@
 package tests
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
 	"io/fs"
 	"os"
 	"testing"
@@ -13,7 +15,6 @@ import (
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain"
 	infra "github.com/NicklasWallgren/go-template/infrastructure"
-	"github.com/NicklasWallgren/go-template/infrastructure/database"
 	"github.com/NicklasWallgren/go-template/infrastructure/env"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"github.com/NicklasWallgren/go-template/tests/factories"
@@ -44,11 +45,11 @@ var TestPersistenceModule = fx.Options(
 	fx.Provide(func(env env.Env) *config.AppConfig {
 		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs()}, env)
 	}),
-	fx.Provide(database.NewDatabase), // retrieve from infrastructure module?
+	fx.Provide(persistence.NewDatabase), // retrieve from infrastructure module?
 	fx.Provide(logger.NewLogger),
 	driven.PersistenceModule,
 	fx.Provide(factories.NewUserFactory),
-	fx.Provide(database.NewGooseMigrator),
+	fx.Provide(migration.NewGooseMigrator),
 )
 
 // ApplicationModule is the application module containing the dependency graph for the application.
