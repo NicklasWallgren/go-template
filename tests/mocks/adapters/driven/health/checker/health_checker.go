@@ -5,7 +5,8 @@ package mocks
 import (
 	context "context"
 
-	health "github.com/NicklasWallgren/go-template/adapters/driven/health"
+	checker "github.com/NicklasWallgren/go-template/adapters/driven/health/checker"
+
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -23,14 +24,14 @@ func (_m *HealthChecker) EXPECT() *HealthChecker_Expecter {
 }
 
 // Check provides a mock function with given fields: ctx
-func (_m *HealthChecker) Check(ctx context.Context) health.Health {
+func (_m *HealthChecker) Check(ctx context.Context) checker.Health {
 	ret := _m.Called(ctx)
 
-	var r0 health.Health
-	if rf, ok := ret.Get(0).(func(context.Context) health.Health); ok {
+	var r0 checker.Health
+	if rf, ok := ret.Get(0).(func(context.Context) checker.Health); ok {
 		r0 = rf(ctx)
 	} else {
-		r0 = ret.Get(0).(health.Health)
+		r0 = ret.Get(0).(checker.Health)
 	}
 
 	return r0
@@ -54,7 +55,7 @@ func (_c *HealthChecker_Check_Call) Run(run func(ctx context.Context)) *HealthCh
 	return _c
 }
 
-func (_c *HealthChecker_Check_Call) Return(_a0 health.Health) *HealthChecker_Check_Call {
+func (_c *HealthChecker_Check_Call) Return(_a0 checker.Health) *HealthChecker_Check_Call {
 	_c.Call.Return(_a0)
 	return _c
 }

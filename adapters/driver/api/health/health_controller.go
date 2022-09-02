@@ -1,8 +1,10 @@
 package health
 
 import (
-	"github.com/NicklasWallgren/go-template/adapters/driven/health"
 	"net/http"
+
+	"github.com/NicklasWallgren/go-template/adapters/driven/health"
+	"github.com/NicklasWallgren/go-template/adapters/driven/health/checker"
 
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 
@@ -29,12 +31,12 @@ func (h HealthController) Health(ctx *gin.Context) (*response.APIResponseEnvelop
 		HealthToHTTPStatus(healthResult.Status), response.WithResponse(h.apiConverter.ResponseOf(healthResult))), nil
 }
 
-func HealthToHTTPStatus(status health.HealthStatus) int {
+func HealthToHTTPStatus(status checker.HealthStatus) int {
 	switch status {
-	case health.Unhealthy:
-	case health.Unknown:
+	case checker.Unhealthy:
+	case checker.Unknown:
 		return http.StatusInternalServerError
-	case health.Healthy:
+	case checker.Healthy:
 		return http.StatusOK
 	}
 

@@ -5,13 +5,13 @@ import (
 	"os"
 	"testing"
 
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/env"
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
-	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
-	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
-
 	"github.com/NicklasWallgren/go-template/adapters/driven"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api"
 
 	"github.com/NicklasWallgren/go-template/tests/integration/utils"
@@ -48,7 +48,7 @@ var TestPersistenceModule = fx.Options(
 	}),
 	fx.Provide(persistence.NewDatabase), // retrieve from infrastructure module?
 	fx.Provide(logger.NewLogger),
-	driven.PersistenceModule,
+	driven.PersistenceRepositories,
 	fx.Provide(factories.NewUserFactory),
 	fx.Provide(migration.NewGooseMigrator),
 )

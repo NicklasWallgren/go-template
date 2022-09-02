@@ -1,8 +1,7 @@
-package checkers
+package checker
 
 import (
 	"context"
-	"github.com/NicklasWallgren/go-template/adapters/driven/health"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
@@ -14,15 +13,15 @@ type DBHealthChecker struct {
 	logger   logger.Logger
 }
 
-func NewDBHealthChecker(database persistence.Database, logger logger.Logger) health.HealthChecker {
+func NewDBHealthChecker(database persistence.Database, logger logger.Logger) HealthChecker {
 	return &DBHealthChecker{database: database, logger: logger}
 }
 
-func (d DBHealthChecker) Check(ctx context.Context) health.Health {
-	result := health.NewHealth(health.Healthy, "db")
+func (d DBHealthChecker) Check(ctx context.Context) Health {
+	result := NewHealth(Healthy, "db")
 
 	if err := d.database.WithContext(ctx).Exec("SELECT 1").Error; err != nil {
-		result.Status = health.Unhealthy
+		result.Status = Unhealthy
 
 		d.logger.Fatalf("The database isn't in a healthy state. Cause: %v", err)
 	}

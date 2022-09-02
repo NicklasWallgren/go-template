@@ -1,6 +1,8 @@
-package health
+package checker
 
-import "context"
+import (
+	"context"
+)
 
 const (
 	Unknown HealthStatus = iota

@@ -6,7 +6,7 @@ import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
-	models "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
