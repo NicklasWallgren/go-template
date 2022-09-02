@@ -12,7 +12,6 @@ import (
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain"
 	infra "github.com/NicklasWallgren/go-template/infrastructure"
-	"github.com/NicklasWallgren/go-template/infrastructure/cli"
 	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
@@ -27,12 +26,12 @@ var CommonModules = fx.Options(
 
 // App root of application.
 type App struct {
-	*cli.RootCommand
+	*cmd.RootCommand
 	assets *config.Assets
 }
 
 func NewApp(assets *config.Assets) *App {
-	app := &App{RootCommand: cli.NewRootCommand(assets), assets: assets}
+	app := &App{RootCommand: cmd.NewRootCommand(assets), assets: assets}
 	app.RootCommand.Add(cmd.NewHTTPServerCommand(), app.boot)
 	app.RootCommand.Add(cmd.NewMigrationCommand(), app.boot)
 	app.RootCommand.Add(cmd.NewRabbitMQCommand(), app.boot)
@@ -40,7 +39,7 @@ func NewApp(assets *config.Assets) *App {
 	return app
 }
 
-func (a App) boot(runner cli.CommandRunner) {
+func (a App) boot(runner cmd.CommandRunner) {
 	opts := fx.Options(
 		fx.WithLogger(func(logger logger.Logger) fxevent.Logger {
 			return logger.GetFxLogger()
