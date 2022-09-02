@@ -1,7 +1,8 @@
-package health
+package checkers
 
 import (
 	"context"
+	"github.com/NicklasWallgren/go-template/adapters/driven/health"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
@@ -13,20 +14,18 @@ type DBHealthChecker struct {
 	logger   logger.Logger
 }
 
-// TODO, move to persistence driver package?
-
-func NewDBHealthChecker(database persistence.Database, logger logger.Logger) HealthChecker {
+func NewDBHealthChecker(database persistence.Database, logger logger.Logger) health.HealthChecker {
 	return &DBHealthChecker{database: database, logger: logger}
 }
 
-func (d DBHealthChecker) Check(ctx context.Context) Health {
-	health := NewHealth(Healthy, "db")
+func (d DBHealthChecker) Check(ctx context.Context) health.Health {
+	result := health.NewHealth(health.Healthy, "db")
 
 	if err := d.database.WithContext(ctx).Exec("SELECT 1").Error; err != nil {
-		health.Status = Unhealthy
+		result.Status = health.Unhealthy
 
 		d.logger.Fatalf("The database isn't in a healthy state. Cause: %v", err)
 	}
 
-	return health
+	return result
 }
