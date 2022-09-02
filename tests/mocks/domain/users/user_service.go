@@ -4,13 +4,12 @@ package mocks
 
 import (
 	context "context"
+	models2 "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 
 	entities "github.com/NicklasWallgren/go-template/domain/users/entities"
 	gorm "gorm.io/gorm"
 
 	mock "github.com/stretchr/testify/mock"
-
-	models "github.com/NicklasWallgren/go-template/adapters/driver/persistence/models"
 
 	users "github.com/NicklasWallgren/go-template/domain/users"
 )
@@ -57,8 +56,8 @@ type UserService_CreateUser_Call struct {
 }
 
 // CreateUser is a helper method to define mock.On call
-//  - ctx context.Context
-//  - toBeCreated entities.User
+//   - ctx context.Context
+//   - toBeCreated entities.User
 func (_e *UserService_Expecter) CreateUser(ctx interface{}, toBeCreated interface{}) *UserService_CreateUser_Call {
 	return &UserService_CreateUser_Call{Call: _e.mock.On("CreateUser", ctx, toBeCreated)}
 }
@@ -95,8 +94,8 @@ type UserService_DeleteUserByID_Call struct {
 }
 
 // DeleteUserByID is a helper method to define mock.On call
-//  - ctx context.Context
-//  - id uint
+//   - ctx context.Context
+//   - id uint
 func (_e *UserService_Expecter) DeleteUserByID(ctx interface{}, id interface{}) *UserService_DeleteUserByID_Call {
 	return &UserService_DeleteUserByID_Call{Call: _e.mock.On("DeleteUserByID", ctx, id)}
 }
@@ -114,20 +113,20 @@ func (_c *UserService_DeleteUserByID_Call) Return(_a0 error) *UserService_Delete
 }
 
 // FindAllUser provides a mock function with given fields: ctx, pagination
-func (_m *UserService) FindAllUser(ctx context.Context, pagination *models.Pagination) (*models.Page[*entities.User], error) {
+func (_m *UserService) FindAllUser(ctx context.Context, pagination *models2.Pagination) (*models2.Page[*entities.User], error) {
 	ret := _m.Called(ctx, pagination)
 
-	var r0 *models.Page[*entities.User]
-	if rf, ok := ret.Get(0).(func(context.Context, *models.Pagination) *models.Page[*entities.User]); ok {
+	var r0 *models2.Page[*entities.User]
+	if rf, ok := ret.Get(0).(func(context.Context, *models2.Pagination) *models2.Page[*entities.User]); ok {
 		r0 = rf(ctx, pagination)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models.Page[*entities.User])
+			r0 = ret.Get(0).(*models2.Page[*entities.User])
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, *models.Pagination) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *models2.Pagination) error); ok {
 		r1 = rf(ctx, pagination)
 	} else {
 		r1 = ret.Error(1)
@@ -142,20 +141,20 @@ type UserService_FindAllUser_Call struct {
 }
 
 // FindAllUser is a helper method to define mock.On call
-//  - ctx context.Context
-//  - pagination *models.Pagination
+//   - ctx context.Context
+//   - pagination *models.Pagination
 func (_e *UserService_Expecter) FindAllUser(ctx interface{}, pagination interface{}) *UserService_FindAllUser_Call {
 	return &UserService_FindAllUser_Call{Call: _e.mock.On("FindAllUser", ctx, pagination)}
 }
 
-func (_c *UserService_FindAllUser_Call) Run(run func(ctx context.Context, pagination *models.Pagination)) *UserService_FindAllUser_Call {
+func (_c *UserService_FindAllUser_Call) Run(run func(ctx context.Context, pagination *models2.Pagination)) *UserService_FindAllUser_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*models.Pagination))
+		run(args[0].(context.Context), args[1].(*models2.Pagination))
 	})
 	return _c
 }
 
-func (_c *UserService_FindAllUser_Call) Return(_a0 *models.Page[*entities.User], err error) *UserService_FindAllUser_Call {
+func (_c *UserService_FindAllUser_Call) Return(_a0 *models2.Page[*entities.User], err error) *UserService_FindAllUser_Call {
 	_c.Call.Return(_a0, err)
 	return _c
 }
@@ -189,8 +188,8 @@ type UserService_FindOneUserByID_Call struct {
 }
 
 // FindOneUserByID is a helper method to define mock.On call
-//  - ctx context.Context
-//  - id uint
+//   - ctx context.Context
+//   - id uint
 func (_e *UserService_Expecter) FindOneUserByID(ctx interface{}, id interface{}) *UserService_FindOneUserByID_Call {
 	return &UserService_FindOneUserByID_Call{Call: _e.mock.On("FindOneUserByID", ctx, id)}
 }
@@ -236,8 +235,8 @@ type UserService_FindOneUserByIDForUpdate_Call struct {
 }
 
 // FindOneUserByIDForUpdate is a helper method to define mock.On call
-//  - ctx context.Context
-//  - id uint
+//   - ctx context.Context
+//   - id uint
 func (_e *UserService_Expecter) FindOneUserByIDForUpdate(ctx interface{}, id interface{}) *UserService_FindOneUserByIDForUpdate_Call {
 	return &UserService_FindOneUserByIDForUpdate_Call{Call: _e.mock.On("FindOneUserByIDForUpdate", ctx, id)}
 }
@@ -283,8 +282,8 @@ type UserService_UpdateUser_Call struct {
 }
 
 // UpdateUser is a helper method to define mock.On call
-//  - ctx context.Context
-//  - updated *entities.User
+//   - ctx context.Context
+//   - updated *entities.User
 func (_e *UserService_Expecter) UpdateUser(ctx interface{}, updated interface{}) *UserService_UpdateUser_Call {
 	return &UserService_UpdateUser_Call{Call: _e.mock.On("UpdateUser", ctx, updated)}
 }
@@ -323,7 +322,7 @@ type UserService_WithTx_Call struct {
 }
 
 // WithTx is a helper method to define mock.On call
-//  - tx *gorm.DB
+//   - tx *gorm.DB
 func (_e *UserService_Expecter) WithTx(tx interface{}) *UserService_WithTx_Call {
 	return &UserService_WithTx_Call{Call: _e.mock.On("WithTx", tx)}
 }

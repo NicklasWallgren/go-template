@@ -4,7 +4,7 @@ response.UserResponse{Name:"Bart Beatty", Email:"cordiajacobi@carroll.net"}
 ---
 
 [Test/GivenUsers_WhenGetUsers_ThenMatchSnapshot - 1]
-response.PageableResponse[github.com/NicklasWallgren/go-template/adapters/driven/api/users/response.UserResponse]{
+response.PageableResponse[github.com/NicklasWallgren/go-template/adapters/driver/api/users/response.UserResponse]{
     Content: {
         {Name:"Bart Beatty", Email:"cordiajacobi@carroll.net"},
         {Name:"Merle Quigley", Email:"arianerice@hackett.com"},

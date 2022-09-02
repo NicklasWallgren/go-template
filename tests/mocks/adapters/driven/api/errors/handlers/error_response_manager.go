@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	response "github.com/NicklasWallgren/go-template/adapters/driven/api/response"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -42,7 +42,7 @@ type ErrorResponseManager_Handle_Call struct {
 }
 
 // Handle is a helper method to define mock.On call
-//  - err error
+//   - err error
 func (_e *ErrorResponseManager_Expecter) Handle(err interface{}) *ErrorResponseManager_Handle_Call {
 	return &ErrorResponseManager_Handle_Call{Call: _e.mock.On("Handle", err)}
 }

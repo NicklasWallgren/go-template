@@ -1,7 +1,7 @@
 package event
 
 import (
-	"github.com/NicklasWallgren/go-template/adapters/driven/api/users/response"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/users/response"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
 )
 

@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	errors "github.com/NicklasWallgren/go-template/adapters/driven/api/errors"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/errors"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -31,7 +31,7 @@ type APIErrorOption_Execute_Call struct {
 }
 
 // Execute is a helper method to define mock.On call
-//  - apiError *errors.APIError
+//   - apiError *errors.APIError
 func (_e *APIErrorOption_Expecter) Execute(apiError interface{}) *APIErrorOption_Execute_Call {
 	return &APIErrorOption_Execute_Call{Call: _e.mock.On("Execute", apiError)}
 }

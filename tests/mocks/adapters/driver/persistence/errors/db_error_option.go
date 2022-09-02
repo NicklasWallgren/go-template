@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	errors "github.com/NicklasWallgren/go-template/adapters/driver/persistence/errors"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/errors"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -31,7 +31,7 @@ type DBErrorOption_Execute_Call struct {
 }
 
 // Execute is a helper method to define mock.On call
-//  - dbError *errors.DBError
+//   - dbError *errors.DBError
 func (_e *DBErrorOption_Expecter) Execute(dbError interface{}) *DBErrorOption_Execute_Call {
 	return &DBErrorOption_Execute_Call{Call: _e.mock.On("Execute", dbError)}
 }

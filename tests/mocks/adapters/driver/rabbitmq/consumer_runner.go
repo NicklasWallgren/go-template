@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 
-	rabbitmq "github.com/NicklasWallgren/go-template/adapters/driver/rabbitmq"
+	rabbitmq "github.com/NicklasWallgren/go-template/adapters/driven/rabbitmq"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -33,7 +33,7 @@ type ConsumerRunner_Do_Call struct {
 }
 
 // Do is a helper method to define mock.On call
-//  - ctx context.Context
+//   - ctx context.Context
 func (_e *ConsumerRunner_Expecter) Do(ctx interface{}) *ConsumerRunner_Do_Call {
 	return &ConsumerRunner_Do_Call{Call: _e.mock.On("Do", ctx)}
 }
@@ -97,7 +97,7 @@ type ConsumerRunner_Run_Call struct {
 }
 
 // Run is a helper method to define mock.On call
-//  - ctx context.Context
+//   - ctx context.Context
 func (_e *ConsumerRunner_Expecter) Run(ctx interface{}) *ConsumerRunner_Run_Call {
 	return &ConsumerRunner_Run_Call{Call: _e.mock.On("Run", ctx)}
 }

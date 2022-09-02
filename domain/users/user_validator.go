@@ -2,8 +2,8 @@ package users
 
 import (
 	"context"
+	repository "github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
 
-	repository "github.com/NicklasWallgren/go-template/adapters/driver/persistence/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
 	"github.com/NicklasWallgren/go-template/domain/validation"
 	"gorm.io/gorm"

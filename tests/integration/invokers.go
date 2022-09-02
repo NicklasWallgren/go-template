@@ -1,8 +1,8 @@
 package integration
 
 import (
-	"github.com/NicklasWallgren/go-template/adapters/driven/api/middlewares"
-	"github.com/NicklasWallgren/go-template/adapters/driven/api/routes"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/middlewares"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/routes"
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/infrastructure/database"
 	"github.com/NicklasWallgren/go-template/tests/integration/utils"

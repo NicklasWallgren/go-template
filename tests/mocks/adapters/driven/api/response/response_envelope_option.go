@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	response "github.com/NicklasWallgren/go-template/adapters/driven/api/response"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -31,7 +31,7 @@ type ResponseEnvelopeOption_Execute_Call struct {
 }
 
 // Execute is a helper method to define mock.On call
-//  - envelop *response.APIResponseEnvelope
+//   - envelop *response.APIResponseEnvelope
 func (_e *ResponseEnvelopeOption_Expecter) Execute(envelop interface{}) *ResponseEnvelopeOption_Execute_Call {
 	return &ResponseEnvelopeOption_Execute_Call{Call: _e.mock.On("Execute", envelop)}
 }

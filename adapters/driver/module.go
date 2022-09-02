@@ -1,8 +1,8 @@
 package driver
 
 import (
-	"github.com/NicklasWallgren/go-template/adapters/driver/persistence/users"
-	"github.com/NicklasWallgren/go-template/adapters/driver/rabbitmq"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
+	"github.com/NicklasWallgren/go-template/adapters/driven/rabbitmq"
 	"go.uber.org/fx"
 )
 

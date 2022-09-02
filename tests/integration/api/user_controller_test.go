@@ -1,15 +1,15 @@
 package api
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/request/types"
+	response2 "github.com/NicklasWallgren/go-template/adapters/driver/api/response"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/users"
+	userResponse "github.com/NicklasWallgren/go-template/adapters/driver/api/users/response"
 	"net/http"
 	"os"
 	"testing"
 
-	"github.com/NicklasWallgren/go-template/adapters/driven/api/common"
-	"github.com/NicklasWallgren/go-template/adapters/driven/api/request/types"
-	"github.com/NicklasWallgren/go-template/adapters/driven/api/response"
-	"github.com/NicklasWallgren/go-template/adapters/driven/api/users"
-	userResponse "github.com/NicklasWallgren/go-template/adapters/driven/api/users/response"
 	"github.com/NicklasWallgren/go-template/tests/factories"
 	. "github.com/NicklasWallgren/go-template/tests/integration"
 	"github.com/NicklasWallgren/go-template/tests/integration/utils"
@@ -45,7 +45,7 @@ func Test(t *testing.T) {
 	t.Run("GivenNoUsers_WhenGetOneUser_ThenHttpStatusNotFound", func(t *testing.T) {
 		testFunc := func(requestHandler common.RequestHandler) {
 			request := utils.NewHTTPRequest(t, "GET", "/api/users/1", nil)
-			response := response.APIErrorResponse{}
+			response := response2.APIErrorResponse{}
 			utils.DoHTTPRequestWithResponse(
 				t, requestHandler.Gin, request, &response, utils.ExpectHTTPStatus(http.StatusNotFound))
 		}
@@ -59,7 +59,7 @@ func Test(t *testing.T) {
 			utils.SuccessOrFailNow(t, func() (any, error) { return uf.Many(5) }) // nolint:wrapcheck
 
 			request := utils.NewHTTPRequest(t, "GET", "/api/users/", nil)
-			pageableUserResponse := response.PageableResponse[userResponse.UserResponse]{}
+			pageableUserResponse := response2.PageableResponse[userResponse.UserResponse]{}
 			utils.DoHTTPRequestWithResponse(
 				t, requestHandler.Gin, request, &pageableUserResponse, utils.ExpectHTTPStatus(http.StatusOK))
 

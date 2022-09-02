@@ -2,9 +2,9 @@ package bootstrap
 
 import (
 	"context"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api"
 	"log"
 
-	"github.com/NicklasWallgren/go-template/adapters/driven/api"
 	"github.com/NicklasWallgren/go-template/adapters/driver"
 	"github.com/NicklasWallgren/go-template/cmd"
 	"github.com/NicklasWallgren/go-template/config"

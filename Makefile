@@ -98,10 +98,6 @@ bash-postgres: prerequisite
 bash-rabbitmq: prerequisite
 	- docker-compose -f docker-compose.yml exec --env COLUMNS=`tput cols` --env LINES=`tput lines` rabbitmq bash
 
-# Opens the postgres bash cli
-bash-postgres: prerequisite
-	- docker-compose -f docker-compose.yml exec --env COLUMNS=`tput cols` --env LINES=`tput lines` postgres bash
-
 #####################################################
 # APPLICATION CLI TARGETS			 				#
 #####################################################
