@@ -4,9 +4,10 @@ import (
 	"net/http"
 
 
+	"github.com/NicklasWallgren/go-template/adapters/driven/health"
+
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
 
-	"github.com/NicklasWallgren/go-template/infrastructure/health"
 	"github.com/gin-gonic/gin"
 )
 

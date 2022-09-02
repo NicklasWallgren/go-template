@@ -4,8 +4,8 @@ package mocks
 
 import (
 	context "context"
+	"github.com/NicklasWallgren/go-template/adapters/driven/health"
 
-	health "github.com/NicklasWallgren/go-template/infrastructure/health"
 	mock "github.com/stretchr/testify/mock"
 )
 
