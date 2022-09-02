@@ -3,13 +3,14 @@ package persistence
 import (
 	"context"
 
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/drivers"
-	models2 "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/transaction"
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain/common"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -19,7 +20,7 @@ type Repository[T common.EntityConstraint] interface {
 	TransactWithDefaultRetry(operation func(tx *gorm.DB) error) error
 	FindOneByID(ctx context.Context, id uint) (entity *T, err error)
 	FindOneByIDForUpdate(ctx context.Context, id uint) (entity *T, err error)
-	FindAll(ctx context.Context, pagination *models2.Pagination) (page *models2.Page[*T], err error)
+	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[*T], err error)
 	Create(ctx context.Context, entity *T) (*T, error)
 	Save(ctx context.Context, entity *T) (*T, error)
 	DeleteByID(ctx context.Context, id uint) error
@@ -73,8 +74,8 @@ func (r repository[T]) FindOneByIDForUpdate(ctx context.Context, id uint) (entit
 }
 
 func (r repository[T]) FindAll(
-	ctx context.Context, pagination *models2.Pagination,
-) (page *models2.Page[*T], err error) {
+	ctx context.Context, pagination *models.Pagination,
+) (page *models.Page[*T], err error) {
 	tx := r.DB.WithContext(ctx).Offset(pagination.Offset()).Limit(pagination.Limit).Order(pagination.Order())
 
 	content := &[]*T{}
@@ -82,7 +83,7 @@ func (r repository[T]) FindAll(
 		return page, r.WrapError(err)
 	}
 
-	newPage, err := models2.NewPageWith[*T](*content, pagination, func() (int, error) { return r.totalCountSupplier(ctx) })
+	newPage, err := models.NewPageWith[*T](*content, pagination, func() (int, error) { return r.totalCountSupplier(ctx) })
 	if err != nil {
 		return page, r.WrapError(err)
 	}

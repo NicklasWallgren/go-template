@@ -4,7 +4,7 @@ package mocks
 
 import (
 	context "context"
-	models2 "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
+	models "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
 
 	entities "github.com/NicklasWallgren/go-template/domain/users/entities"
@@ -156,20 +156,20 @@ func (_c *UserRepository_DeleteByID_Call) Return(_a0 error) *UserRepository_Dele
 }
 
 // FindAll provides a mock function with given fields: ctx, pagination
-func (_m *UserRepository) FindAll(ctx context.Context, pagination *models2.Pagination) (*models2.Page[*entities.User], error) {
+func (_m *UserRepository) FindAll(ctx context.Context, pagination *models.Pagination) (*models.Page[*entities.User], error) {
 	ret := _m.Called(ctx, pagination)
 
-	var r0 *models2.Page[*entities.User]
-	if rf, ok := ret.Get(0).(func(context.Context, *models2.Pagination) *models2.Page[*entities.User]); ok {
+	var r0 *models.Page[*entities.User]
+	if rf, ok := ret.Get(0).(func(context.Context, *models.Pagination) *models.Page[*entities.User]); ok {
 		r0 = rf(ctx, pagination)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models2.Page[*entities.User])
+			r0 = ret.Get(0).(*models.Page[*entities.User])
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, *models2.Pagination) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *models.Pagination) error); ok {
 		r1 = rf(ctx, pagination)
 	} else {
 		r1 = ret.Error(1)
@@ -190,14 +190,14 @@ func (_e *UserRepository_Expecter) FindAll(ctx interface{}, pagination interface
 	return &UserRepository_FindAll_Call{Call: _e.mock.On("FindAll", ctx, pagination)}
 }
 
-func (_c *UserRepository_FindAll_Call) Run(run func(ctx context.Context, pagination *models2.Pagination)) *UserRepository_FindAll_Call {
+func (_c *UserRepository_FindAll_Call) Run(run func(ctx context.Context, pagination *models.Pagination)) *UserRepository_FindAll_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*models2.Pagination))
+		run(args[0].(context.Context), args[1].(*models.Pagination))
 	})
 	return _c
 }
 
-func (_c *UserRepository_FindAll_Call) Return(page *models2.Page[*entities.User], err error) *UserRepository_FindAll_Call {
+func (_c *UserRepository_FindAll_Call) Return(page *models.Page[*entities.User], err error) *UserRepository_FindAll_Call {
 	_c.Call.Return(page, err)
 	return _c
 }

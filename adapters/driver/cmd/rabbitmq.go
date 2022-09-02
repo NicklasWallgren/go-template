@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	"github.com/NicklasWallgren/go-template/adapters/driven/rabbitmq"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"github.com/spf13/cobra"
 )
 

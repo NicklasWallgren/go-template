@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
-	models2 "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
+	models "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 
 	common "github.com/NicklasWallgren/go-template/domain/common"
 
@@ -157,20 +157,20 @@ func (_c *Repository_DeleteByID_Call[T]) Return(_a0 error) *Repository_DeleteByI
 }
 
 // FindAll provides a mock function with given fields: ctx, pagination
-func (_m *Repository[T]) FindAll(ctx context.Context, pagination *models2.Pagination) (*models2.Page[*T], error) {
+func (_m *Repository[T]) FindAll(ctx context.Context, pagination *models.Pagination) (*models.Page[*T], error) {
 	ret := _m.Called(ctx, pagination)
 
-	var r0 *models2.Page[*T]
-	if rf, ok := ret.Get(0).(func(context.Context, *models2.Pagination) *models2.Page[*T]); ok {
+	var r0 *models.Page[*T]
+	if rf, ok := ret.Get(0).(func(context.Context, *models.Pagination) *models.Page[*T]); ok {
 		r0 = rf(ctx, pagination)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models2.Page[*T])
+			r0 = ret.Get(0).(*models.Page[*T])
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, *models2.Pagination) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *models.Pagination) error); ok {
 		r1 = rf(ctx, pagination)
 	} else {
 		r1 = ret.Error(1)
@@ -191,14 +191,14 @@ func (_e *Repository_Expecter[T]) FindAll(ctx interface{}, pagination interface{
 	return &Repository_FindAll_Call[T]{Call: _e.mock.On("FindAll", ctx, pagination)}
 }
 
-func (_c *Repository_FindAll_Call[T]) Run(run func(ctx context.Context, pagination *models2.Pagination)) *Repository_FindAll_Call[T] {
+func (_c *Repository_FindAll_Call[T]) Run(run func(ctx context.Context, pagination *models.Pagination)) *Repository_FindAll_Call[T] {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*models2.Pagination))
+		run(args[0].(context.Context), args[1].(*models.Pagination))
 	})
 	return _c
 }
 
-func (_c *Repository_FindAll_Call[T]) Return(page *models2.Page[*T], err error) *Repository_FindAll_Call[T] {
+func (_c *Repository_FindAll_Call[T]) Return(page *models.Page[*T], err error) *Repository_FindAll_Call[T] {
 	_c.Call.Return(page, err)
 	return _c
 }

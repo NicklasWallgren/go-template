@@ -3,6 +3,8 @@ package utils
 import (
 	"database/sql"
 	"strings"
+
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
 
 	_ "github.com/lib/pq" // nolint:revive

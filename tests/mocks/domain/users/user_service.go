@@ -4,7 +4,7 @@ package mocks
 
 import (
 	context "context"
-	models2 "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
+	models "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 
 	entities "github.com/NicklasWallgren/go-template/domain/users/entities"
 	gorm "gorm.io/gorm"
@@ -113,20 +113,20 @@ func (_c *UserService_DeleteUserByID_Call) Return(_a0 error) *UserService_Delete
 }
 
 // FindAllUser provides a mock function with given fields: ctx, pagination
-func (_m *UserService) FindAllUser(ctx context.Context, pagination *models2.Pagination) (*models2.Page[*entities.User], error) {
+func (_m *UserService) FindAllUser(ctx context.Context, pagination *models.Pagination) (*models.Page[*entities.User], error) {
 	ret := _m.Called(ctx, pagination)
 
-	var r0 *models2.Page[*entities.User]
-	if rf, ok := ret.Get(0).(func(context.Context, *models2.Pagination) *models2.Page[*entities.User]); ok {
+	var r0 *models.Page[*entities.User]
+	if rf, ok := ret.Get(0).(func(context.Context, *models.Pagination) *models.Page[*entities.User]); ok {
 		r0 = rf(ctx, pagination)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models2.Page[*entities.User])
+			r0 = ret.Get(0).(*models.Page[*entities.User])
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, *models2.Pagination) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *models.Pagination) error); ok {
 		r1 = rf(ctx, pagination)
 	} else {
 		r1 = ret.Error(1)
@@ -147,14 +147,14 @@ func (_e *UserService_Expecter) FindAllUser(ctx interface{}, pagination interfac
 	return &UserService_FindAllUser_Call{Call: _e.mock.On("FindAllUser", ctx, pagination)}
 }
 
-func (_c *UserService_FindAllUser_Call) Run(run func(ctx context.Context, pagination *models2.Pagination)) *UserService_FindAllUser_Call {
+func (_c *UserService_FindAllUser_Call) Run(run func(ctx context.Context, pagination *models.Pagination)) *UserService_FindAllUser_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*models2.Pagination))
+		run(args[0].(context.Context), args[1].(*models.Pagination))
 	})
 	return _c
 }
 
-func (_c *UserService_FindAllUser_Call) Return(_a0 *models2.Page[*entities.User], err error) *UserService_FindAllUser_Call {
+func (_c *UserService_FindAllUser_Call) Return(_a0 *models.Page[*entities.User], err error) *UserService_FindAllUser_Call {
 	_c.Call.Return(_a0, err)
 	return _c
 }

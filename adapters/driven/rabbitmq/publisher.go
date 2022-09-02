@@ -4,11 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"log"
-
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/pubsub"
 
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/ext"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"

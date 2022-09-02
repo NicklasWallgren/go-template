@@ -3,12 +3,13 @@ package users
 import (
 	"context"
 
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
-	models2 "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
+	models "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -19,7 +20,7 @@ type UserRepository interface {
 	FindOneByID(ctx context.Context, id uint) (user *entities.User, err error)
 	FindOneByIDForUpdate(ctx context.Context, id uint) (*entities.User, error)
 	FindOneByEmailWithExclusiveLock(ctx context.Context, email string) (*entities.User, error)
-	FindAll(ctx context.Context, pagination *models2.Pagination) (page *models2.Page[*entities.User], err error)
+	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[*entities.User], err error)
 	Create(ctx context.Context, user *entities.User) (*entities.User, error)
 	Save(ctx context.Context, user *entities.User) (*entities.User, error)
 	DeleteByID(ctx context.Context, id uint) error
@@ -78,8 +79,8 @@ func (r userRepository) FindOneByEmailWithExclusiveLock(ctx context.Context, ema
 }
 
 func (r userRepository) FindAll(
-	ctx context.Context, pagination *models2.Pagination,
-) (page *models2.Page[*entities.User], err error) {
+	ctx context.Context, pagination *models.Pagination,
+) (page *models.Page[*entities.User], err error) {
 	return r.Repository.FindAll(ctx, pagination)
 }
 

@@ -3,13 +3,13 @@ package persistence
 import (
 	"errors"
 	"time"
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	gormTrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/gorm.io/gorm.v1"
 	mysqlGorm "gorm.io/driver/mysql"
 	postgresGorm "gorm.io/driver/postgres"
 
 	"github.com/NicklasWallgren/go-template/config"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"github.com/avast/retry-go"
 	"gorm.io/gorm"
 )

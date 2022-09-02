@@ -3,9 +3,9 @@ package health
 import (
 	"context"
 
-	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
 )
 
 type DBHealthChecker struct {

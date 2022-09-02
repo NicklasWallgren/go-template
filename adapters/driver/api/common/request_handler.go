@@ -1,7 +1,7 @@
 package common
 
 import (
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	"github.com/gin-gonic/gin"
 )
 

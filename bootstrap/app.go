@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"context"
 	"log"
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driver/cmd"
 
@@ -11,14 +12,11 @@ import (
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain"
-	infra "github.com/NicklasWallgren/go-template/infrastructure"
-	"github.com/NicklasWallgren/go-template/infrastructure/logger"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
 )
 
 var CommonModules = fx.Options(
-	infra.Module,
 	domain.Module,
 	api.Module,
 	driven.Module,
