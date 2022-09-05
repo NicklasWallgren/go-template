@@ -8,7 +8,7 @@ import (
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
-	models "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 	repository "github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
 
 	domainErrors "github.com/NicklasWallgren/go-template/domain/errors"
@@ -23,6 +23,7 @@ type UserService interface {
 	FindOneUserByID(ctx context.Context, id uint) (user *entities.User, err error)
 	FindOneUserByIDForUpdate(ctx context.Context, id uint) (*entities.User, error)
 	FindAllUser(ctx context.Context, pagination *models.Pagination) (users *models.Page[*entities.User], err error)
+	FindAllUserByCriteria(ctx context.Context, criteria *repository.FindAllCriteria, pagination *models.Pagination) (users *models.Page[*entities.User], err error)
 	CreateUser(ctx context.Context, toBeCreated entities.User) (user *entities.User, err error)
 	UpdateUser(ctx context.Context, updated *entities.User) (user *entities.User, err error)
 	DeleteUserByID(ctx context.Context, id uint) error
@@ -90,8 +91,20 @@ func (s userService) FindAllUser(
 	ctx context.Context,
 	pagination *models.Pagination,
 ) (users *models.Page[*entities.User], err error) {
-	// TODO, support filter by predicate/criteria
 	if users, err = s.repository.FindAll(ctx, pagination); err != nil {
+		return nil, domainErrors.NewDomainError("unable to retrieve the available users", err)
+	}
+
+	return users, nil
+}
+
+// FindAllUserByCriteria retrieves a paginated list of users.
+func (s userService) FindAllUserByCriteria(
+	ctx context.Context,
+	criteria *repository.FindAllCriteria,
+	pagination *models.Pagination,
+) (users *models.Page[*entities.User], err error) {
+	if users, err = s.repository.FindAllByCriteria(ctx, criteria, pagination); err != nil {
 		return nil, domainErrors.NewDomainError("unable to retrieve the available users", err)
 	}
 

@@ -204,6 +204,54 @@ func (_c *UserRepository_FindAll_Call) Return(page *models.Page[*entities.User],
 	return _c
 }
 
+// FindAllByCriteria provides a mock function with given fields: ctx, criteria, pagination
+func (_m *UserRepository) FindAllByCriteria(ctx context.Context, criteria *users.FindAllCriteria, pagination *models.Pagination) (*models.Page[*entities.User], error) {
+	ret := _m.Called(ctx, criteria, pagination)
+
+	var r0 *models.Page[*entities.User]
+	if rf, ok := ret.Get(0).(func(context.Context, *users.FindAllCriteria, *models.Pagination) *models.Page[*entities.User]); ok {
+		r0 = rf(ctx, criteria, pagination)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Page[*entities.User])
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *users.FindAllCriteria, *models.Pagination) error); ok {
+		r1 = rf(ctx, criteria, pagination)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// UserRepository_FindAllByCriteria_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindAllByCriteria'
+type UserRepository_FindAllByCriteria_Call struct {
+	*mock.Call
+}
+
+// FindAllByCriteria is a helper method to define mock.On call
+//  - ctx context.Context
+//  - criteria *users.FindAllCriteria
+//  - pagination *models.Pagination
+func (_e *UserRepository_Expecter) FindAllByCriteria(ctx interface{}, criteria interface{}, pagination interface{}) *UserRepository_FindAllByCriteria_Call {
+	return &UserRepository_FindAllByCriteria_Call{Call: _e.mock.On("FindAllByCriteria", ctx, criteria, pagination)}
+}
+
+func (_c *UserRepository_FindAllByCriteria_Call) Run(run func(ctx context.Context, criteria *users.FindAllCriteria, pagination *models.Pagination)) *UserRepository_FindAllByCriteria_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*users.FindAllCriteria), args[2].(*models.Pagination))
+	})
+	return _c
+}
+
+func (_c *UserRepository_FindAllByCriteria_Call) Return(page *models.Page[*entities.User], err error) *UserRepository_FindAllByCriteria_Call {
+	_c.Call.Return(page, err)
+	return _c
+}
+
 // FindOneByEmailWithExclusiveLock provides a mock function with given fields: ctx, email
 func (_m *UserRepository) FindOneByEmailWithExclusiveLock(ctx context.Context, email string) (*entities.User, error) {
 	ret := _m.Called(ctx, email)

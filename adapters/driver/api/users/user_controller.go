@@ -1,6 +1,7 @@
 package users
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
 	"net/http"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
@@ -68,13 +69,12 @@ func (u UserController) FindOneUserByID(ctx *gin.Context) (*response.APIResponse
 // @Failure		400 {object} response.APIErrorResponse "in case of an error"
 // @Router 		/users [get].
 func (u UserController) FindAllUsers(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
-	pagination, err := request.Into(ctx, models.NewPaginationWithDefaults())
+	criteriaAndPagination, err := request.Into(ctx, models.NewCriteriaAndPagination[users.FindAllCriteria](users.FindAllCriteria{}))
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO, support for predicate/criteria?
-	userPage, err := u.service.FindAllUser(ctx.Request.Context(), &pagination)
+	userPage, err := u.service.FindAllUserByCriteria(ctx.Request.Context(), &criteriaAndPagination.Criteria, &criteriaAndPagination.Pagination)
 	if err != nil {
 		return nil, err
 	}

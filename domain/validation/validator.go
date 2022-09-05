@@ -32,10 +32,6 @@ type ValidationError struct {
 	Message string
 }
 
-func (v ValidationError) Unwrap() error {
-	return nil
-}
-
 func (v ValidationError) Error() string {
 	return fmt.Sprintf("validation error %s", v.Message)
 }
@@ -44,10 +40,6 @@ type ValidationFieldError struct {
 	Field   string
 	Message string
 	Value   any
-}
-
-func (v ValidationFieldError) Unwrap() error {
-	return nil
 }
 
 func (v ValidationFieldError) Error() string {

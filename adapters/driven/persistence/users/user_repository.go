@@ -2,7 +2,6 @@ package users
 
 import (
 	"context"
-
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
@@ -21,6 +20,7 @@ type UserRepository interface {
 	FindOneByIDForUpdate(ctx context.Context, id uint) (*entities.User, error)
 	FindOneByEmailWithExclusiveLock(ctx context.Context, email string) (*entities.User, error)
 	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[*entities.User], err error)
+	FindAllByCriteria(ctx context.Context, criteria *FindAllCriteria, pagination *models.Pagination) (page *models.Page[*entities.User], err error)
 	Create(ctx context.Context, user *entities.User) (*entities.User, error)
 	Save(ctx context.Context, user *entities.User) (*entities.User, error)
 	DeleteByID(ctx context.Context, id uint) error
@@ -82,6 +82,14 @@ func (r userRepository) FindAll(
 	ctx context.Context, pagination *models.Pagination,
 ) (page *models.Page[*entities.User], err error) {
 	return r.EntityRepository.FindAll(ctx, pagination)
+}
+
+func (r userRepository) FindAllByCriteria(
+	ctx context.Context,
+	criteria *FindAllCriteria,
+	pagination *models.Pagination,
+) (page *models.Page[*entities.User], err error) {
+	return r.EntityRepository.FindAllByCriteria(ctx, criteria, pagination)
 }
 
 func (r userRepository) Create(ctx context.Context, user *entities.User) (*entities.User, error) {
