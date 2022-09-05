@@ -12,14 +12,28 @@ import (
 	"moul.io/zapgorm2"
 )
 
-// Logger structure.
-type Logger struct {
+type Logger interface {
+	Debug(args ...interface{})
+	Debugf(template string, args ...interface{})
+	Info(args ...interface{})
+	Infof(template string, args ...interface{})
+	Warn(args ...interface{})
+	Warnf(template string, args ...interface{})
+	Error(args ...interface{})
+	Errorf(template string, args ...interface{})
+	GetGinLogger() GinLogger
+	GetFxLogger() fxevent.Logger
+	GetGormLogger() gormLogger.Interface
+}
+
+// logger structure.
+type logger struct {
 	*zap.SugaredLogger
 	zapLogger *zap.Logger
 }
 
 type GinLogger struct {
-	*Logger
+	*logger
 }
 
 // Write interface implementation for gin-framework.
@@ -33,7 +47,7 @@ func (l GinLogger) Write(p []byte) (n int, err error) {
 func NewLogger(env env.Env) (Logger, error) {
 	level, err := zapcore.ParseLevel(env.LogLevel)
 	if err != nil {
-		return Logger{}, fmt.Errorf("unable to determine log level %w", err)
+		return logger{}, fmt.Errorf("unable to determine log level %w", err)
 	}
 
 	config := zap.NewDevelopmentConfig()
@@ -42,29 +56,31 @@ func NewLogger(env env.Env) (Logger, error) {
 
 	zapLogger, err := config.Build()
 	if err != nil {
-		return Logger{}, fmt.Errorf("unable to create logger %w", err)
+		return logger{}, fmt.Errorf("unable to create logger %w", err)
 	}
 
-	return Logger{SugaredLogger: zapLogger.Sugar(), zapLogger: zapLogger}, nil
+	return logger{SugaredLogger: zapLogger.Sugar(), zapLogger: zapLogger}, nil
 }
 
 // GetGinLogger get the gin logger.
-func (l Logger) GetGinLogger() GinLogger {
-	logger := l.zapLogger.WithOptions(zap.WithCaller(false))
+func (l logger) GetGinLogger() GinLogger {
+	zapLogger := l.zapLogger.WithOptions(zap.WithCaller(false))
 
-	return GinLogger{Logger: &Logger{SugaredLogger: logger.Sugar()}}
+	l.Error()
+
+	return GinLogger{logger: &logger{SugaredLogger: zapLogger.Sugar()}}
 }
 
 // GetFxLogger gets logger for go-fx.
-func (l *Logger) GetFxLogger() fxevent.Logger {
-	logger := l.zapLogger.WithOptions(zap.WithCaller(false))
+func (l logger) GetFxLogger() fxevent.Logger {
+	zapLogger := l.zapLogger.WithOptions(zap.WithCaller(false))
 
-	return &fxevent.ZapLogger{Logger: logger}
+	return &fxevent.ZapLogger{Logger: zapLogger}
 }
 
 // GetGormLogger gets the gorm framework logger.
-func (l Logger) GetGormLogger() gormLogger.Interface {
-	log := zapgorm2.New(l.zapLogger)
+func (l logger) GetGormLogger() gormLogger.Interface {
+	zapGormLogger := zapgorm2.New(l.zapLogger)
 
-	return log.LogMode(gormLogger.Info)
+	return zapGormLogger.LogMode(gormLogger.Info)
 }
