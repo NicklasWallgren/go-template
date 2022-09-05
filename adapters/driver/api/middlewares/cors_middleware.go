@@ -15,7 +15,7 @@ type CorsMiddleware struct {
 }
 
 // NewCorsMiddleware creates new cors middleware.
-func NewCorsMiddleware(handler common.RequestHandler, logger logger.Logger, env env.Env) CorsMiddleware {
+func NewCorsMiddleware(handler common.RequestHandler, logger logger.Logger, env env.Env) Middleware {
 	return CorsMiddleware{
 		handler: handler,
 		logger:  logger,

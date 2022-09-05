@@ -8,15 +8,15 @@ import (
 
 type RouteHandler func(c *gin.Context) (*response.APIResponseEnvelope, error)
 
-type RootHandler struct {
+type RootRouteHandler struct {
 	ErrorHandler handlers.ErrorResponseManager
 }
 
-func NewRootHandler(errorHandler handlers.ErrorResponseManager) *RootHandler {
-	return &RootHandler{ErrorHandler: errorHandler}
+func NewRootRouteHandler(errorHandler handlers.ErrorResponseManager) *RootRouteHandler {
+	return &RootRouteHandler{ErrorHandler: errorHandler}
 }
 
-func (r RootHandler) Handle(handler RouteHandler) gin.HandlerFunc {
+func (r RootRouteHandler) Handle(handler RouteHandler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		apiResponseEnvelop, err := handler(ctx)
 		if err != nil {

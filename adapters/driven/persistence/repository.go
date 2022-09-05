@@ -42,7 +42,7 @@ func (r repository) WithTx(tx *gorm.DB) Repository {
 }
 
 func (r repository) RawSql(ctx context.Context, sql string, values ...any) error {
-	if err := r.DB.WithContext(ctx).Exec(sql, values).Error; err != nil {
+	if err := r.DB.WithContext(ctx).Exec(sql, values...).Error; err != nil {
 		return r.WrapError(err)
 	}
 

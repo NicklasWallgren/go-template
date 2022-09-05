@@ -1,0 +1,28 @@
+
+[Test/GivenHealthyStatus_WhenHealth_ThenMatchSnapshot - 1]
+health.HealthResponse{
+    Health:     "Healthy",
+    Components: {
+        {
+            Status:  "Healthy",
+            Name:    "name of checker",
+            Details: {
+            },
+        },
+    },
+}
+---
+
+[Test/GivenUnhealthyStatus_WhenHealth_ThenMatchSnapshot - 1]
+health.HealthResponse{
+    Health:     "Unhealthy",
+    Components: {
+        {
+            Status:  "Unhealthy",
+            Name:    "name of checker",
+            Details: {
+            },
+        },
+    },
+}
+---

@@ -17,7 +17,8 @@ type HealthController struct {
 }
 
 func NewHealthController(
-	healthCheckerManager *health.HealthCheckerManager, apiConverter *HealthAPIConverter,
+	healthCheckerManager *health.HealthCheckerManager,
+	apiConverter *HealthAPIConverter,
 ) HealthController {
 	return HealthController{
 		healthCheckerManager: healthCheckerManager, apiConverter: apiConverter,

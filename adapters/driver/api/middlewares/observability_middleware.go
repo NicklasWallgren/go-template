@@ -7,17 +7,19 @@ import (
 	gintrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/gin-gonic/gin"
 )
 
-// ObservabilityMiddleware middleware for cors.
+// ObservabilityMiddleware middleware for observability.
 type ObservabilityMiddleware struct {
 	handler common.RequestHandler
 	logger  logger.Logger
 	env     env.Env
 }
 
-// NewObservabilityMiddleware creates new cors middleware.
+// NewObservabilityMiddleware creates new observability middleware.
 func NewObservabilityMiddleware(
-	handler common.RequestHandler, logger logger.Logger, env env.Env,
-) ObservabilityMiddleware {
+	handler common.RequestHandler,
+	logger logger.Logger,
+	env env.Env,
+) Middleware {
 	return ObservabilityMiddleware{
 		handler: handler,
 		logger:  logger,

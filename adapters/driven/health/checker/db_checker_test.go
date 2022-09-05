@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func Test(t *testing.T) {
+func TestDBChecker(t *testing.T) {
 
 	t.Run("givenHealthyDatabase_whenCheck_thenIsHealthy", func(t *testing.T) {
 		ctx := context.TODO()
