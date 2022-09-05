@@ -12,11 +12,14 @@ import (
 	"go.uber.org/fx"
 )
 
-var routers = fx.Options(
-	fx.Provide(users.NewUserRoutes),
-	fx.Provide(health.NewHealthRoutes),
-	fx.Provide(routes.NewSwaggerRoutes),
-	fx.Provide(routes.NewRoutes),
+var routers = fx.Provide(
+	fx.Annotate(users.NewUserRoutes, fx.ResultTags(`group:"routers"`)),
+	fx.Annotate(health.NewHealthRoutes, fx.ResultTags(`group:"routers"`)),
+	fx.Annotate(routes.NewSwaggerRoutes, fx.ResultTags(`group:"routers"`)),
+)
+
+var route = fx.Provide(
+	fx.Annotate(routes.NewRoutes, fx.ParamTags(`group:"routers"`)),
 )
 
 var controllers = fx.Options(
@@ -24,10 +27,13 @@ var controllers = fx.Options(
 	fx.Provide(health.NewHealthController),
 )
 
-var httpMiddlewares = fx.Options(
-	fx.Provide(middlewares.NewCorsMiddleware),
-	fx.Provide(middlewares.NewObservabilityMiddleware),
-	fx.Provide(middlewares.NewMiddlewares),
+var httpMiddlewares = fx.Provide(
+	fx.Annotate(middlewares.NewCorsMiddleware, fx.ResultTags(`group:"http_middlewares"`)),
+	fx.Annotate(middlewares.NewObservabilityMiddleware, fx.ResultTags(`group:"http_middlewares"`)),
+)
+
+var httpMiddleware = fx.Provide(
+	fx.Annotate(middlewares.NewMiddlewares, fx.ParamTags(`group:"http_middlewares"`)),
 )
 
 var apiConverters = fx.Options(
@@ -59,10 +65,12 @@ var Module = fx.Options(
 	errorTypeHandlers,
 	errorResponseManager,
 	fx.Provide(common.NewRequestHandler),
-	fx.Provide(routeHandler.NewRootHandler),
+	fx.Provide(routeHandler.NewRootRouteHandler),
 	routers,
+	route,
 	controllers,
 	httpMiddlewares,
+	httpMiddleware,
 	apiConverters,
 	validators,
 )

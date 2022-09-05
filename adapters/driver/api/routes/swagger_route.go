@@ -19,7 +19,7 @@ func (s SwaggerRoutes) Setup() {
 }
 
 // NewSwaggerRoutes creates new user controller.
-func NewSwaggerRoutes(handler routes.RequestHandler) SwaggerRoutes {
+func NewSwaggerRoutes(handler routes.RequestHandler) Route {
 	return SwaggerRoutes{
 		handler: handler,
 	}

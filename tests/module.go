@@ -1,6 +1,11 @@
 package tests
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/errors/handlers"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/middlewares"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/routes"
+	routeHandler "github.com/NicklasWallgren/go-template/adapters/driver/api/routes/handlers"
 	"io/fs"
 	"os"
 	"testing"
@@ -40,7 +45,7 @@ func NewForTest(tb testing.TB, opts ...fx.Option) *fx.App {
 	return fx.New(opts...)
 }
 
-// TestPersistenceModule is the test persistence module containing the dependency graph for the persistence module.
+// TestPersistenceModule contains the dependency graph for the persistence components.
 var TestPersistenceModule = fx.Options(
 	fx.Provide(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {
@@ -53,7 +58,17 @@ var TestPersistenceModule = fx.Options(
 	fx.Provide(migration.NewGooseMigrator),
 )
 
-// ApplicationModule is the application module containing the dependency graph for the application.
+// DefaultModule contains the dependency graph for the default application components
+var DefaultModule = fx.Options(
+	fx.Decorate(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
+	fx.Provide(func(env env.Env) *config.AppConfig {
+		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs()}, env)
+	}),
+	env.Module,
+	logger.Module,
+)
+
+// ApplicationModule contains the dependency graph for the application components.
 var ApplicationModule = fx.Options(
 	fx.Decorate(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {
@@ -63,4 +78,13 @@ var ApplicationModule = fx.Options(
 	api.Module,
 	driven.Module,
 	fx.Provide(factories.NewUserFactory),
+)
+
+// DefaultHTTPModule contains the dependency graph for the default http api components.
+var DefaultHTTPModule = fx.Options(
+	fx.Provide(fx.Annotate(routes.NewRoutes, fx.ParamTags(`group:"routers"`))),
+	fx.Provide(fx.Annotate(middlewares.NewMiddlewares, fx.ParamTags(`group:"http_middlewares"`))),
+	fx.Provide(fx.Annotate(handlers.NewErrorResponseManager, fx.ParamTags(`group:"error_type_handlers"`))),
+	fx.Provide(routeHandler.NewRootRouteHandler),
+	fx.Provide(common.NewRequestHandler),
 )

@@ -3,6 +3,7 @@ package users
 import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/routes"
 	routeHandlers "github.com/NicklasWallgren/go-template/adapters/driver/api/routes/handlers"
 )
 
@@ -11,7 +12,7 @@ type UserRoutes struct {
 	logger         logger.Logger
 	handler        common.RequestHandler
 	userController UserController
-	rootHandler    *routeHandlers.RootHandler
+	rootHandler    *routeHandlers.RootRouteHandler
 }
 
 // Setup user routes.
@@ -31,8 +32,8 @@ func NewUserRoutes(
 	logger logger.Logger,
 	handler common.RequestHandler,
 	userController UserController,
-	rootHandler *routeHandlers.RootHandler,
-) UserRoutes {
+	rootHandler *routeHandlers.RootRouteHandler,
+) routes.Route {
 	return UserRoutes{
 		handler:        handler,
 		logger:         logger,

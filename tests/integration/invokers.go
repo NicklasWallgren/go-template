@@ -26,7 +26,7 @@ func InitializeMiddlewareAndRoutes(middleware middlewares.Middlewares, route rou
 	route.Setup()
 
 	// Disables the binding.StructValidator, to be able to chain bind methods and field validation
-	// Workaround for see https://github.com/gin-gonic/gin/issues/2535
+	// Workaround for https://github.com/gin-gonic/gin/issues/2535
 	gin.DisableBindValidation()
 
 	return nil
