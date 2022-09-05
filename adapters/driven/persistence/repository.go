@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/drivers"
 
@@ -13,7 +14,7 @@ import (
 
 type Repository interface {
 	WithTx(tx *gorm.DB) Repository
-	RawSql(ctx context.Context, sql string, values ...any) error
+	RawSQL(ctx context.Context, sql string, values ...any) error
 	Gorm() *gorm.DB
 	WrapError(err error) error
 }
@@ -41,7 +42,7 @@ func (r repository) WithTx(tx *gorm.DB) Repository {
 	return cloned
 }
 
-func (r repository) RawSql(ctx context.Context, sql string, values ...any) error {
+func (r repository) RawSQL(ctx context.Context, sql string, values ...any) error {
 	if err := r.DB.WithContext(ctx).Exec(sql, values...).Error; err != nil {
 		return r.WrapError(err)
 	}

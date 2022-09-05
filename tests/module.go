@@ -1,14 +1,15 @@
 package tests
 
 import (
+	"io/fs"
+	"os"
+	"testing"
+
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/errors/handlers"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/middlewares"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/routes"
 	routeHandler "github.com/NicklasWallgren/go-template/adapters/driver/api/routes/handlers"
-	"io/fs"
-	"os"
-	"testing"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
 
@@ -58,7 +59,7 @@ var TestPersistenceModule = fx.Options(
 	fx.Provide(migration.NewGooseMigrator),
 )
 
-// DefaultModule contains the dependency graph for the default application components
+// DefaultModule contains the dependency graph for the default application components.
 var DefaultModule = fx.Options(
 	fx.Decorate(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {

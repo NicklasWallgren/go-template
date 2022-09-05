@@ -1,10 +1,11 @@
 package common
 
 import (
+	"time"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 // RequestHandler function.

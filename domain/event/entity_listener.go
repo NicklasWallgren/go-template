@@ -3,6 +3,7 @@ package event
 import (
 	"context"
 	"log"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/pubsub"
 
 	"github.com/NicklasWallgren/go-template/domain/users/entities"

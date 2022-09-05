@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 
-
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driver/cmd"
