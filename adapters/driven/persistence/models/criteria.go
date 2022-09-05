@@ -13,3 +13,12 @@ func (c Criteria) ToWhereMap() (*map[string]interface{}, error) {
 
 	return result, mapstructure.Decode(c, &result)
 }
+
+type CriteriaAndPagination[T any] struct {
+	Criteria   T
+	Pagination Pagination
+}
+
+func NewCriteriaAndPagination[T any](Criteria T) CriteriaAndPagination[T] {
+	return CriteriaAndPagination[T]{Criteria: Criteria, Pagination: NewPaginationWithDefaults()}
+}

@@ -205,6 +205,54 @@ func (_c *EntityRepository_FindAll_Call[T]) Return(page *models.Page[*T], err er
 	return _c
 }
 
+// FindAllByCriteria provides a mock function with given fields: ctx, criteria, pagination
+func (_m *EntityRepository[T]) FindAllByCriteria(ctx context.Context, criteria interface{}, pagination *models.Pagination) (*models.Page[*T], error) {
+	ret := _m.Called(ctx, criteria, pagination)
+
+	var r0 *models.Page[*T]
+	if rf, ok := ret.Get(0).(func(context.Context, interface{}, *models.Pagination) *models.Page[*T]); ok {
+		r0 = rf(ctx, criteria, pagination)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Page[*T])
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, interface{}, *models.Pagination) error); ok {
+		r1 = rf(ctx, criteria, pagination)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// EntityRepository_FindAllByCriteria_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindAllByCriteria'
+type EntityRepository_FindAllByCriteria_Call[T common.EntityConstraint] struct {
+	*mock.Call
+}
+
+// FindAllByCriteria is a helper method to define mock.On call
+//  - ctx context.Context
+//  - criteria interface{}
+//  - pagination *models.Pagination
+func (_e *EntityRepository_Expecter[T]) FindAllByCriteria(ctx interface{}, criteria interface{}, pagination interface{}) *EntityRepository_FindAllByCriteria_Call[T] {
+	return &EntityRepository_FindAllByCriteria_Call[T]{Call: _e.mock.On("FindAllByCriteria", ctx, criteria, pagination)}
+}
+
+func (_c *EntityRepository_FindAllByCriteria_Call[T]) Run(run func(ctx context.Context, criteria interface{}, pagination *models.Pagination)) *EntityRepository_FindAllByCriteria_Call[T] {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(interface{}), args[2].(*models.Pagination))
+	})
+	return _c
+}
+
+func (_c *EntityRepository_FindAllByCriteria_Call[T]) Return(page *models.Page[*T], err error) *EntityRepository_FindAllByCriteria_Call[T] {
+	_c.Call.Return(page, err)
+	return _c
+}
+
 // FindOneByID provides a mock function with given fields: ctx, id
 func (_m *EntityRepository[T]) FindOneByID(ctx context.Context, id uint) (*T, error) {
 	ret := _m.Called(ctx, id)

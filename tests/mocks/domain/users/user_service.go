@@ -12,6 +12,8 @@ import (
 
 	models "github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 
+	persistenceusers "github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
+
 	users "github.com/NicklasWallgren/go-template/domain/users"
 )
 
@@ -156,6 +158,54 @@ func (_c *UserService_FindAllUser_Call) Run(run func(ctx context.Context, pagina
 }
 
 func (_c *UserService_FindAllUser_Call) Return(_a0 *models.Page[*entities.User], err error) *UserService_FindAllUser_Call {
+	_c.Call.Return(_a0, err)
+	return _c
+}
+
+// FindAllUserByCriteria provides a mock function with given fields: ctx, criteria, pagination
+func (_m *UserService) FindAllUserByCriteria(ctx context.Context, criteria *persistenceusers.FindAllCriteria, pagination *models.Pagination) (*models.Page[*entities.User], error) {
+	ret := _m.Called(ctx, criteria, pagination)
+
+	var r0 *models.Page[*entities.User]
+	if rf, ok := ret.Get(0).(func(context.Context, *persistenceusers.FindAllCriteria, *models.Pagination) *models.Page[*entities.User]); ok {
+		r0 = rf(ctx, criteria, pagination)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Page[*entities.User])
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *persistenceusers.FindAllCriteria, *models.Pagination) error); ok {
+		r1 = rf(ctx, criteria, pagination)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// UserService_FindAllUserByCriteria_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindAllUserByCriteria'
+type UserService_FindAllUserByCriteria_Call struct {
+	*mock.Call
+}
+
+// FindAllUserByCriteria is a helper method to define mock.On call
+//  - ctx context.Context
+//  - criteria *persistenceusers.FindAllCriteria
+//  - pagination *models.Pagination
+func (_e *UserService_Expecter) FindAllUserByCriteria(ctx interface{}, criteria interface{}, pagination interface{}) *UserService_FindAllUserByCriteria_Call {
+	return &UserService_FindAllUserByCriteria_Call{Call: _e.mock.On("FindAllUserByCriteria", ctx, criteria, pagination)}
+}
+
+func (_c *UserService_FindAllUserByCriteria_Call) Run(run func(ctx context.Context, criteria *persistenceusers.FindAllCriteria, pagination *models.Pagination)) *UserService_FindAllUserByCriteria_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*persistenceusers.FindAllCriteria), args[2].(*models.Pagination))
+	})
+	return _c
+}
+
+func (_c *UserService_FindAllUserByCriteria_Call) Return(_a0 *models.Page[*entities.User], err error) *UserService_FindAllUserByCriteria_Call {
 	_c.Call.Return(_a0, err)
 	return _c
 }

@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	"io/fs"
 	"os"
 	"testing"
@@ -13,10 +14,8 @@ import (
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
 
-	"github.com/NicklasWallgren/go-template/adapters/driven/env"
-	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
-
 	"github.com/NicklasWallgren/go-template/adapters/driven"
+	"github.com/NicklasWallgren/go-template/adapters/driven/env"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api"
 
@@ -46,34 +45,29 @@ func NewForTest(tb testing.TB, opts ...fx.Option) *fx.App {
 	return fx.New(opts...)
 }
 
-// TestPersistenceModule contains the dependency graph for the persistence components.
-var TestPersistenceModule = fx.Options(
-	fx.Provide(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
-	fx.Provide(func(env env.Env) *config.AppConfig {
-		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs()}, env)
-	}),
-	fx.Provide(persistence.NewDatabase), // retrieve from infrastructure module?
-	fx.Provide(logger.NewLogger),
-	driven.PersistenceRepositories,
-	fx.Provide(factories.NewUserFactory),
-	fx.Provide(migration.NewGooseMigrator),
-)
-
 // DefaultModule contains the dependency graph for the default application components.
 var DefaultModule = fx.Options(
 	fx.Provide(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {
 		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs()}, env)
 	}),
+)
+
+// TestPersistenceModule contains the dependency graph for the persistence components.
+var TestPersistenceModule = fx.Options(
+	DefaultModule,
+
 	logger.Module,
+	fx.Provide(persistence.NewDatabase), // retrieve from infrastructure module?
+	driven.PersistenceRepositories,
+	fx.Provide(factories.NewUserFactory),
+	fx.Provide(migration.NewGooseMigrator),
 )
 
 // ApplicationModule contains the dependency graph for the application components.
 var ApplicationModule = fx.Options(
-	fx.Provide(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
-	fx.Provide(func(env env.Env) *config.AppConfig {
-		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs()}, env)
-	}),
+	DefaultModule,
+
 	domain.Module,
 	api.Module,
 	driven.Module,
@@ -82,6 +76,7 @@ var ApplicationModule = fx.Options(
 
 // DefaultHTTPModule contains the dependency graph for the default http api components.
 var DefaultHTTPModule = fx.Options(
+	logger.Module,
 	fx.Provide(fx.Annotate(routes.NewRoutes, fx.ParamTags(`group:"routers"`))),
 	fx.Provide(fx.Annotate(middlewares.NewMiddlewares, fx.ParamTags(`group:"http_middlewares"`))),
 	fx.Provide(fx.Annotate(handlers.NewErrorResponseManager, fx.ParamTags(`group:"error_type_handlers"`))),

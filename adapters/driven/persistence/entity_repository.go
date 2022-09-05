@@ -21,6 +21,7 @@ type EntityRepository[T common.EntityConstraint] interface {
 	FindOneByID(ctx context.Context, id uint) (entity *T, err error)
 	FindOneByIDForUpdate(ctx context.Context, id uint) (entity *T, err error)
 	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[*T], err error)
+	FindAllByCriteria(ctx context.Context, criteria any, pagination *models.Pagination) (page *models.Page[*T], err error)
 	Create(ctx context.Context, entity *T) (*T, error)
 	Save(ctx context.Context, entity *T) (*T, error)
 	DeleteByID(ctx context.Context, id uint) error
@@ -77,9 +78,30 @@ func (r entityRepository[T]) FindOneByIDForUpdate(ctx context.Context, id uint) 
 }
 
 func (r entityRepository[T]) FindAll(
-	ctx context.Context, pagination *models.Pagination,
+	ctx context.Context,
+	pagination *models.Pagination,
 ) (page *models.Page[*T], err error) {
 	tx := r.DB.WithContext(ctx).Offset(pagination.Offset()).Limit(pagination.Limit).Order(pagination.Order())
+
+	content := &[]*T{}
+	if tx.Find(content).Error != nil {
+		return page, r.WrapError(err)
+	}
+
+	newPage, err := models.NewPageWith[*T](*content, pagination, func() (int, error) { return r.totalCountSupplier(ctx) })
+	if err != nil {
+		return page, r.WrapError(err)
+	}
+
+	return newPage, nil
+}
+
+func (r entityRepository[T]) FindAllByCriteria(
+	ctx context.Context,
+	criteria any,
+	pagination *models.Pagination,
+) (page *models.Page[*T], err error) {
+	tx := r.DB.WithContext(ctx).Where(criteria).Offset(pagination.Offset()).Limit(pagination.Limit).Order(pagination.Order())
 
 	content := &[]*T{}
 	if tx.Find(content).Error != nil {
