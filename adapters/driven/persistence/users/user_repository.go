@@ -29,12 +29,12 @@ type UserRepository interface {
 
 // userRepository database structure.
 type userRepository struct {
-	persistence.Repository[entities.User]
+	persistence.EntityRepository[entities.User]
 }
 
 // NewUserRepository creates a new user repository.
 func NewUserRepository(db persistence.Database, logger logger.Logger, config *config.AppConfig) UserRepository {
-	return &userRepository{persistence.NewRepository[entities.User](db, entities.User{}, logger, config)}
+	return &userRepository{persistence.NewEntityRepository[entities.User](db, entities.User{}, logger, config)}
 }
 
 // WithTx delegates transaction to user repository.
@@ -42,8 +42,8 @@ func (r userRepository) WithTx(tx *gorm.DB) UserRepository {
 	// Ensures that the transaction (*gorm.DB) is only available in the returned UserRepository
 	// Otherwise we would pollute the main instance.
 	cloned := r
-	// Returns a copy of Repository with the TX applied
-	cloned.Repository = r.Repository.WithTx(tx)
+	// Returns a copy of EntityRepository with the TX applied
+	cloned.EntityRepository = r.EntityRepository.WithTx(tx)
 
 	return cloned
 }
@@ -52,17 +52,17 @@ func (r userRepository) WithTx(tx *gorm.DB) UserRepository {
 func (r userRepository) TransactWithDefaultRetry(ctx context.Context, operation func(tx *gorm.DB) error) error {
 	// TODO, pass repository instead of gorm.DB?
 
-	return r.Repository.TransactWithDefaultRetry(func(tx *gorm.DB) error {
+	return r.EntityRepository.TransactWithDefaultRetry(func(tx *gorm.DB) error {
 		return operation(tx.WithContext(ctx))
 	})
 }
 
 func (r userRepository) FindOneByID(ctx context.Context, id uint) (*entities.User, error) {
-	return r.Repository.FindOneByID(ctx, id)
+	return r.EntityRepository.FindOneByID(ctx, id)
 }
 
 func (r userRepository) FindOneByIDForUpdate(ctx context.Context, id uint) (*entities.User, error) {
-	return r.Repository.FindOneByIDForUpdate(ctx, id)
+	return r.EntityRepository.FindOneByIDForUpdate(ctx, id)
 }
 
 func (r userRepository) FindOneByEmailWithExclusiveLock(ctx context.Context, email string) (*entities.User, error) {
@@ -81,21 +81,21 @@ func (r userRepository) FindOneByEmailWithExclusiveLock(ctx context.Context, ema
 func (r userRepository) FindAll(
 	ctx context.Context, pagination *models.Pagination,
 ) (page *models.Page[*entities.User], err error) {
-	return r.Repository.FindAll(ctx, pagination)
+	return r.EntityRepository.FindAll(ctx, pagination)
 }
 
 func (r userRepository) Create(ctx context.Context, user *entities.User) (*entities.User, error) {
-	return r.Repository.Create(ctx, user)
+	return r.EntityRepository.Create(ctx, user)
 }
 
 func (r userRepository) Save(ctx context.Context, user *entities.User) (*entities.User, error) {
-	return r.Repository.Save(ctx, user)
+	return r.EntityRepository.Save(ctx, user)
 }
 
 func (r userRepository) DeleteByID(ctx context.Context, id uint) error {
-	return r.Repository.DeleteByID(ctx, id)
+	return r.EntityRepository.DeleteByID(ctx, id)
 }
 
 func (r userRepository) Count(ctx context.Context) (int64, error) {
-	return r.Repository.Count(ctx)
+	return r.EntityRepository.Count(ctx)
 }
