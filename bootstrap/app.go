@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"context"
+	"github.com/NicklasWallgren/go-template/adapters/driven/env"
 	"log"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
@@ -18,6 +19,7 @@ import (
 )
 
 var CommonModules = fx.Options(
+	env.Module,
 	domain.Module,
 	api.Module,
 	driven.Module,

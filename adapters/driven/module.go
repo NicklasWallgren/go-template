@@ -1,7 +1,6 @@
 package driven
 
 import (
-	"github.com/NicklasWallgren/go-template/adapters/driven/env"
 	"github.com/NicklasWallgren/go-template/adapters/driven/health"
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
@@ -17,7 +16,6 @@ var PersistenceRepositories = fx.Options(
 )
 
 var Module = fx.Options(
-	env.Module,
 	logger.Module,
 	fx.Provide(persistence.NewDatabase),
 	fx.Provide(migration.NewGooseMigrator),

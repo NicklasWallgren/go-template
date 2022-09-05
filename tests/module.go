@@ -61,17 +61,16 @@ var TestPersistenceModule = fx.Options(
 
 // DefaultModule contains the dependency graph for the default application components.
 var DefaultModule = fx.Options(
-	fx.Decorate(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
+	fx.Provide(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {
 		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs()}, env)
 	}),
-	env.Module,
 	logger.Module,
 )
 
 // ApplicationModule contains the dependency graph for the application components.
 var ApplicationModule = fx.Options(
-	fx.Decorate(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
+	fx.Provide(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {
 		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs()}, env)
 	}),
