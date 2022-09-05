@@ -422,15 +422,15 @@ func (_c *Repository_TransactWithDefaultRetry_Call[T]) Return(_a0 error) *Reposi
 }
 
 // WithTx provides a mock function with given fields: tx
-func (_m *Repository[T]) WithTx(tx *gorm.DB) persistence.Repository[T] {
+func (_m *Repository[T]) WithTx(tx *gorm.DB) persistence.EntityRepository[T] {
 	ret := _m.Called(tx)
 
-	var r0 persistence.Repository[T]
-	if rf, ok := ret.Get(0).(func(*gorm.DB) persistence.Repository[T]); ok {
+	var r0 persistence.EntityRepository[T]
+	if rf, ok := ret.Get(0).(func(*gorm.DB) persistence.EntityRepository[T]); ok {
 		r0 = rf(tx)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(persistence.Repository[T])
+			r0 = ret.Get(0).(persistence.EntityRepository[T])
 		}
 	}
 
@@ -455,7 +455,7 @@ func (_c *Repository_WithTx_Call[T]) Run(run func(tx *gorm.DB)) *Repository_With
 	return _c
 }
 
-func (_c *Repository_WithTx_Call[T]) Return(_a0 persistence.Repository[T]) *Repository_WithTx_Call[T] {
+func (_c *Repository_WithTx_Call[T]) Return(_a0 persistence.EntityRepository[T]) *Repository_WithTx_Call[T] {
 	_c.Call.Return(_a0)
 	return _c
 }

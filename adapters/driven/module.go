@@ -12,6 +12,7 @@ import (
 )
 
 var PersistenceRepositories = fx.Options(
+	fx.Provide(persistence.NewRepository),
 	fx.Provide(users.NewUserRepository),
 )
 

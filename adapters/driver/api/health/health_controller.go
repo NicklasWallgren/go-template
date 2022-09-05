@@ -28,10 +28,10 @@ func (h HealthController) Health(ctx *gin.Context) (*response.APIResponseEnvelop
 	healthResult := h.healthCheckerManager.Check(ctx.Request.Context())
 
 	return response.NewEnvelope(
-		HealthToHTTPStatus(healthResult.Status), response.WithResponse(h.apiConverter.ResponseOf(healthResult))), nil
+		healthToHTTPStatus(healthResult.Status), response.WithResponse(h.apiConverter.ResponseOf(healthResult))), nil
 }
 
-func HealthToHTTPStatus(status checker.HealthStatus) int {
+func healthToHTTPStatus(status checker.HealthStatus) int {
 	switch status {
 	case checker.Unhealthy:
 	case checker.Unknown:

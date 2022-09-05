@@ -9,21 +9,21 @@ import (
 )
 
 type DBHealthChecker struct {
-	database persistence.Database
-	logger   logger.Logger
+	repository persistence.Repository
+	logger     logger.Logger
 }
 
-func NewDBHealthChecker(database persistence.Database, logger logger.Logger) HealthChecker {
-	return &DBHealthChecker{database: database, logger: logger}
+func NewDBHealthChecker(repository persistence.Repository, logger logger.Logger) HealthChecker {
+	return &DBHealthChecker{repository: repository, logger: logger}
 }
 
 func (d DBHealthChecker) Check(ctx context.Context) Health {
 	result := NewHealth(Healthy, "db")
 
-	if err := d.database.WithContext(ctx).Exec("SELECT 1").Error; err != nil {
+	if err := d.repository.RawSql(ctx, "SELECT 1").Error; err != nil {
 		result.Status = Unhealthy
 
-		d.logger.Fatalf("The database isn't in a healthy state. Cause: %v", err)
+		d.logger.Errorf("The database isn't in a healthy state. Cause: %v", err)
 	}
 
 	return result

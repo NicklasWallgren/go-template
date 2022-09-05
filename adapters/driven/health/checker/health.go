@@ -2,6 +2,12 @@ package checker
 
 type HealthStatus int
 
+const (
+	Unknown HealthStatus = iota
+	Healthy
+	Unhealthy
+)
+
 func (h HealthStatus) String() string {
 	return [...]string{"Unknown", "Healthy", "Unhealthy"}[h]
 }
