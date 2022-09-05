@@ -4,7 +4,6 @@ import (
 	"errors"
 	"time"
 
-
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	gormTrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/gorm.io/gorm.v1"

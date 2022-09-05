@@ -2,15 +2,19 @@ package health
 
 import (
 	"context"
+	"testing"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/health/checker"
 	mocks "github.com/NicklasWallgren/go-template/tests/mocks/adapters/driven/health/checker"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func Test(t *testing.T) {
+	t.Parallel()
 
 	t.Run("givenHealthyCheckers_whenCheck_thenIsHealthy", func(t *testing.T) {
+		t.Parallel()
+
 		ctx := context.TODO()
 
 		mockedHealthyChecker := mocks.NewHealthChecker(t)
@@ -23,6 +27,8 @@ func Test(t *testing.T) {
 	})
 
 	t.Run("givenHealthyAndUnhealthyCheckers_whenCheck_thenIsUnhealthy", func(t *testing.T) {
+		t.Parallel()
+
 		ctx := context.TODO()
 
 		mockedHealthyChecker := mocks.NewHealthChecker(t)
@@ -38,6 +44,8 @@ func Test(t *testing.T) {
 	})
 
 	t.Run("givenNoCheckers_whenCheck_thenIsUnknown", func(t *testing.T) {
+		t.Parallel()
+
 		ctx := context.TODO()
 
 		healthCheckerManager := NewHealthCheckerManager([]checker.HealthChecker{})
@@ -45,5 +53,4 @@ func Test(t *testing.T) {
 
 		assert.Equal(t, checker.Unknown, healthResult.Status)
 	})
-
 }

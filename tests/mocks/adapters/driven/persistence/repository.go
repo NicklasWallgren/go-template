@@ -63,8 +63,8 @@ func (_c *Repository_Gorm_Call) Return(_a0 *gorm.DB) *Repository_Gorm_Call {
 	return _c
 }
 
-// RawSql provides a mock function with given fields: ctx, sql, values
-func (_m *Repository) RawSql(ctx context.Context, sql string, values ...interface{}) error {
+// RawSQL provides a mock function with given fields: ctx, sql, values
+func (_m *Repository) RawSQL(ctx context.Context, sql string, values ...interface{}) error {
 	var _ca []interface{}
 	_ca = append(_ca, ctx, sql)
 	_ca = append(_ca, values...)
@@ -80,21 +80,21 @@ func (_m *Repository) RawSql(ctx context.Context, sql string, values ...interfac
 	return r0
 }
 
-// Repository_RawSql_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RawSql'
-type Repository_RawSql_Call struct {
+// Repository_RawSQL_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RawSQL'
+type Repository_RawSQL_Call struct {
 	*mock.Call
 }
 
-// RawSql is a helper method to define mock.On call
+// RawSQL is a helper method to define mock.On call
 //  - ctx context.Context
 //  - sql string
 //  - values ...interface{}
-func (_e *Repository_Expecter) RawSql(ctx interface{}, sql interface{}, values ...interface{}) *Repository_RawSql_Call {
-	return &Repository_RawSql_Call{Call: _e.mock.On("RawSql",
+func (_e *Repository_Expecter) RawSQL(ctx interface{}, sql interface{}, values ...interface{}) *Repository_RawSQL_Call {
+	return &Repository_RawSQL_Call{Call: _e.mock.On("RawSQL",
 		append([]interface{}{ctx, sql}, values...)...)}
 }
 
-func (_c *Repository_RawSql_Call) Run(run func(ctx context.Context, sql string, values ...interface{})) *Repository_RawSql_Call {
+func (_c *Repository_RawSQL_Call) Run(run func(ctx context.Context, sql string, values ...interface{})) *Repository_RawSQL_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		variadicArgs := make([]interface{}, len(args)-2)
 		for i, a := range args[2:] {
@@ -107,7 +107,7 @@ func (_c *Repository_RawSql_Call) Run(run func(ctx context.Context, sql string, 
 	return _c
 }
 
-func (_c *Repository_RawSql_Call) Return(_a0 error) *Repository_RawSql_Call {
+func (_c *Repository_RawSQL_Call) Return(_a0 error) *Repository_RawSQL_Call {
 	_c.Call.Return(_a0)
 	return _c
 }
