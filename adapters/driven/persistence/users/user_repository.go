@@ -3,12 +3,9 @@ package users
 import (
 	"context"
 
-	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
-
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 
-	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
 	userModels "github.com/NicklasWallgren/go-template/domain/users/models"
 	"gorm.io/gorm"
@@ -46,13 +43,11 @@ type userRepository struct {
 
 // NewUserRepository creates a new user repository.
 func NewUserRepository(
-	db persistence.Database,
-	logger logger.Logger,
-	config *config.AppConfig,
+	userEntityRepository persistence.EntityRepository[entities.User],
 	queryTemplateEngine sqlTemplate.QueryTemplateEngine,
 ) UserRepository {
 	return &userRepository{
-		persistence.NewEntityRepository[entities.User](db, entities.User{}, logger, config),
+		userEntityRepository,
 		queryTemplateEngine,
 	}
 }
