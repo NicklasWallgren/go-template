@@ -1,10 +1,11 @@
 package tests
 
 import (
-	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 	"io/fs"
 	"os"
 	"testing"
+
+	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/common"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/errors/handlers"
@@ -33,6 +34,10 @@ func MigrationFs() fs.FS {
 	return os.DirFS(utils.TestDirectoryRoot + "/../")
 }
 
+func TemplateSQLFs() fs.FS {
+	return os.DirFS(utils.TestDirectoryRoot + "/../resources/database/sql")
+}
+
 func NewForTest(tb testing.TB, opts ...fx.Option) *fx.App {
 	tb.Helper()
 
@@ -49,7 +54,7 @@ func NewForTest(tb testing.TB, opts ...fx.Option) *fx.App {
 var DefaultModule = fx.Options(
 	fx.Provide(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {
-		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs()}, env)
+		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs(), TemplateSQL: TemplateSQLFs()}, env)
 	}),
 )
 
@@ -60,6 +65,7 @@ var TestPersistenceModule = fx.Options(
 	logger.Module,
 	fx.Provide(persistence.NewDatabase), // retrieve from infrastructure module?
 	driven.PersistenceRepositories,
+	driven.QueryTemplateEngine,
 	fx.Provide(factories.NewUserFactory),
 	fx.Provide(migration.NewGooseMigrator),
 )

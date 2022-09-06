@@ -17,6 +17,14 @@ func NewPage[T any](content []T, pageable Pageable, total int) *Page[T] {
 	}
 }
 
+func NewEmptyPage[T any]() *Page[T] {
+	return &Page[T]{
+		Content:               []T{},
+		Pageable:              NewPaginationWithDefaults(),
+		TotalNumberOfElements: 0,
+	}
+}
+
 func (p Page[T]) NumberOfElements() int {
 	return len(p.Content)
 }

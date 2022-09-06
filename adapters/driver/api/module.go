@@ -38,6 +38,7 @@ var httpMiddleware = fx.Provide(
 
 var apiConverters = fx.Options(
 	fx.Provide(users.NewUserAPIConverter),
+	fx.Provide(users.NewUserOverviewAPIConverter),
 	fx.Provide(health.NewHealthAPIConverter),
 )
 

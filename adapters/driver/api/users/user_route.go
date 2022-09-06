@@ -20,6 +20,7 @@ func (s UserRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/users")
 	{
 		api.GET("/", s.rootHandler.Handle(s.userController.FindAllUsers))
+		api.GET("/overview", s.rootHandler.Handle(s.userController.Overview))
 		api.GET("/:id", s.rootHandler.Handle(s.userController.FindOneUserByID))
 		api.POST("/", s.rootHandler.Handle(s.userController.CreateUser))
 		api.POST("/:id", s.rootHandler.Handle(s.userController.UpdateUser))

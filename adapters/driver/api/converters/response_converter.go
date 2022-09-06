@@ -3,15 +3,14 @@ package converters
 import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/models"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/response"
-	"github.com/NicklasWallgren/go-template/domain/common"
 	"github.com/mariomac/gostream/stream"
 )
 
-type APIResponseConverter[T common.EntityConstraint, R response.APIResponse] interface {
+type APIResponseConverter[T any, R response.APIResponse] interface {
 	ResponseOf(T) R
 }
 
-type PageableResponseConverter[T common.EntityConstraint, R response.APIResponse] struct{}
+type PageableResponseConverter[T any, R response.APIResponse] struct{}
 
 func (p PageableResponseConverter[T, R]) ResponseOf(
 	page *models.Page[T],

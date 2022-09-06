@@ -3,7 +3,9 @@ package users
 import (
 	"context"
 
-	converters2 "github.com/NicklasWallgren/go-template/adapters/driver/api/converters"
+	"github.com/NicklasWallgren/go-template/domain/users/models"
+
+	"github.com/NicklasWallgren/go-template/adapters/driver/api/converters"
 	"github.com/NicklasWallgren/go-template/adapters/driver/api/users/response"
 
 	domain "github.com/NicklasWallgren/go-template/domain/users"
@@ -11,9 +13,9 @@ import (
 )
 
 type UserAPIConverter interface {
-	converters2.APIResponseConverter[*entities.User, response.UserResponse]
-	converters2.APIRequestCreateConverter[CreateUserRequest, entities.User]
-	converters2.APIRequestUpdateConverter[UpdateUserRequest, entities.User]
+	converters.APIResponseConverter[*entities.User, response.UserResponse]
+	converters.APIRequestCreateConverter[CreateUserRequest, entities.User]
+	converters.APIRequestUpdateConverter[UpdateUserRequest, entities.User]
 }
 
 type userAPIConverter struct {
@@ -26,6 +28,10 @@ func NewUserAPIConverter(userService domain.UserService) UserAPIConverter {
 
 func (u userAPIConverter) ResponseOf(user *entities.User) response.UserResponse {
 	return response.UserResponse{Name: user.Name, Email: user.Email}
+}
+
+func (u userAPIConverter) OverviewResponseOf(user *models.SenderOverview) response.UserOverviewResponse {
+	return response.UserOverviewResponse{Name: user.Name, Email: user.Email}
 }
 
 func (u userAPIConverter) EntityOf(request *CreateUserRequest) entities.User {

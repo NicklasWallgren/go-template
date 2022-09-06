@@ -21,7 +21,8 @@ type EntityRepository[T common.EntityConstraint] interface {
 	FindOneByID(ctx context.Context, id uint) (entity *T, err error)
 	FindOneByIDForUpdate(ctx context.Context, id uint) (entity *T, err error)
 	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[*T], err error)
-	FindAllByCriteria(ctx context.Context, criteria any, pagination *models.Pagination) (page *models.Page[*T], err error)
+	FindAllByCriteria(
+		ctx context.Context, criteriaAndPagination any, pagination *models.Pagination) (page *models.Page[*T], err error)
 	Create(ctx context.Context, entity *T) (*T, error)
 	Save(ctx context.Context, entity *T) (*T, error)
 	DeleteByID(ctx context.Context, id uint) error
@@ -101,7 +102,8 @@ func (r entityRepository[T]) FindAllByCriteria(
 	criteria any,
 	pagination *models.Pagination,
 ) (page *models.Page[*T], err error) {
-	tx := r.DB.WithContext(ctx).Where(criteria).Offset(pagination.Offset()).Limit(pagination.Limit).Order(pagination.Order())
+	tx := r.DB.WithContext(ctx).Where(criteria).Offset(pagination.Offset()).Limit(pagination.Limit).
+		Order(pagination.Order())
 
 	content := &[]*T{}
 	if tx.Find(content).Error != nil {

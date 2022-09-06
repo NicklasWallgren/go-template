@@ -18,13 +18,16 @@ var embedMigrations embed.FS
 //go:embed resources/assets/logo.ascii
 var logo string
 
+//go:embed resources/database/sql/*.tsql
+var templateSQL embed.FS
+
 // @title GO template API
 // @description An template for implementing a hexagonal application.
 // @version 1.0
 // @host localhost:8080
 // @BasePath /api.
 func main() {
-	assets := config.NewAssets(logo, embedMigrations)
+	assets := config.NewAssets(logo, embedMigrations, templateSQL)
 	app := bootstrap.NewApp(assets)
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
