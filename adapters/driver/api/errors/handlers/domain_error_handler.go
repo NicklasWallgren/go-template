@@ -16,8 +16,8 @@ func NewDomainErrorTypeHandler() ErrorTypeResponseHandler {
 }
 
 func (d DomainErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope {
-	if entityNotFoundError := AsEntityNotFoundError(err); entityNotFoundError != nil {
-		errorList := []response.APIError{response.NewAPIErrorWithValue(entityNotFoundError.Error(), entityNotFoundError.ID)}
+	if entityNotFoundError := AsError[domainErrors.EntityNotFoundError](err); entityNotFoundError != nil {
+		errorList := []response.APIError{response.NewAPIErrorWithField(entityNotFoundError.Error(), "Id", entityNotFoundError.ID)}
 
 		return response.NewEnvelope(http.StatusNotFound, response.WithResponse(response.NewAPIErrorResponse(errorList)))
 	}
@@ -31,7 +31,7 @@ func (d DomainErrorTypeHandler) Handle(err error) *response.APIResponseEnvelope 
 }
 
 func (d DomainErrorTypeHandler) IsSupported(err error) bool {
-	if AsEntityNotFoundError(err) != nil {
+	if AsError[domainErrors.EntityNotFoundError](err) != nil {
 		return true
 	}
 
@@ -40,19 +40,6 @@ func (d DomainErrorTypeHandler) IsSupported(err error) bool {
 	return errors.As(err, &domainError)
 }
 
-func (d DomainErrorTypeHandler) ErrorType() error {
-	return &domainErrors.DomainError{}
-}
-
 func (d DomainErrorTypeHandler) Priority() int {
 	return 4
-}
-
-func AsEntityNotFoundError(err error) *domainErrors.EntityNotFoundError {
-	var entityNotFoundError *domainErrors.EntityNotFoundError
-	if errors.As(err, &entityNotFoundError) {
-		return entityNotFoundError
-	}
-
-	return nil
 }

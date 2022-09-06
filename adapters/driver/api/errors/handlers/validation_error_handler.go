@@ -30,10 +30,6 @@ func (a ValidationErrorTypeHandler) IsSupported(err error) bool {
 	return errors.As(err, &validationError)
 }
 
-func (a ValidationErrorTypeHandler) ErrorType() error {
-	return &validation.ValidationError{}
-}
-
 func (a ValidationErrorTypeHandler) Priority() int {
 	return 2
 }

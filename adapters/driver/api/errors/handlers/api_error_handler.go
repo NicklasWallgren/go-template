@@ -31,10 +31,6 @@ func (a APIErrorTypeHandler) IsSupported(err error) bool {
 	return errors.As(err, &apiError)
 }
 
-func (a APIErrorTypeHandler) ErrorType() error {
-	return &errorTypes.APIError{}
-}
-
 func (a APIErrorTypeHandler) Priority() int {
 	return 5
 }

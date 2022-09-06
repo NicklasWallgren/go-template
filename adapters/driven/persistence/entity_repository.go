@@ -63,16 +63,28 @@ func (r entityRepository[T]) TransactWithDefaultRetry(operation func(tx *gorm.DB
 }
 
 func (r entityRepository[T]) FindOneByID(ctx context.Context, id uint) (entity *T, err error) {
-	if err := r.DB.WithContext(ctx).First(&entity, id).Error; err != nil {
+	dbSession := r.DB.WithContext(ctx).Limit(1).Find(&entity, id)
+
+	if err := dbSession.Error; err != nil {
 		return nil, r.WrapError(err)
+	}
+
+	if dbSession.RowsAffected == 0 {
+		return nil, gorm.ErrRecordNotFound
 	}
 
 	return entity, nil
 }
 
 func (r entityRepository[T]) FindOneByIDForUpdate(ctx context.Context, id uint) (entity *T, err error) {
-	if err := r.DB.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&entity, id).Error; err != nil {
+	dbSession := r.DB.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&entity, id)
+
+	if err := dbSession.Error; err != nil {
 		return nil, r.WrapError(err)
+	}
+
+	if dbSession.RowsAffected == 0 {
+		return nil, gorm.ErrRecordNotFound
 	}
 
 	return entity, nil
