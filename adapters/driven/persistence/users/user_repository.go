@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence"
@@ -9,8 +10,11 @@ import (
 
 	"github.com/NicklasWallgren/go-template/config"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
+	userModels "github.com/NicklasWallgren/go-template/domain/users/models"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+
+	sqlTemplate "github.com/NicklasWallgren/sqlTemplate/pkg"
 )
 
 type UserRepository interface {
@@ -20,7 +24,14 @@ type UserRepository interface {
 	FindOneByIDForUpdate(ctx context.Context, id uint) (*entities.User, error)
 	FindOneByEmailWithExclusiveLock(ctx context.Context, email string) (*entities.User, error)
 	FindAll(ctx context.Context, pagination *models.Pagination) (page *models.Page[*entities.User], err error)
-	FindAllByCriteria(ctx context.Context, criteria *FindAllCriteria, pagination *models.Pagination) (page *models.Page[*entities.User], err error)
+	FindAllByCriteria(
+		ctx context.Context,
+		criteriaAndPagination *models.CriteriaAndPagination[FindAllCriteria],
+	) (page *models.Page[*entities.User], err error)
+	Overview(
+		ctx context.Context,
+		criteriaAndPagination *models.CriteriaAndPagination[OverviewCriteria],
+	) (page *models.Page[*userModels.SenderOverview], err error)
 	Create(ctx context.Context, user *entities.User) (*entities.User, error)
 	Save(ctx context.Context, user *entities.User) (*entities.User, error)
 	DeleteByID(ctx context.Context, id uint) error
@@ -30,11 +41,20 @@ type UserRepository interface {
 // userRepository database structure.
 type userRepository struct {
 	persistence.EntityRepository[entities.User]
+	queryTemplateEngine sqlTemplate.QueryTemplateEngine
 }
 
 // NewUserRepository creates a new user repository.
-func NewUserRepository(db persistence.Database, logger logger.Logger, config *config.AppConfig) UserRepository {
-	return &userRepository{persistence.NewEntityRepository[entities.User](db, entities.User{}, logger, config)}
+func NewUserRepository(
+	db persistence.Database,
+	logger logger.Logger,
+	config *config.AppConfig,
+	queryTemplateEngine sqlTemplate.QueryTemplateEngine,
+) UserRepository {
+	return &userRepository{
+		persistence.NewEntityRepository[entities.User](db, entities.User{}, logger, config),
+		queryTemplateEngine,
+	}
 }
 
 // WithTx delegates transaction to user repository.
@@ -67,12 +87,12 @@ func (r userRepository) FindOneByIDForUpdate(ctx context.Context, id uint) (*ent
 
 func (r userRepository) FindOneByEmailWithExclusiveLock(ctx context.Context, email string) (*entities.User, error) {
 	var user *entities.User
-	if err := r.Gorm().
+	if err := r.EntityRepository.Gorm().
 		WithContext(ctx).
 		Where("email = ?", email).
 		Clauses(clause.Locking{Strength: "UPDATE"}).
 		Find(&user).Error; err != nil {
-		return nil, r.WrapError(err)
+		return nil, r.EntityRepository.WrapError(err)
 	}
 
 	return user, nil
@@ -86,10 +106,17 @@ func (r userRepository) FindAll(
 
 func (r userRepository) FindAllByCriteria(
 	ctx context.Context,
-	criteria *FindAllCriteria,
-	pagination *models.Pagination,
+	criteriaAndPagination *models.CriteriaAndPagination[FindAllCriteria],
 ) (page *models.Page[*entities.User], err error) {
-	return r.EntityRepository.FindAllByCriteria(ctx, criteria, pagination)
+	return r.EntityRepository.FindAllByCriteria(ctx, criteriaAndPagination.Criteria, &criteriaAndPagination.Pagination)
+}
+
+func (r userRepository) Overview(
+	ctx context.Context,
+	criteriaAndPagination *models.CriteriaAndPagination[OverviewCriteria],
+) (page *models.Page[*userModels.SenderOverview], err error) {
+	return persistence.FindUsingTemplatePageable[userModels.SenderOverview, OverviewCriteria](
+		ctx, r.EntityRepository.Gorm(), r.queryTemplateEngine, "users", "overview", criteriaAndPagination)
 }
 
 func (r userRepository) Create(ctx context.Context, user *entities.User) (*entities.User, error) {

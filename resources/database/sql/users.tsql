@@ -1,0 +1,14 @@
+{{define "overview"}}
+    SELECT *
+    FROM users
+    WHERE 1
+    {{if .Criteria.Name}}AND name={{bind .Criteria.Name}}{{end}}
+    LIMIT {{.Pagination.Offset}}, {{.Pagination.Limit}}
+{{end}}
+
+{{define "overview_count"}}
+    SELECT count(1)
+    FROM users
+    WHERE 1
+    {{if .Criteria.Name}}AND name={{bind .Criteria.Name}}{{end}}
+{{end}}

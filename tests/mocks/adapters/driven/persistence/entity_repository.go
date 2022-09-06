@@ -205,13 +205,13 @@ func (_c *EntityRepository_FindAll_Call[T]) Return(page *models.Page[*T], err er
 	return _c
 }
 
-// FindAllByCriteria provides a mock function with given fields: ctx, criteria, pagination
-func (_m *EntityRepository[T]) FindAllByCriteria(ctx context.Context, criteria interface{}, pagination *models.Pagination) (*models.Page[*T], error) {
-	ret := _m.Called(ctx, criteria, pagination)
+// FindAllByCriteria provides a mock function with given fields: ctx, criteriaAndPagination, pagination
+func (_m *EntityRepository[T]) FindAllByCriteria(ctx context.Context, criteriaAndPagination interface{}, pagination *models.Pagination) (*models.Page[*T], error) {
+	ret := _m.Called(ctx, criteriaAndPagination, pagination)
 
 	var r0 *models.Page[*T]
 	if rf, ok := ret.Get(0).(func(context.Context, interface{}, *models.Pagination) *models.Page[*T]); ok {
-		r0 = rf(ctx, criteria, pagination)
+		r0 = rf(ctx, criteriaAndPagination, pagination)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.Page[*T])
@@ -220,7 +220,7 @@ func (_m *EntityRepository[T]) FindAllByCriteria(ctx context.Context, criteria i
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(context.Context, interface{}, *models.Pagination) error); ok {
-		r1 = rf(ctx, criteria, pagination)
+		r1 = rf(ctx, criteriaAndPagination, pagination)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -235,13 +235,13 @@ type EntityRepository_FindAllByCriteria_Call[T common.EntityConstraint] struct {
 
 // FindAllByCriteria is a helper method to define mock.On call
 //  - ctx context.Context
-//  - criteria interface{}
+//  - criteriaAndPagination interface{}
 //  - pagination *models.Pagination
-func (_e *EntityRepository_Expecter[T]) FindAllByCriteria(ctx interface{}, criteria interface{}, pagination interface{}) *EntityRepository_FindAllByCriteria_Call[T] {
-	return &EntityRepository_FindAllByCriteria_Call[T]{Call: _e.mock.On("FindAllByCriteria", ctx, criteria, pagination)}
+func (_e *EntityRepository_Expecter[T]) FindAllByCriteria(ctx interface{}, criteriaAndPagination interface{}, pagination interface{}) *EntityRepository_FindAllByCriteria_Call[T] {
+	return &EntityRepository_FindAllByCriteria_Call[T]{Call: _e.mock.On("FindAllByCriteria", ctx, criteriaAndPagination, pagination)}
 }
 
-func (_c *EntityRepository_FindAllByCriteria_Call[T]) Run(run func(ctx context.Context, criteria interface{}, pagination *models.Pagination)) *EntityRepository_FindAllByCriteria_Call[T] {
+func (_c *EntityRepository_FindAllByCriteria_Call[T]) Run(run func(ctx context.Context, criteriaAndPagination interface{}, pagination *models.Pagination)) *EntityRepository_FindAllByCriteria_Call[T] {
 	_c.Call.Run(func(args mock.Arguments) {
 		run(args[0].(context.Context), args[1].(interface{}), args[2].(*models.Pagination))
 	})

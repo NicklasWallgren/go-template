@@ -14,6 +14,7 @@ import (
 	domainErrors "github.com/NicklasWallgren/go-template/domain/errors"
 	"github.com/NicklasWallgren/go-template/domain/event"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
+	userModels "github.com/NicklasWallgren/go-template/domain/users/models"
 	"github.com/NicklasWallgren/go-template/domain/validation"
 	"gorm.io/gorm"
 )
@@ -22,8 +23,15 @@ type UserService interface {
 	WithTx(tx *gorm.DB) UserService
 	FindOneUserByID(ctx context.Context, id uint) (user *entities.User, err error)
 	FindOneUserByIDForUpdate(ctx context.Context, id uint) (*entities.User, error)
-	FindAllUser(ctx context.Context, pagination *models.Pagination) (users *models.Page[*entities.User], err error)
-	FindAllUserByCriteria(ctx context.Context, criteria *repository.FindAllCriteria, pagination *models.Pagination) (users *models.Page[*entities.User], err error)
+	FindAllUsers(ctx context.Context, pagination *models.Pagination) (users *models.Page[*entities.User], err error)
+	FindAllUsersByCriteria(
+		ctx context.Context,
+		criteriaAndPagination *models.CriteriaAndPagination[repository.FindAllCriteria],
+	) (users *models.Page[*entities.User], err error)
+	Overview(
+		ctx context.Context,
+		criteriaAndPagination *models.CriteriaAndPagination[repository.OverviewCriteria],
+	) (users *models.Page[*userModels.SenderOverview], err error)
 	CreateUser(ctx context.Context, toBeCreated entities.User) (user *entities.User, err error)
 	UpdateUser(ctx context.Context, updated *entities.User) (user *entities.User, err error)
 	DeleteUserByID(ctx context.Context, id uint) error
@@ -86,8 +94,8 @@ func (s userService) FindOneUserByIDForUpdate(ctx context.Context, id uint) (use
 	return user, nil
 }
 
-// FindAllUser retrieves a paginated list of users.
-func (s userService) FindAllUser(
+// FindAllUsers retrieves a paginated list of users.
+func (s userService) FindAllUsers(
 	ctx context.Context,
 	pagination *models.Pagination,
 ) (users *models.Page[*entities.User], err error) {
@@ -98,14 +106,25 @@ func (s userService) FindAllUser(
 	return users, nil
 }
 
-// FindAllUserByCriteria retrieves a paginated list of users.
-func (s userService) FindAllUserByCriteria(
+// FindAllUsersByCriteria retrieves a paginated list of users.
+func (s userService) FindAllUsersByCriteria(
 	ctx context.Context,
-	criteria *repository.FindAllCriteria,
-	pagination *models.Pagination,
+	criteriaAndPagination *models.CriteriaAndPagination[repository.FindAllCriteria],
 ) (users *models.Page[*entities.User], err error) {
-	if users, err = s.repository.FindAllByCriteria(ctx, criteria, pagination); err != nil {
+	if users, err = s.repository.FindAllByCriteria(ctx, criteriaAndPagination); err != nil {
 		return nil, domainErrors.NewDomainError("unable to retrieve the available users", err)
+	}
+
+	return users, nil
+}
+
+// Overview retrieves a paginated list of users overview.
+func (s userService) Overview(
+	ctx context.Context,
+	criteriaAndPagination *models.CriteriaAndPagination[repository.OverviewCriteria],
+) (users *models.Page[*userModels.SenderOverview], err error) {
+	if users, err = s.repository.Overview(ctx, criteriaAndPagination); err != nil {
+		return nil, domainErrors.NewDomainError("unable to retrieve the users overview", err)
 	}
 
 	return users, nil

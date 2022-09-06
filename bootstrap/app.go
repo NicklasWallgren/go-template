@@ -2,8 +2,9 @@ package bootstrap
 
 import (
 	"context"
-	"github.com/NicklasWallgren/go-template/adapters/driven/env"
 	"log"
+
+	"github.com/NicklasWallgren/go-template/adapters/driven/env"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 

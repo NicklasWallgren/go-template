@@ -19,6 +19,6 @@ type CriteriaAndPagination[T any] struct {
 	Pagination Pagination
 }
 
-func NewCriteriaAndPagination[T any](Criteria T) CriteriaAndPagination[T] {
-	return CriteriaAndPagination[T]{Criteria: Criteria, Pagination: NewPaginationWithDefaults()}
+func NewCriteriaAndPagination[T any](criteria T) CriteriaAndPagination[T] {
+	return CriteriaAndPagination[T]{Criteria: criteria, Pagination: NewPaginationWithDefaults()}
 }

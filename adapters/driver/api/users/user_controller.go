@@ -1,8 +1,9 @@
 package users
 
 import (
-	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
 	"net/http"
+
+	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/users"
 
 	"github.com/NicklasWallgren/go-template/adapters/driven/logger"
 
@@ -15,6 +16,7 @@ import (
 
 	services "github.com/NicklasWallgren/go-template/domain/users"
 	"github.com/NicklasWallgren/go-template/domain/users/entities"
+	userModels "github.com/NicklasWallgren/go-template/domain/users/models"
 	"github.com/gin-gonic/gin/binding"
 
 	"github.com/gin-gonic/gin"
@@ -22,10 +24,11 @@ import (
 
 // UserController is a struct which handles the typical http requests for a user.
 type UserController struct {
-	service      services.UserService
-	logger       logger.Logger
-	apiConverter UserAPIConverter
-	validator    binding.StructValidator
+	service              services.UserService
+	logger               logger.Logger
+	apiConverter         UserAPIConverter
+	overviewAPIConverter UserOverviewAPIConverter
+	validator            binding.StructValidator
 }
 
 // NewUserController creates a new [NewUserController].
@@ -33,13 +36,15 @@ func NewUserController(
 	userService services.UserService,
 	logger logger.Logger,
 	apiConverter UserAPIConverter,
+	overviewAPIConverter UserOverviewAPIConverter,
 	validator binding.StructValidator,
 ) UserController {
 	return UserController{
-		service:      userService,
-		logger:       logger,
-		apiConverter: apiConverter,
-		validator:    validator,
+		service:              userService,
+		logger:               logger,
+		apiConverter:         apiConverter,
+		overviewAPIConverter: overviewAPIConverter,
+		validator:            validator,
 	}
 }
 
@@ -69,12 +74,13 @@ func (u UserController) FindOneUserByID(ctx *gin.Context) (*response.APIResponse
 // @Failure		400 {object} response.APIErrorResponse "in case of an error"
 // @Router 		/users [get].
 func (u UserController) FindAllUsers(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
-	criteriaAndPagination, err := request.Into(ctx, models.NewCriteriaAndPagination[users.FindAllCriteria](users.FindAllCriteria{}))
+	criteriaAndPagination, err := request.Into(
+		ctx, models.NewCriteriaAndPagination[users.FindAllCriteria](users.FindAllCriteria{}))
 	if err != nil {
 		return nil, err
 	}
 
-	userPage, err := u.service.FindAllUserByCriteria(ctx.Request.Context(), &criteriaAndPagination.Criteria, &criteriaAndPagination.Pagination)
+	userPage, err := u.service.FindAllUsersByCriteria(ctx.Request.Context(), &criteriaAndPagination)
 	if err != nil {
 		return nil, err
 	}
@@ -83,6 +89,29 @@ func (u UserController) FindAllUsers(ctx *gin.Context) (*response.APIResponseEnv
 	converter := converters.PageableResponseConverter[*entities.User, userResponse.UserResponse]{}
 
 	return response.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.apiConverter)), nil
+}
+
+// Overview retrieves overview information about users.
+// @Summary 	Retrieves paginated response of users
+// @Success		200 {object} response.PageableResponse[response.UserResponse]
+// @Failure		400 {object} response.APIErrorResponse "in case of an error"
+// @Router 		/users/overview [get].
+func (u UserController) Overview(ctx *gin.Context) (*response.APIResponseEnvelope, error) {
+	criteriaAndPagination, err := request.Into(
+		ctx, models.NewCriteriaAndPagination[users.OverviewCriteria](users.OverviewCriteria{}))
+	if err != nil {
+		return nil, err
+	}
+
+	userPage, err := u.service.Overview(ctx.Request.Context(), &criteriaAndPagination)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO, inject converter
+	converter := converters.PageableResponseConverter[*userModels.SenderOverview, userResponse.UserOverviewResponse]{}
+
+	return response.NewWithResponse(http.StatusOK, converter.ResponseOf(userPage, u.overviewAPIConverter)), nil
 }
 
 // CreateUser creates a user using the prerequisites provided.
