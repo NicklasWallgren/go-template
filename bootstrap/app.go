@@ -29,10 +29,10 @@ var CommonModules = fx.Options(
 // App root of application.
 type App struct {
 	*cmd.RootCommand
-	assets *config.Assets
+	assets *config.AssetsConfig
 }
 
-func NewApp(assets *config.Assets) *App {
+func NewApp(assets *config.AssetsConfig) *App {
 	app := &App{RootCommand: cmd.NewRootCommand(assets), assets: assets}
 	app.RootCommand.Add(cmd.NewHTTPServerCommand(), app.boot)
 	app.RootCommand.Add(cmd.NewMigrationCommand(), app.boot)
@@ -49,7 +49,7 @@ func (a App) boot(runner cmd.CommandRunner) {
 		fx.Invoke(runner),
 	)
 	ctx := context.Background()
-	app := fx.New(fx.Provide(func() *config.Assets { return a.assets }), config.Module, CommonModules, opts)
+	app := fx.New(fx.Provide(func() *config.AssetsConfig { return a.assets }), config.Module, CommonModules, opts)
 
 	if err := app.Start(ctx); err != nil {
 		log.Println(err)

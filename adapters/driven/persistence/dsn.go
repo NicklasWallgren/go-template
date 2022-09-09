@@ -6,7 +6,7 @@ import (
 	"github.com/NicklasWallgren/go-template/config"
 )
 
-func DSN(config *config.Database) string {
+func DSN(config *config.DatabaseConfig) string {
 	switch config.Driver {
 	case "mysql":
 		return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&multiStatements=true",

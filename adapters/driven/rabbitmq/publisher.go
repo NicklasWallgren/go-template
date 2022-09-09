@@ -23,7 +23,7 @@ var _ pubsub.AMQPPublisher = (*RabbitMQPublisher)(nil)
 type RabbitMQPublisher struct {
 	rabbitmqPublisher *rabbitmq.Publisher
 	initialized       bool
-	config            *config.RabbitMQ
+	config            *config.RabbitMQConfig
 	logger            logger.Logger
 }
 
