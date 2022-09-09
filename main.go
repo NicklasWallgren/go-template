@@ -27,7 +27,7 @@ var templateSQL embed.FS
 // @host localhost:8080
 // @BasePath /api.
 func main() {
-	assets := config.NewAssets(logo, embedMigrations, templateSQL)
+	assets := config.NewAssetsConfig(logo, embedMigrations, templateSQL)
 	app := bootstrap.NewApp(assets)
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)

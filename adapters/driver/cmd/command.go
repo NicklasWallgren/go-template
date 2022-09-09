@@ -9,7 +9,7 @@ type RootCommand struct {
 	*cobra.Command
 }
 
-func NewRootCommand(assets *config.Assets) *RootCommand {
+func NewRootCommand(assets *config.AssetsConfig) *RootCommand {
 	return &RootCommand{&cobra.Command{
 		Use:   "go-template",
 		Short: "An go template ",

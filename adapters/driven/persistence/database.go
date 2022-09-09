@@ -30,7 +30,7 @@ func NewDatabase(config *config.AppConfig, logger logger.Logger) (Database, erro
 	return Database{DB: db}, nil
 }
 
-func connect(config *config.Database, logger logger.Logger) (db *gorm.DB, err error) {
+func connect(config *config.DatabaseConfig, logger logger.Logger) (db *gorm.DB, err error) {
 	// The database might not have been initialized yet, retry
 	err = retry.Do(func() (err error) {
 		dialector, err := gormDialector(config)
@@ -46,7 +46,7 @@ func connect(config *config.Database, logger logger.Logger) (db *gorm.DB, err er
 	return db, err
 }
 
-func gormDialector(config *config.Database) (gorm.Dialector, error) {
+func gormDialector(config *config.DatabaseConfig) (gorm.Dialector, error) {
 	url := DSN(config)
 
 	switch config.Driver {

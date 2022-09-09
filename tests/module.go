@@ -54,7 +54,7 @@ func NewForTest(tb testing.TB, opts ...fx.Option) *fx.App {
 var DefaultModule = fx.Options(
 	fx.Provide(func() env.Env { return env.NewEnvWithPath(utils.TestDirectoryRoot + "/.env") }),
 	fx.Provide(func(env env.Env) *config.AppConfig {
-		return config.NewAppConfig(&config.Assets{EmbedMigrations: MigrationFs(), TemplateSQL: TemplateSQLFs()}, env)
+		return config.NewAppConfig(&config.AssetsConfig{EmbedMigrations: MigrationFs(), TemplateSQL: TemplateSQLFs()}, env)
 	}),
 )
 
