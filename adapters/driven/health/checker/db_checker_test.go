@@ -22,7 +22,7 @@ func TestDBChecker(t *testing.T) {
 		repository := persistenceMock.NewRepository(t)
 		repository.EXPECT().RawSQL(ctx, mock.AnythingOfType("string")).Return(nil)
 
-		dbHealthChecker := NewDBHealthChecker(repository, logger.NullLogger{})
+		dbHealthChecker := NewDBHealthChecker(repository, logger.NopLogger{})
 		health := dbHealthChecker.Check(ctx)
 
 		assert.Equal(t, Healthy, health.Status)
@@ -37,7 +37,7 @@ func TestDBChecker(t *testing.T) {
 		repository := persistenceMock.NewRepository(t)
 		repository.EXPECT().RawSQL(ctx, mock.AnythingOfType("string")).Return(err)
 
-		dbHealthChecker := NewDBHealthChecker(repository, logger.NullLogger{})
+		dbHealthChecker := NewDBHealthChecker(repository, logger.NopLogger{})
 		health := dbHealthChecker.Check(ctx)
 
 		assert.Equal(t, Unhealthy, health.Status)

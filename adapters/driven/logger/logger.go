@@ -55,7 +55,7 @@ func NewLogger(env env.Env) (Logger, error) {
 func (l logger) GetFxLogger() fxevent.Logger {
 	zapLogger := l.zapLogger.WithOptions(zap.WithCaller(false))
 
-	return &fxevent.ZapLogger{Logger: zapLogger}
+	return NewFxZapLoggerDecorator(zapLogger)
 }
 
 // GetGormLogger gets the gorm framework logger.

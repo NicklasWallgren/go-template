@@ -62,7 +62,6 @@ func (s *HTTPServerCommand) Run(cmd *cobra.Command) CommandRunner {
 		srv := &http.Server{Addr: ":" + config.HTTPServer.Port, ReadHeaderTimeout: 10 * time.Second, Handler: router.Gin}
 
 		// Initializing the server in a goroutine so that it won't block
-		// See validatorModule in adapters/driven/api/module.go
 		go func() {
 			if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 				log.Fatalf("listen: %s\n", err)

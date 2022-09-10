@@ -44,7 +44,7 @@ func NewApp(assets *config.AssetsConfig) *App {
 func (a App) boot(runner cmd.CommandRunner) {
 	opts := fx.Options(
 		fx.WithLogger(func(logger logger.Logger) fxevent.Logger {
-			return logger.GetFxLogger()
+			return logger.GetFxLogger() // TODO, pass fx.NopLogger for some commands?
 		}),
 		fx.Invoke(runner),
 	)

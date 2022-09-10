@@ -21,7 +21,7 @@ func (r RootCommand) Add(command Command, boot func(runner CommandRunner)) {
 	wrappedCmd := &cobra.Command{
 		Use:   command.Use(),
 		Short: command.Short(),
-		Run: func(c *cobra.Command, args []string) {
+		Run: func(c *cobra.Command, args []string) { // TODO, use RunE instead?
 			boot(command.Run(c))
 		},
 	}
@@ -66,5 +66,5 @@ type Command interface {
 	// 	 },
 	//  }
 	//
-	Run(cmd *cobra.Command) CommandRunner
+	Run(cmd *cobra.Command) CommandRunner // TODO, RunE instead?
 }

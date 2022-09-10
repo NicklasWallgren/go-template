@@ -63,7 +63,7 @@ var TestPersistenceModule = fx.Options(
 	DefaultModule,
 
 	logger.Module,
-	fx.Provide(persistence.NewDatabase), // retrieve from infrastructure module?
+	fx.Provide(persistence.NewDatabase),
 	driven.PersistenceRepositories,
 	driven.QueryTemplateEngine,
 	fx.Provide(factories.NewUserFactory),

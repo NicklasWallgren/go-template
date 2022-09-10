@@ -13,7 +13,7 @@ func NewMigrationCommand() Command {
 }
 
 func (m MigrationCommand) Use() string {
-	return "migrate"
+	return "handleMigrate"
 }
 
 func (m MigrationCommand) Short() string {
@@ -22,33 +22,45 @@ func (m MigrationCommand) Short() string {
 
 func (m MigrationCommand) Setup(cmd *cobra.Command) {
 	cmd.Flags().Bool("up", false, "Applies the migration files")
-	cmd.Flags().String("create", "", "Creates a new migration file")
+	cmd.Flags().String("handleCreate", "", "Creates a new migration file")
+	cmd.Flags().Bool("handleStatus", false, "Shows the migration handleStatus")
 }
 
 func (m MigrationCommand) Run(cmd *cobra.Command) CommandRunner {
 	return func(migrator migration.Migrator) {
 		upFlag, _ := cmd.Flags().GetBool("up")
-		createFlag, _ := cmd.Flags().GetString("create")
+		createFlag, _ := cmd.Flags().GetString("handleCreate")
+		statusFlag, _ := cmd.Flags().GetBool("handleStatus")
 
-		if upFlag {
-			migrate(migrator)
-		} else if createFlag != "" {
-			create(migrator, createFlag)
-		}
-
-		// TODO, handle unknown flag
+		switch {
+		case upFlag:
+			handleMigrate(migrator)
+		case createFlag != "":
+			handleCreate(migrator, createFlag)
+		case statusFlag:
+			handleStatus(migrator)
+		default:
+			// TODO, handle unknown flag
+		} // nolint: wsl
 	} // nolint: wsl
 }
 
-func migrate(migrator migration.Migrator) {
+func handleMigrate(migrator migration.Migrator) {
 	if err := migrator.Up(); err != nil {
 		// TODO, handle error properly
 		panic(err)
 	}
 }
 
-func create(migrator migration.Migrator, filename string) {
+func handleCreate(migrator migration.Migrator, filename string) {
 	if err := migrator.Create(filename); err != nil {
+		// TODO, handle error properly
+		panic(err)
+	}
+}
+
+func handleStatus(migrator migration.Migrator) {
+	if err := migrator.Status(); err != nil {
 		// TODO, handle error properly
 		panic(err)
 	}
