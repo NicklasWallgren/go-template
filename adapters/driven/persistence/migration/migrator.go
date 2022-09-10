@@ -5,4 +5,5 @@ type Migrator interface {
 	Down() error
 	Create(filename string) error
 	Fix() error
+	Status() error
 }

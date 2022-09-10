@@ -1,7 +1,7 @@
 package migration
 
 import (
-	"errors"
+	"database/sql"
 	"fmt"
 	"io/fs"
 
@@ -17,9 +17,6 @@ type GooseMigrator struct {
 	migrationDirectoryPath string
 }
 
-// ErrMigrationUp is returned when the available migrations could not be applied.
-var ErrMigrationUp = errors.New("could not apply the available migrations")
-
 func NewGooseMigrator(db persistence.Database, config *config.AppConfig) (Migrator, error) {
 	goose.SetBaseFS(config.Assets.EmbedMigrations)
 
@@ -28,19 +25,19 @@ func NewGooseMigrator(db persistence.Database, config *config.AppConfig) (Migrat
 	}
 
 	return &GooseMigrator{
-		db: db, filesystem: config.Assets.EmbedMigrations, migrationDirectoryPath: config.Database.MigrationDirectory,
+		db:                     db,
+		filesystem:             config.Assets.EmbedMigrations,
+		migrationDirectoryPath: config.Database.MigrationDirectory,
 	}, nil
 }
 
 func (m GooseMigrator) Up() error {
-	db, err := m.db.DB.DB()
+	db, err := m.dbConnection()
 	if err != nil {
-		return fmt.Errorf("could not establish a connection to the database. %w", err)
+		return err
 	}
 
-	// TODO, option to control WithAllowMissing?
-
-	if err := goose.Up(db, m.migrationDirectoryPath, goose.WithAllowMissing()); err != nil {
+	if err := goose.Up(db, m.migrationDirectoryPath, m.optionFuncs()...); err != nil {
 		return fmt.Errorf("could not apply the available migrations. %w", err)
 	}
 
@@ -56,9 +53,9 @@ func (m GooseMigrator) Down() error {
 } // nolint:wsl
 
 func (m GooseMigrator) Create(name string) error {
-	db, err := m.db.DB.DB()
+	db, err := m.dbConnection()
 	if err != nil {
-		return fmt.Errorf("could not establish a connection to the database. %w", err)
+		return err
 	}
 
 	if err := goose.Create(db, m.migrationDirectoryPath, name, "sql"); err != nil {
@@ -71,4 +68,33 @@ func (m GooseMigrator) Create(name string) error {
 func (m GooseMigrator) Fix() error {
 	// TODO implement me
 	panic("implement me")
+}
+
+func (m GooseMigrator) Status() error {
+	db, err := m.dbConnection()
+	if err != nil {
+		return err
+	}
+
+	if err := goose.Status(db, m.migrationDirectoryPath, m.optionFuncs()...); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m GooseMigrator) dbConnection() (*sql.DB, error) {
+	db, err := m.db.DB.DB()
+	if err != nil {
+		return nil, fmt.Errorf("could not establish a connection to the database. %w", err)
+	}
+
+	return db, nil
+}
+
+func (m GooseMigrator) optionFuncs() []goose.OptionsFunc {
+	return []goose.OptionsFunc{
+		goose.WithAllowMissing(), // TODO, option to control?
+		// goose.WithNoVersioning(), // TODO, should be active by default?
+	}
 }
