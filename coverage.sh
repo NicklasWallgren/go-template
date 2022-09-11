@@ -35,7 +35,11 @@ go test $(go list ./...) -p 1 -coverprofile=build/coverage.out -covermode count 
 # Removes the ignored paths from the coverage.out file
 while read p || [ -n "$p" ]
 do
-sed -i '' "/${p//\//\\/}/d" ./build/coverage.out
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' "/${p//\//\\/}/d" ./build/coverage.out
+else
+  sed -i "/${p//\//\\/}/d" ./build/coverage.out
+fi
 done < ./.coverageignore
 
 if [[ -n $(has_param "--html" "$@") ]]; then
