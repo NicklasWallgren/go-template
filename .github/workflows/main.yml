@@ -47,7 +47,7 @@ jobs:
           mysql -h 127.0.0.1 -u root -psecret go_template_test < deployment/docker/mariadb/procedures.sql
           ./coverage.sh
 
-      - name: Run codacy-coverage-reporter
+      - name: Send coverage Codacy
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r build/coverage.out
 
