@@ -1,9 +1,6 @@
 on: [ push, pull_request ]
 name: Test
 
-env:
-  CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-
 jobs:
   test:
     strategy:
@@ -48,6 +45,8 @@ jobs:
           ./coverage.sh
 
       - name: Send coverage Codacy
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r build/coverage.out
 
