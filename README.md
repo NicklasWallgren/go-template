@@ -11,6 +11,14 @@
   <img src="resources/assets/gophere_logo.png" width="125">
 </p>
 
+[![Build Status](https://github.com/NicklasWallgren/go-template/workflows/Test/badge.svg)](https://github.com/NicklasWallgren/go-template/actions?query=workflow%3ATest)
+[![Reviewdog](https://github.com/NicklasWallgren/go-template/workflows/reviewdog/badge.svg)](https://github.com/NicklasWallgren/go-template/actions?query=workflow%3Areviewdog)
+[![Go Report Card](https://goreportcard.com/badge/github.com/NicklasWallgren/go-template)](https://goreportcard.com/report/github.com/NicklasWallgren/go-template)
+[![GoDoc](https://godoc.org/github.com/NicklasWallgren/go-template?status.svg)](https://godoc.org/github.com/NicklasWallgren/go-template)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cabd5fbbcde543ec959fb4a3581600ed)](https://app.codacy.com/gh/NicklasWallgren/go-template?utm_source=github.com&utm_medium=referral&utm_content=NicklasWallgren/go-template&utm_campaign=Badge_Grade)
+
+
+
 # Go Template - Hexa(go)nal architecture based on DDD
 
 Go-template is an opinionated Hexagonal backend template written in GO.
