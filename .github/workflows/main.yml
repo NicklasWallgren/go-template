@@ -37,14 +37,11 @@ jobs:
           GO111MODULE: off
         run: go get github.com/mattn/goveralls
 
-#      - name: Shutdown Ubuntu MySQL
-#        run: sudo service mysql stop
-
       - name: Test
         run: |
           mkdir -p build
           mysql -h 127.0.0.1 -u root -psecret go_template_test < deployment/docker/mariadb/procedures.sql
-          go test -v $(go list ./...) -p 1 -coverprofile=build/coverage.out -covermode count -coverpkg ./... || true
+          go test -v $(go list ./...) -p 1 -coverprofile=build/coverage.out -covermode count -coverpkg ./... || true TODO, do not suppress
 
       - name: Send coverage
         env:
