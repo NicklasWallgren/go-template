@@ -26,13 +26,13 @@ if [[ -n $(has_param "help" "$@") ]]; then
     help
 fi
 
-# Creates the build directory
+# Creates the default working directory
 mkdir -p build
 
 # Executes the tests and generates the coverage.out report
 go test $(go list ./...) -p 1 -coverprofile=build/coverage.out -covermode count -coverpkg ./...
 
-# Removes the ignores paths from the coverage.out file
+# Removes the ignored paths from the coverage.out file
 while read p || [ -n "$p" ]
 do
 sed -i '' "/${p//\//\\/}/d" ./build/coverage.out
