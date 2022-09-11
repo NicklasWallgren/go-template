@@ -1,5 +1,6 @@
 on: [ push, pull_request ]
 name: Test
+
 jobs:
   test:
     strategy:
@@ -41,9 +42,15 @@ jobs:
         run: |
           mkdir -p build
           mysql -h 127.0.0.1 -u root -psecret go_template_test < deployment/docker/mariadb/procedures.sql
-          go test -v $(go list ./...) -p 1 -coverprofile=build/coverage.out -covermode count -coverpkg ./... || true TODO, do not suppress
+          ./coverage.sh
 
-      - name: Send coverage
+      - name: Send coverage Codacy
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: |
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r build/coverage.out
+
+      - name: Send coverage Coveralls
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: goveralls -coverprofile=build/coverage.out -service=github
