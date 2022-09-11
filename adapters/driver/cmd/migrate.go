@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"github.com/NicklasWallgren/go-template/adapters/driven/persistence/migration"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +12,7 @@ func NewMigrationCommand() Command {
 }
 
 func (m MigrationCommand) Use() string {
-	return "handleMigrate"
+	return "migrate"
 }
 
 func (m MigrationCommand) Short() string {
