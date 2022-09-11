@@ -1,12 +1,24 @@
-on: [push, pull_request]
+on: [ push, pull_request ]
 name: Test
 jobs:
   test:
     strategy:
       matrix:
-        go-version: [1.19.x]
-        os: [ubuntu-latest]
+        go-version: [ 1.19.x ]
+        os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
+
+    services:
+      mariadb:
+        image: mariadb:10.5.10
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: go_template_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
@@ -25,10 +37,16 @@ jobs:
           GO111MODULE: off
         run: go get github.com/mattn/goveralls
 
+#      - name: Shutdown Ubuntu MySQL
+#        run: sudo service mysql stop
+
       - name: Test
-        run: go test -v -coverprofile=profile.cov
+        run: |
+          mkdir -p build
+          mysql -h 127.0.0.1 -u root -psecret go_template_test < deployment/docker/mariadb/procedures.sql
+          go test -v $(go list ./...) -p 1 -coverprofile=build/coverage.out -covermode count -coverpkg ./... || true
 
       - name: Send coverage
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: goveralls -coverprofile=profile.cov -service=github
+        run: goveralls -coverprofile=build/coverage.out -service=github
