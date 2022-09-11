@@ -18,7 +18,6 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/cabd5fbbcde543ec959fb4a3581600ed)](https://app.codacy.com/gh/NicklasWallgren/go-template?utm_source=github.com&utm_medium=referral&utm_content=NicklasWallgren/go-template&utm_campaign=Badge_Grade)
 
 
-
 # Go Template - Hexa(go)nal architecture based on DDD
 
 Go-template is an opinionated Hexagonal backend template written in GO.
