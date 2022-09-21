@@ -209,10 +209,10 @@ github.com/gin-gonic/gin v1.7.0/go.mod h1:jD2toBW3GZUr5UMcdrwQA10I7RuaFOl/SGeDjX
 github.com/gin-gonic/gin v1.7.7/go.mod h1:axIBovoeJpVj8S3BwE0uPMTeReE4+AfFtqpqaZ1qq1U=
 github.com/gin-gonic/gin v1.8.1 h1:4+fr/el88TOO3ewCmQr8cx/CtZ/umlIRIs5M4NTNjf8=
 github.com/gin-gonic/gin v1.8.1/go.mod h1:ji8BvRH1azfM+SYow9zQ6SZMvR8qOMZHmsCuWR9tTTk=
-github.com/gkampitakis/ciinfo v0.1.0 h1:hPvgzhg7q6xlTNl4hWgEy13esbW847lWTREf0GoezRQ=
-github.com/gkampitakis/ciinfo v0.1.0/go.mod h1:PoTj49S/eZLL7PvEdBeu9D1qpd3JsEHOCyf5Y5hVYOs=
-github.com/gkampitakis/go-snaps v0.3.2 h1:Hm/zhPa8esP2epzP/bFhtWJjTnyTFPvCOd2mB83SNCM=
-github.com/gkampitakis/go-snaps v0.3.2/go.mod h1:q5aO5iv3BALma1z3nysRSu3vliaHDrHv9XZmvUxXXGw=
+github.com/gkampitakis/ciinfo v0.1.1 h1:dz1LCkOd+zmZ3YYlFNpr0hRDqGY7Ox2mcaltHzdahqk=
+github.com/gkampitakis/ciinfo v0.1.1/go.mod h1:bVaOGziPqf8PoeYZxatq1HmCsJUmv191hLnFboYxd9Y=
+github.com/gkampitakis/go-snaps v0.3.8 h1:6hXzH8OJlvLqpPYvJkF9lgKAPer1NwwJc3sB6GQFt4o=
+github.com/gkampitakis/go-snaps v0.3.8/go.mod h1:K7ZOtJfx+Apn1RB6XxSeQzQurmgr6fJx6SsJg0SUdGc=
 github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8/go.mod h1:xkRDCp4j0OGD1HRkm4kmhM+pmpv3AKq5SU7GMg4oO/Q=
 github.com/go-asn1-ber/asn1-ber v1.3.1/go.mod h1:hEBeB/ic+5LoWskz+yKT7vGhhPYkProFKoKdwZRWMe0=
 github.com/go-chi/chi v1.5.0/go.mod h1:REp24E+25iKvxgeTfHmdUoL5x15kBiDBlnIl5bCwe2k=
@@ -425,7 +425,6 @@ github.com/hashicorp/go-uuid v1.0.0/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/b
 github.com/hashicorp/go-uuid v1.0.1/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/bN7x4byOro=
 github.com/hashicorp/go-uuid v1.0.2/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/bN7x4byOro=
 github.com/hashicorp/go-version v1.1.0/go.mod h1:fltr4n8CU8Ke44wwGCBoEymUuxUHl09ZGVZPK5anwXA=
-github.com/hashicorp/go.net v0.0.1 h1:sNCoNyDEvN1xa+X0baata4RdcpKwcMS6DH+xwfqPgjw=
 github.com/hashicorp/go.net v0.0.1/go.mod h1:hjKkEWcCURg++eb33jQU7oqQcI9XDCnUzHA0oac0k90=
 github.com/hashicorp/golang-lru v0.5.0/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.1/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
@@ -747,8 +746,8 @@ github.com/rogpeppe/go-internal v1.2.2/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFR
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.6.1/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTEfhy4qGm1nDQc=
 github.com/rogpeppe/go-internal v1.8.0/go.mod h1:WmiCO8CzOY8rg0OYDC4/i/2WRWAB6poM+XZ2dLUbcbE=
-github.com/rogpeppe/go-internal v1.8.1 h1:geMPLpDpQOgVyCg5z5GoRwLHepNdb71NXb67XFkP+Eg=
-github.com/rogpeppe/go-internal v1.8.1/go.mod h1:JeRgkft04UBgHMgCIwADu4Pn6Mtm5d4nPKWu0nJ5d+o=
+github.com/rogpeppe/go-internal v1.9.0 h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZVejAe8=
+github.com/rogpeppe/go-internal v1.9.0/go.mod h1:WtVeX8xhTBvf0smdhujwtBcq4Qrzq/fJaraNFVN+nFs=
 github.com/rs/cors v1.8.1 h1:OrP+y5H+5Md29ACTA9imbALaKHwOSUZkcizaG0LT5ow=
 github.com/rs/cors v1.8.1/go.mod h1:XyqrcTp5zjWr1wsJ8PIRZssZ8b/WMcMf71DJnit4EMU=
 github.com/rs/cors/wrapper/gin v0.0.0-20220223021805-a4a5ce87d5a2 h1:1aAml1kdZoFYpFSgGJVzjqICbOv05pUotSI1+9VQaX8=
