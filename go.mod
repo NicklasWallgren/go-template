@@ -9,16 +9,18 @@ require (
 	go.uber.org/fx v1.17.1
 	go.uber.org/zap v1.21.0
 	gopkg.in/DataDog/dd-trace-go.v1 v1.38.1
-	gorm.io/gorm v1.23.5
+	gorm.io/gorm v1.24.0
 )
 
 require (
+	github.com/NicklasWallgren/sqlTemplate v0.11.0
 	github.com/avast/retry-go v3.0.0+incompatible
 	github.com/brianvoe/gofakeit/v6 v6.16.0
+	github.com/gin-contrib/zap v0.0.2
 	github.com/gkampitakis/go-snaps v0.3.2
 	github.com/go-playground/validator/v10 v10.10.1
 	github.com/go-sql-driver/mysql v1.6.0
-	github.com/hashicorp/go.net v0.0.1
+	github.com/google/uuid v1.3.0
 	github.com/iamolegga/enviper v1.4.0
 	github.com/jackc/pgconn v1.12.1
 	github.com/lib/pq v1.10.4
@@ -45,14 +47,12 @@ require (
 	github.com/DataDog/sketches-go v1.0.0 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.5.1 // indirect
-	github.com/NicklasWallgren/sqlTemplate v0.11.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgraph-io/ristretto v0.1.0 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-contrib/zap v0.0.2 // indirect
 	github.com/gkampitakis/ciinfo v0.1.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.20.0 // indirect
@@ -62,7 +62,6 @@ require (
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
