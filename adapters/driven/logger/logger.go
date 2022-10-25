@@ -21,6 +21,7 @@ type Logger interface {
 	Warnf(template string, args ...interface{})
 	Error(args ...interface{})
 	Errorf(template string, args ...interface{})
+	With(args ...interface{}) Logger
 	GetFxLogger() fxevent.Logger
 	GetGormLogger() gormLogger.Interface
 	GetZapLogger() *zap.Logger
@@ -39,7 +40,7 @@ func NewLogger(env env.Env) (Logger, error) {
 		return logger{}, fmt.Errorf("unable to determine log level %w", err)
 	}
 
-	config := zap.NewDevelopmentConfig()
+	config := zap.NewProductionConfig()
 	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	config.Level.SetLevel(level)
 
@@ -49,6 +50,12 @@ func NewLogger(env env.Env) (Logger, error) {
 	}
 
 	return logger{SugaredLogger: zapLogger.Sugar(), zapLogger: zapLogger}, nil
+}
+
+func (l logger) With(fields ...interface{}) Logger {
+	l.SugaredLogger = l.SugaredLogger.With(fields)
+
+	return l
 }
 
 // GetFxLogger gets logger for go-fx.
