@@ -53,7 +53,7 @@ func NewLogger(env env.Env) (Logger, error) {
 }
 
 func (l logger) With(fields ...interface{}) Logger {
-	l.SugaredLogger = l.SugaredLogger.With(fields)
+	l.SugaredLogger = l.SugaredLogger.With(fields...)
 
 	return l
 }

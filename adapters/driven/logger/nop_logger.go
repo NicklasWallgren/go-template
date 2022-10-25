@@ -8,6 +8,9 @@ import (
 
 type NopLogger struct{}
 
+// To ensure that NopLogger implements the Logger interface.
+var _ Logger = (*NopLogger)(nil)
+
 func (n NopLogger) Debug(args ...interface{}) {
 }
 
@@ -30,6 +33,10 @@ func (n NopLogger) Error(args ...interface{}) {
 }
 
 func (n NopLogger) Errorf(template string, args ...interface{}) {
+}
+
+func (n NopLogger) With(fields ...interface{}) Logger {
+	return nil
 }
 
 func (n NopLogger) GetFxLogger() fxevent.Logger {
